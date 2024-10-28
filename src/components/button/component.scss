@@ -1,0 +1,28 @@
+@import '../../styles/color-variables.scss'; 
+
+
+button{
+    padding: 10px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.primary{
+    border: none;
+    background-color: $primary-color;
+    color: $secondary-color;
+}
+
+.primary:hover{
+    background-color: orangered;
+}
+
+.secondary{
+    border: 1px solid $primary-color;
+    background-color: transparent;
+    color: $primary-color;
+}
+
+.secondary:hover{
+    opacity: 0.5;
+}

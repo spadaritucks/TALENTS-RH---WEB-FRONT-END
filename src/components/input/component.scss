@@ -1,0 +1,39 @@
+@import '../../styles/color-variables.scss'; 
+
+.input-wrapper{
+    display: flex;
+    flex-direction: column;
+    color: $secondary-color;
+    width: 230px;
+
+    label{
+        font-size: 14px;
+        font-weight: 700;
+        text-align: justify;
+    }
+
+    input{
+        width: 220px;
+        border: none;
+        border-radius: 8px;
+        background-color: $bg-secondary-color;
+        padding: 5px 10px;
+        color: $secondary-color;
+    }
+
+    input:focus{
+        outline: none;
+    }
+
+    input:disabled{
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+}
+
+.input-wrapper-checkbox{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}

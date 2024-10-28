@@ -1,0 +1,17 @@
+@import '../../styles/color-variables.scss'; 
+.nav-area{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: $secondary-color;
+
+    .nav-links{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 20px;
+    }
+}
+
+
+

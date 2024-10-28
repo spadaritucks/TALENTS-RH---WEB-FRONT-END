@@ -1,0 +1,102 @@
+@import '../../../styles/color-variables.scss'; 
+.cadastro-area{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: $secondary-color;
+
+    .cadastro-content{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        border: 2px solid $bg-secondary-color;
+        border-radius: 8px;
+        padding: 10px 15px;
+        margin-top: 40px;
+        text-align: center;
+        
+
+        h2{
+            font-size: 24px;
+            font-weight: 700;
+
+        }
+
+        form{
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); // Duas colunas
+            gap: 15px; // Espaçamento entre os inputs
+            color: $secondary-color;
+            place-items: end;
+
+            .checkboxes-content{
+                grid-column: span 3; 
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 10px;
+                max-width: 350px;
+
+                .checkboxes{
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 10px;
+                }
+            }
+
+            .textarea-content{
+                grid-column: span 3;
+                width: 100%;
+            }
+        }
+    }
+}
+
+
+@media (max-width: 768px) {
+
+    .cadastro-area{
+        .cadastro-content{
+            
+            form{
+                grid-template-columns: repeat(2, 1fr);
+
+                .checkboxes-content{
+                    grid-column: span 2;
+                }
+
+                .textarea-content{
+                    grid-column: span 2;
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 450px) {
+
+    .cadastro-area{
+        .cadastro-content{
+            
+            form{
+               display: flex;
+               flex-direction: column;
+               align-items: center;
+               justify-content: center;
+
+                .checkboxes-content{
+                    grid-column: span 1;
+                }
+
+                .textarea-content{
+                    grid-column: span 1;
+                }
+            }
+        }
+    }
+}
