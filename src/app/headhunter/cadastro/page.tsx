@@ -7,14 +7,60 @@ import Input from "@/components/input/component"
 import useNumericInput from "@/hooks/NumericInput"
 import Select from "@/components/select/component"
 import Button from "@/components/button/component"
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import TextArea from '@/components/textarea/component'
+import { createUser } from '@/api/users/api'
 
 
 export default function Cadastro() {
 
     const [search, setSearch] = useState('')
+    const formRef = useRef<HTMLFormElement>(null);
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
 
+        if (formRef.current) {
+            const formData = new FormData(formRef.current)
+            const tipoUsuario = 'headhunter'
+            const ComoConheceu = Array.from(formRef.current.querySelectorAll('input[name="como_conheceu[]"]:checked')).map(input => (input as HTMLInputElement).value);
+            const Situacao = Array.from(formRef.current.querySelectorAll('input[name="situacao[]"]:checked')).map(input => (input as HTMLInputElement).value )
+            const AnosTrabalho = Array.from(formRef.current.querySelectorAll('input[name="anos_trabalho[]"]:checked')).map(input => (input as HTMLInputElement).value)
+            const QuantiaVagas = Array.from(formRef.current.querySelectorAll('input[name="quantia_vagas[]"]:checked')).map(input => (input as HTMLInputElement).value)
+            const HorasDiarias = Array.from(formRef.current.querySelectorAll('input[name="horas_diarias[]"]:checked')).map(input => (input as HTMLInputElement).value)
+            const DiasSemanas = Array.from(formRef.current.querySelectorAll('input[name="dias_semanais[]"]:checked')).map(input => (input as HTMLInputElement).value)
+            const NivelSenioridade = Array.from(formRef.current.querySelectorAll('input[name="nivel_senioridade[]"]:checked')).map(input => (input as HTMLInputElement).value)
+            const Segmento = Array.from(formRef.current.querySelectorAll('input[name="segmento[]"]:checked')).map(input => (input as HTMLInputElement).value)
+            formData.append('tipo_usuario', tipoUsuario)
+            formData.append('como_conheceu', JSON.stringify(ComoConheceu))
+            formData.append('situacao', JSON.stringify(Situacao))
+            formData.append('anos_trabalho', JSON.stringify(AnosTrabalho))
+            formData.append('quantia_vagas', JSON.stringify(QuantiaVagas))
+            formData.append('horas_diarias', JSON.stringify(HorasDiarias))
+            formData.append('dias_semanais', JSON.stringify(DiasSemanas))
+            formData.append('nivel_senioridade', JSON.stringify(NivelSenioridade))
+            formData.append('segmento', JSON.stringify(Segmento))
+
+
+
+            if (formData.get('password') === formData.get('password_confirm')) {
+                formData.delete('password_confirm')
+
+                const data = await createUser(formData)
+
+                if (data) {
+                    console.log(data)
+                    if (data.status === false) {
+                        alert(data.message)
+                    } else {
+                        alert('Cadastro realizado com sucesso!')
+                        window.location.href = '/headhunter/login'
+                    }
+                }
+            }
+
+
+        }
+    }
 
 
 
@@ -25,13 +71,16 @@ export default function Cadastro() {
                 <Image width={160} height={160} src={logo} alt='Logo Talents RH'></Image>
                 <h2>Cadastro do Headhunter</h2>
 
-                <form>
+                <form ref={formRef} onSubmit={handleSubmit}>
                     <Input label="Nome" placeholder='Nome' type="text" name="nome" />
                     <Input label="Sobrenome" placeholder='Sobrenome' type="text" name="sobrenome" />
                     <Input label="Cidade" placeholder='Cidade' type="text" name="cidade" />
                     <Input label="Estado" placeholder='Estado' type="text" name="estado" />
                     <Input label="Email" placeholder='exemplo@dominio.com' type="email" name="email" />
                     <Input label="Celular Principal" placeholder='(11) 99999-9999' type="text" name="celular_1" onInput={useNumericInput} />
+                    <Input label="Celular Alternativo" placeholder='(11) 99999-9999' type="text" name="celular_2" onInput={useNumericInput} />
+                    <Input label="Data de Nascimento" type="date" name="data_nascimento" />
+                    <Input label="Linkedin" placeholder='linkedin.com/in/usuario' type="text" name="linkedin" />
                     <div className="checkboxes-content">
                         <h2>Como nos conheceu?</h2>
                         <div className='checkboxes'>

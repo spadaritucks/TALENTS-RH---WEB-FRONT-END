@@ -8,15 +8,56 @@ import useNumericInput from "@/hooks/NumericInput"
 import Select from "@/components/select/component"
 import Button from "@/components/button/component"
 import { profissoes } from '@/json/profissoes'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { consultores } from '@/json/consultores'
+import { createUser } from '@/api/users/api'
 
 
 export default function Cadastro() {
 
     const [search, setSearch] = useState('')
-
+    const [formErrors, setFormErrors] = useState<{[key:string]: string[]}>({})
     const filteredProfissoes = profissoes.filter((profissao) => profissao.toLowerCase().includes(search.toLowerCase()))
+    const formRef = useRef<HTMLFormElement>(null);
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+    
+        if (formRef.current) {
+          const formData = new FormData(formRef.current)
+          const tipoUsuario = 'candidato'
+          formData.append('tipo_usuario', tipoUsuario)
+          
+          // Coletar valores de escolaridade e nível de inglês
+          const escolaridade = Array.from(formRef.current.querySelectorAll('input[name="escolaridade[]"]:checked')).map(input => (input as HTMLInputElement).value);
+          const nivelIngles = Array.from(formRef.current.querySelectorAll('input[name="nivel_ingles[]"]:checked')).map(input => (input as HTMLInputElement).value);
+          
+          // Adicionar os valores ao FormData
+          formData.append('escolaridade', JSON.stringify(escolaridade));
+          formData.append('nivel_ingles', JSON.stringify(nivelIngles));
+
+          if(formData.get('password') === formData.get('password_confirm')){
+            formData.delete('password_confirm')
+            console.log(formData)
+            const data = await createUser(formData)
+          
+          if (data) {
+            console.log(data)
+            if (data.status === false) {
+              if(typeof data.message === 'object'){
+                setFormErrors(data.message)
+              }else{
+                alert(data.message)
+              }
+            } else {
+              alert('Cadastro realizado com sucesso!')
+              window.location.href = '/candidato/login'
+              }
+            }
+          }else{
+            alert('As senhas não correspondem!')
+          }
+        }
+    }
 
 
     return (
@@ -26,7 +67,7 @@ export default function Cadastro() {
                 <Image width={160} height={160} src={logo} alt='Logo Talents RH'></Image>
                 <h2>Cadastro do Candidato</h2>
 
-                <form>
+                <form ref={formRef} onSubmit={handleSubmit}>
                     <Input label="Nome" placeholder='Nome' type="text" name="nome" />
                     <Input label="Sobrenome" placeholder='Sobrenome' type="text" name="sobrenome" />
                     <Input label="Cidade" placeholder='Cidade' type="text" name="cidade" />
@@ -36,7 +77,7 @@ export default function Cadastro() {
                     <Input label="Celular Alternativo" placeholder='(11) 99999-9999' type="text" name="celular_2" onInput={useNumericInput} />
                     <Input label="Data de Nascimento" type="date" name="data_nascimento" />
                     <Input label="Linkedin" placeholder='linkedin.com/in/usuario' type="text" name="linkedin" />
-                    <Input label="Ultimo Cargo" placeholder='Ex: Desenvolvedor Front-End' type="text" name="ulitmo_cargo" />
+                    <Input label="Ultimo Cargo" placeholder='Ex: Desenvolvedor Front-End' type="text" name="ultimo_cargo" />
                     <Input label="Ultimo Salario" placeholder='Ex: R$ 2000,00' type="text" name="ultimo_salario" onInput={useNumericInput} />
                     <Input label='Pretensão Salarial CLT' placeholder='Ex: R$ 2000,00' type='text' name='pretensao_salarial_clt' onInput={useNumericInput} />
                     <Input label='Pretensão Salarial PJ' placeholder='Ex: R$ 2000,00' type='text' name='pretensao_salarial_pj' onInput={useNumericInput} />

@@ -1,9 +1,11 @@
+'use client'
 import Button from "../button/component";
 import { useModal } from "./context";
 import {
     Dialog,
     DialogContent,
     DialogDescription,
+    DialogFooter,
     DialogHeader,
     DialogTitle,
     DialogTrigger,
@@ -11,18 +13,22 @@ import {
 
 
 
+
 export default function Modal() {
+
     const { modalShow, modalTitle, modalBody, hideModal } = useModal();
 
     return (
-        <Dialog open={modalShow}>
-            <DialogContent>
+        <Dialog open={modalShow} onOpenChange={hideModal}>
+            <DialogContent className="bg-#1b1b1b text-white border-none">
                 <DialogHeader>
                     <DialogTitle>{modalTitle}</DialogTitle>
-                    <Button ButtonName="Fechar"  type="button" variant="secondary" onClick={hideModal} />
                 </DialogHeader>
-                {modalBody}
+                <div className="modal-body">{modalBody}</div>
+                <DialogFooter>
+                    <Button ButtonName="Fechar" type="button" variant="secondary" onClick={hideModal} />
+                </DialogFooter>
             </DialogContent>
         </Dialog>
-    )
+    );
 }

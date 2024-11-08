@@ -6,7 +6,9 @@ import Main from "@/layouts/candidato/layout";
 export default function Painel() {
     return (
        <Main>
-        <h1>Painel</h1>
+         <section className="area-painel">
+            
+         </section>
        </Main>
     )
 }

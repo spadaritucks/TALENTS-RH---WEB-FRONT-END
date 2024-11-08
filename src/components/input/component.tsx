@@ -12,15 +12,16 @@ interface InputProps{
     placeholder?: string
     onChange?: (e:ChangeEvent<HTMLInputElement>) => void
     onInput?: (e:ChangeEvent<HTMLInputElement>) => void
+    disabled?: boolean
 }
 
-export default function Input ({placeholder,label,onChange, type,value,name, onInput}: InputProps){
+export default function Input ({placeholder,label,onChange, type,value,name, onInput, disabled}: InputProps){
 
 
     return(
         <div className= {`${type === "checkbox" ? "input-wrapper-checkbox"  : "input-wrapper"}`}>
             <label htmlFor={label}>{label}</label>
-            <input type={type} name={name} placeholder={placeholder} value={value} onChange={onChange} onInput={onInput} />
+            <input type={type} name={name} placeholder={placeholder} value={value} onChange={onChange} onInput={onInput} disabled ={disabled} />
         </div>
     )
 }
