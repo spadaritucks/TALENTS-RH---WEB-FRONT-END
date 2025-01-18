@@ -26,6 +26,10 @@ export default function Home() {
           <h2>Headhunter</h2>
           <Link href= '/headhunter/login'>Clique aqui</Link>
         </div>
+        <div className='type-profile-content'>
+          <h2>Administrador</h2>
+          <Link href= '/admin/login'>Clique aqui</Link>
+        </div>
       </div>
     </section>
   )

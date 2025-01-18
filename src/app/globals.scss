@@ -8,9 +8,19 @@
   box-sizing: border-box;
   padding: 0 auto;
   margin: 0 auto;
-  background-color: $bg-primary-color;
   font-family: 'Poppins', 'sans-serif';
+  
 }
+
+body{
+  background-color: $bg-primary-color;
+  
+}
+
+html{
+  scroll-behavior: smooth;
+}
+
 
 
 @layer base {

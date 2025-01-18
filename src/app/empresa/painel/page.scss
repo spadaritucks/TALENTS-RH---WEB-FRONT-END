@@ -1,0 +1,56 @@
+@import "../../../styles/color-variables.scss";
+.empresa-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: $secondary-color;
+
+    h1 {
+        font-size: 30px;
+    }
+
+    .chamado-area {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 20px;
+        margin-top: 30px;
+        
+        h2{
+            font-weight: bold;
+            font-size: 24px;
+        }
+
+        .chamados-buttons{
+            display: flex;
+            align-items: flex-start;
+            justify-content: flex-start;
+        }
+        
+
+        .table-head {
+            font-weight: 700;
+            text-align: center;
+            color: $secondary-color;
+        }
+
+        .table-buttons{
+            display: flex;
+            gap: 10px;
+        }
+    }
+
+
+}
+
+.chamado-form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 220px;
+}
+

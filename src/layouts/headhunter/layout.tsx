@@ -25,8 +25,8 @@ export default function Main({ children }: { children: ReactNode }) {
     return (
         <>
             <NavBar>
-                <Link href='/'>Candidatos</Link>
-                <Link href='/'>Perfil</Link>
+                <Link href='#candidado-search-area'>Candidatos</Link>
+                <Link href='#headhunter-area'>Vagas</Link>
                 <Button type="button" variant="primary" ButtonName="Logout" onClick={handleLogout} />
             </NavBar>
             {children}

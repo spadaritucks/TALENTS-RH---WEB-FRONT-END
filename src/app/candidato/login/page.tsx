@@ -7,20 +7,46 @@ import Button from '@/components/button/component'
 import Link from 'next/link'
 import useNumericInput from '@/hooks/NumericInput'
 import { Login } from '@/api/login/api'
-import { useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { CandidatosProps, getAllUsers, UserProps } from '@/api/users/api'
+
 
 
 export default function Home() {
 
   const formRef = useRef<HTMLFormElement>(null);
+  const [users, setUsers] = useState<UserProps[]>([])
+  const [candidatos, setCandidatos] = useState<CandidatosProps[]>([])
+
+  useEffect(() => {
+
+    const fetchUsers = async () => {
+      const response = await getAllUsers();
+      if (response) {
+        setUsers(response.data.users)
+        setCandidatos(response.data.candidatos);
+      }
+    }
+
+    fetchUsers();
+  }, [])
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (formRef.current) {
       const formData = new FormData(formRef.current)
+      const email = formData.get('email');
+      const userVerification = users.find(user => user.email === email);
+      const candidatoVerification = candidatos.find(candidatos => candidatos.user_id === userVerification?.id);
+
+      if(!userVerification || !candidatoVerification){
+        alert('Usuário não encontrado');
+        return;
+      }
+
       const data = await Login(formData)
-      
+
       if (data) {
         console.log(data)
         if (data.status === false) {

@@ -1,0 +1,55 @@
+@import '../../styles/color-variables.scss';
+
+.input-wrapper {
+    display: flex;
+    flex-direction: column;
+    color: $secondary-color;
+    width: 230px;
+
+    label {
+        font-size: 14px;
+        font-weight: 700;
+        text-align: justify;
+    }
+
+    /* Estilo para o contêiner do TagsInput */
+    .react-tagsinput {
+        padding: 5px;
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: $bg-secondary-color;
+        outline: none;
+    }
+
+    /* Estilo para cada tag */
+    .react-tagsinput-tag {
+        background-color: $bg-primary-color;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 3px;
+        margin: 2px;
+        display: flex;
+        align-items: center;
+    }
+
+    /* Estilo para o botão de remoção da tag */
+    .react-tagsinput-remove {
+        margin-left: 5px;
+        cursor: pointer;
+        font-weight: bold;
+        background-color: transparent;
+    }
+
+    /* Estilo para o campo de entrada */
+    .react-tagsinput-input {
+        border: none;
+        outline: none;
+        flex-grow: 1;
+        padding: 5px;
+        margin: 2px;
+        min-width: 100px;
+        background-color: $bg-secondary-color;
+    }
+}

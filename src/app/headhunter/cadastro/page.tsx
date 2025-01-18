@@ -64,6 +64,7 @@ export default function Cadastro() {
 
 
 
+
     return (
         <section className='cadastro-area'>
             <div className='cadastro-content'>

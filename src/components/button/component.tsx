@@ -7,7 +7,8 @@ type ButtonVariants = 'primary' | 'secondary'
 interface ButtonProps{
     type: ButtonTypes;
     variant: ButtonVariants;
-    ButtonName: string
+    ButtonName: string;
+    disabled?:boolean;
     onClick?: (e:React.MouseEvent<HTMLButtonElement>) => void
 
 }

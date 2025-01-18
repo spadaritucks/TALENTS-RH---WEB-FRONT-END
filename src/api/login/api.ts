@@ -3,7 +3,7 @@ import { api } from "@/api/axios"
 
 export const Login = async (formdata:FormData) => {
     try{
-        const response = await api.post('/login', formdata)
+        const response = await api.post('/api/login', formdata)
         return {
             status: true,
             message: response.data.message,
