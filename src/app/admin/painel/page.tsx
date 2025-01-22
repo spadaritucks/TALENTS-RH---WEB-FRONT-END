@@ -27,7 +27,7 @@ import useNumericInput from '@/hooks/NumericInput'
 
 export default function Painel() {
 
-    const [profissoes, setProfissoes] = useState<ProfissoesProps[]>([])
+    
     const [chamados, setChamados] = useState<ChamadoProps[]>([]);
     const [users, setUsers] = useState<UserProps[]>([]) // Dados gerais de todos os usuarios
     const [empresa, setEmpresa] = useState<EmpresaProps[]>([]) // Dados da Empresa
@@ -36,6 +36,7 @@ export default function Painel() {
     const [headhunters, setHeadHunters] = useState<HeadHunterProps[]>([]); // Dados dos Head Hunters
     const [candidatos, setCandidatos] = useState<CandidatosProps[]>([]) // Dados dos Candidatos
     const [user, setUser] = useState<UserProps>() //Dados do Usuario Logado
+    const [profissoes, setProfissoes] = useState<ProfissoesProps[]>([])
     const formRef = useRef<HTMLFormElement>(null)
     const { showModal, hideModal } = useModal()
 
@@ -52,16 +53,7 @@ export default function Painel() {
     }, []);
 
     useEffect(() => {
-        //Consultar Dados de Profissoes
-        const fetchProfissoes = async () => {
-            const response = await getProfissoes()
 
-            if (response) {
-                setProfissoes(response.data.profissoes)
-            }
-        }
-
-        fetchProfissoes()
 
         const fetchChamados = async () => {
             const response = await getChamados()
@@ -71,6 +63,17 @@ export default function Painel() {
         }
 
         fetchChamados()
+
+                //Consultar Dados de Profissoes
+                const fetchProfissoes = async () => {
+                    const response = await getProfissoes()
+        
+                    if (response) {
+                        setProfissoes(response.data.profissoes)
+                    }
+                }
+        
+                fetchProfissoes()
 
         const fetchUsers = async () => {
             const response = await getAllUsers()
@@ -99,75 +102,7 @@ export default function Painel() {
 
 
 
-    //Função de submeter o formulario de profissões
 
-    const handleProfissoesSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault()
-
-        if (formRef.current) {
-            const formdata = new FormData(formRef.current)
-
-            const data = await createProfissoes(formdata)
-
-            if (data) {
-                console.log(data)
-                if (data.status === false) {
-                    alert(data.message)
-                } else {
-                    alert('Cargo Criado com sucesso!')
-
-                }
-            }
-        }
-
-    }
-
-    const handleUpdateProfissoesSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault()
-
-        if (formRef.current) {
-            const formdata = new FormData(formRef.current)
-            const id = formdata.get('profissao_id')?.toString();
-
-            if (id) {
-                const data = await updateProfissoes(parseInt(id), formdata)
-
-                if (data) {
-                    console.log(data)
-                    if (data.status === false) {
-                        alert(data.message)
-                    } else {
-                        alert('Cargo Atualizado com sucesso!')
-
-                    }
-                }
-            }
-
-
-
-        }
-
-    }
-
-     const handleDeleteProfissoesSubmit = (e:React.MouseEvent<HTMLButtonElement>,id: number) => {
-            e.preventDefault();
-            showModal('Tem certeza que deseja excluir esse Cargo?',
-                <div className="div-excluir">
-                    <Button ButtonName="Sim" type="button" variant="primary" onClick={async () => {
-                        const response = await deleteProfissoes(id);
-                        if (response) {
-                            if (response.status === false) {
-                                alert('Erro' + response?.data.message)
-                            } else {
-                                alert('Cargo excluido com sucesso')
-                            }
-                        }
-                    }} />
-                    <Button ButtonName="Não" type="button" variant="secondary" onClick={hideModal} />
-                </div>
-            )
-        }
-    
 
     const handleConsutoresSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
@@ -218,7 +153,7 @@ export default function Painel() {
 
     }
 
-    const handleDeleteConsultoresSubmit = (e:React.MouseEvent<HTMLButtonElement>,id: number) => {
+    const handleDeleteConsultoresSubmit = (e: React.MouseEvent<HTMLButtonElement>, id: number) => {
         e.preventDefault();
         showModal('Tem certeza que deseja excluir esse Consultor?',
             <div className="div-excluir">
@@ -237,7 +172,7 @@ export default function Painel() {
         )
     }
 
-    const handleAtualizarChamados = async (e: React.FormEvent<HTMLFormElement>, idChamado: number, idUsuario:number | undefined) => {
+    const handleAtualizarChamados = async (e: React.FormEvent<HTMLFormElement>, idChamado: number, idUsuario: number | undefined) => {
         e.preventDefault()
 
         if (formRef.current) {
@@ -259,6 +194,7 @@ export default function Painel() {
         }
     }
 
+
     //Filtrar consultores
     const consultoresFiltrados = users.filter(user => user.tipo_usuario === 'consultor')
 
@@ -266,10 +202,11 @@ export default function Painel() {
         <Main>
             <section className='admin-area'>
                 <h1>Painel do Admin</h1>
-                <div className='charts-area'>
+                <div className='dashboard-area'>
                     <BarsChart />
                     <LineCharts />
                     <AreaBarChart />
+
 
                 </div>
                 <div className='chamado-area'>
@@ -288,8 +225,8 @@ export default function Painel() {
                         </TableHeader>
                         <TableBody>
                             {chamados.map((chamado) => {
-                                 const empresaSelecionada = empresa.find(empresas => empresas.id == chamado.empresa_id)
-                                 const profissao = profissoes.find(profissao => profissao.id === chamado.profissao_id )
+                                const empresaSelecionada = empresa.find(empresas => empresas.id == chamado.empresa_id)
+                                const profissao = profissoes.find(profissao => profissao.id === chamado.profissao_id)
 
                                 return (
                                     <TableRow key={chamado.id}>
@@ -332,37 +269,10 @@ export default function Painel() {
                     <div className='profissoes-area'>
                         <h2>Cargos</h2>
                         <div className='profissoes-buttons'>
-                            <Button ButtonName='Cadastrar' type='button' variant='primary' onClick={() => {
-                                showModal('Criar Profissão',
-                                    <form className='profissao-form' ref={formRef} onSubmit={handleProfissoesSubmit}>
-                                        <Input label='Digite o nome da profissão' type='text' name='nome' placeholder='Analista de Redes' />
-                                        <Button ButtonName='Enviar' variant='primary' type='submit' />
-                                    </form>)
-                            }} />
-                            <Button ButtonName='Editar' type='button' variant='secondary' onClick={() => {
-                                showModal('Editar Profissão',
-                                    <form className='profissao-form' ref={formRef} onSubmit={handleUpdateProfissoesSubmit}>
-                                        <Select label='Selecione as Profissão' name='profissao_id' defaultValue='selecione'>
-                                            <option value='selecione'>Selecione</option>
-                                            {
-                                                profissoes.map((profissao) => (
-                                                    <option key={profissao.id} value={profissao.id}>{profissao.nome}</option>
-                                                ))
-
-                                            }
-                                        </Select>
-                                        <Input label='Digite o nome da profissão' type='text' name='nome' placeholder='Analista de Redes' />
-                                        <Button ButtonName='Enviar' variant='primary' type='submit' />
-                                    </form>)
-                            }} />
+                           
                         </div>
                         <div className='profissoes-list'>
-                            {profissoes.map((profissão) => (
-                                <div className='div-line' key={profissão.id}>
-                                    <p >{profissão.nome}</p>
-                                    <Button ButtonName='Excluir' type='button' variant='primary' onClick={(e)=>{handleDeleteProfissoesSubmit(e, profissão.id)}} />
-                                </div>
-                            ))}
+                            
                         </div>
                     </div>
 
@@ -416,7 +326,7 @@ export default function Painel() {
                             {consultoresFiltrados.map((consultor) => (
                                 <div className='div-line' key={consultor.id}>
                                     <p>{consultor.nome} {consultor.sobrenome}</p>
-                                    <Button ButtonName='Excluir' type='button' variant='primary' onClick={(e)=> handleDeleteConsultoresSubmit(e, consultor.id)} />
+                                    <Button ButtonName='Excluir' type='button' variant='primary' onClick={(e) => handleDeleteConsultoresSubmit(e, consultor.id)} />
                                 </div>
 
                             ))}

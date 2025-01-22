@@ -56,8 +56,9 @@ export default function Main({ children }: { children: ReactNode }) {
                             </Avatar>
                             <h3>{user?.nome}</h3>
                         </div>
-                        <Button type="button" variant="primary" ButtonName="Logout" onClick={handleLogout} />
+                        
                     </div>
+                    <Button type="button" variant="primary" ButtonName="Logout" onClick={handleLogout} />
                 </div>
             </NavBar>
             {children}

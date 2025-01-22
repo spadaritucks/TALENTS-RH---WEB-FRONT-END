@@ -55,6 +55,7 @@ export default function Main({ children }: { children: ReactNode }) {
                     </div>
                     <Button type="button" variant="primary" ButtonName="Logout" onClick={handleLogout} />
                 </div>
+
             </NavBar>
             {children}
         </>

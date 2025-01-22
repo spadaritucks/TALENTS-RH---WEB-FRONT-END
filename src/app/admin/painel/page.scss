@@ -7,7 +7,7 @@
     justify-content: center;
     color: $secondary-color;
 
-    .charts-area{
+    .dashboard-area{
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         gap: 20px;
@@ -88,42 +88,13 @@
 
            
 
-            .div-line{
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                width: 100%;
-                border: 1px solid $primary-color;
-                padding: 0 10px;
-                p {
-                    border-radius: 8px;
-                    margin: 8px;
-                    width: 100%;
-                    padding: 10px;
-                    font-size: 14px;
-                }
-            }
+            
         }
     }
 
-    
-
-    
 }
 
-.profissao-form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 20px;
 
-    .option-div {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-}
 
 .chamado-form{
     display: flex;
