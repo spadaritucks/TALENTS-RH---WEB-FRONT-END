@@ -1,5 +1,4 @@
 'use client'
-
 import { Suspense, useEffect, useState } from 'react'
 import './page.scss'
 import { getAllProcessos, ProcessosProps } from '@/api/processos/api'
@@ -7,35 +6,27 @@ import { getAllVagas, VagasProps } from '@/api/vagas/api'
 import { CandidatosProps, EmpresaProps, getAllUsers, UserProps } from '@/api/users/api'
 import Button from '@/components/button/component'
 import { useModal } from '@/components/modal/context'
-import { useSearchParams } from 'next/navigation'
 import Main from '@/layouts/headhunter/layout'
+import { useSearchParams } from 'next/navigation'
 
-export default function RenderCandidatoVaga () {
-    return(
+export default function RenderCandidatoVaga() {
+    return (
         <Suspense fallback={<div>Loading...</div>}>
-            <CandidatoVaga/>
+            <CandidatoVaga />
         </Suspense>
     )
 }
 
 function CandidatoVaga() {
     const [processos, setProcessos] = useState<ProcessosProps[]>([])
-    const [vagas, setVagas] = useState<VagasProps[]>([]) 
-    const [candidatos, setCandidatos] = useState<CandidatosProps[]>([]) 
-    const [users, setUsers] = useState<UserProps[]>([]) 
-    const [empresa, setEmpresa] = useState<EmpresaProps[]>([]) 
-    const { showModal } = useModal()
-    
-    // 🔥 Corrige erro no SSR: impede uso de `useSearchParams()` no servidor
-    const [id, setId] = useState<number | null>(null)
-
-    useEffect(() => {
-        if (typeof window !== 'undefined') { // Garante que estamos no client
-            const searchParams = new URLSearchParams(window.location.search)
-            const idString = searchParams.get('id')
-            setId(idString ? parseInt(idString) : null)
-        }
-    }, [])
+    const [vagas, setVagas] = useState<VagasProps[]>([]) // Dados das Vagas criadas pelo headhunter
+    const [candidatos, setCandidatos] = useState<CandidatosProps[]>([]) // Dados dos Candidatos
+    const [users, setUsers] = useState<UserProps[]>([]) // Dados gerais de todos os usuarios
+    const [empresa, setEmpresa] = useState<EmpresaProps[]>([]) // Dados da Empresa
+    const { showModal, hideModal } = useModal()
+    const searchParams = useSearchParams();
+    const idString = searchParams.get('id');
+    const id = parseInt(idString || '0');
 
     useEffect(() => {
         const fetchUsers = async () => {
@@ -48,7 +39,6 @@ function CandidatoVaga() {
         }
 
         fetchUsers()
-
         const fetchProcessos = async () => {
             const response = await getAllProcessos()
             if (response) {
@@ -66,8 +56,6 @@ function CandidatoVaga() {
 
         FetchVagas()
     }, [])
-
-    if (id === null) return <div>Carregando...</div> // Aguarda ID ser definido
 
     const candidatosProcessos = processos.filter(processo => processo.vaga_id === id)
     const vagasDados = vagas.find(vaga => vaga.id === id)
