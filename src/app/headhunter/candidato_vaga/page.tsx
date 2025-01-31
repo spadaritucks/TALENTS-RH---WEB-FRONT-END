@@ -16,10 +16,17 @@ export default function CandidatoVaga() {
     const [users, setUsers] = useState<UserProps[]>([]) // Dados gerais de todos os usuarios
     const [empresa, setEmpresa] = useState<EmpresaProps[]>([]) // Dados da Empresa
     const { showModal, hideModal } = useModal()
-    const searchParams = useSearchParams();
-    const idString = searchParams.get('id');
-    const id = parseInt(idString || '0');
 
+    const [id, setId] = useState<number | null>(null)
+
+    useEffect(() => {
+        if (typeof window !== 'undefined') { // Garante que só executa no cliente
+            const searchParams = new URLSearchParams(window.location.search)
+            const idString = searchParams.get('id')
+            setId(idString ? parseInt(idString) : null)
+        }
+    }, [])
+    
     useEffect(() => {
 
         const fetchUsers = async () => {

@@ -1,4 +1,4 @@
-'use client' // 🔥 Isso garante que tudo será executado no cliente
+'use client' 
 
 import { useEffect, useState } from 'react'
 import './page.scss'

@@ -23,10 +23,16 @@ import { useModal } from "@/components/modal/context";
 
 
 export default function Chamados() {
-    const searchParams = useSearchParams();
-    const idString = searchParams.get('id');
-    const id = parseInt(idString || '0');
-    console.log(id);
+    
+    const [id, setId] = useState<number | null>(null)
+
+    useEffect(() => {
+        if (typeof window !== 'undefined') { // Garante que só executa no cliente
+            const searchParams = new URLSearchParams(window.location.search)
+            const idString = searchParams.get('id')
+            setId(idString ? parseInt(idString) : null)
+        }
+    }, [])
 
     const [atualizacoes, setAtualizacoes] = useState<AtualizacoesProps[]>([])
     const [user, setUser] = useState<UserProps>() //Dados do Usuario Logado
