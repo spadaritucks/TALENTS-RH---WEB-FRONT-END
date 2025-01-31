@@ -1,7 +1,7 @@
 'use client'
 import Image from 'next/image'
 import './page.scss'
-import logo from '@/../public/logo.png'
+import logo from '@/../public/logo-not-background.png'
 import Input from '@/components/input/component'
 import Button from '@/components/button/component'
 import Link from 'next/link'
