@@ -10,18 +10,16 @@ import { useSearchParams } from 'next/navigation'
 import Main from '@/layouts/headhunter/layout'
 
 
-export default function CandidatoVaga() {
+export default function RenderCandidatoVaga () {
 
-    return (
-        <Main>
-            <Suspense fallback={<div>Carregando...</div>}>
-                <CandidatoVagaContent />
-            </Suspense>
-        </Main>
+    return(
+        <Suspense fallback={<div>Loading...</div>}>
+            <CandidatoVaga/>
+        </Suspense>
     )
 }
 
-function CandidatoVagaContent() {
+ function CandidatoVaga() {
     const [processos, setProcessos] = useState<ProcessosProps[]>([])
     const [vagas, setVagas] = useState<VagasProps[]>([]) // Dados das Vagas criadas pelo headhunter
     const [candidatos, setCandidatos] = useState<CandidatosProps[]>([]) // Dados dos Candidatos
@@ -62,16 +60,16 @@ function CandidatoVagaContent() {
         FetchVagas()
     }, [])
 
-
+    
 
     const candidatosProcessos = processos.filter(processo => processo.vaga_id === id)
     const vagasDados = vagas.find(vaga => vaga.id === id)
 
-
+    
 
 
     return (
-       
+        <Main>
             <div className='candidados-vaga'>
                 <h1>Candidatos para a Vaga de {vagasDados?.titulo}</h1>
                 <div className="candidatos-container">
@@ -79,15 +77,15 @@ function CandidatoVagaContent() {
                         const candidato = candidatos.find(candidato => candidato.id === processo.candidato_id)
                         const candidatoDados = users.find(user => user.id === candidato?.user_id)
 
-
-
+                      
+                       
 
                         return (
                             <div className="candidato" key={processo.id}>
                                 <h2>{candidatoDados?.nome} {candidatoDados?.sobrenome}</h2>
                                 <p><strong>Curriculo :</strong> <a href={`${process.env.NEXT_PUBLIC_API_URL}/storage/${candidato?.cv}`} >Baixar Curriculo</a></p>
                                 <p><strong>Link Telefone: </strong><a href={`https://wa.me/${candidatoDados?.celular_1}`}>{candidatoDados?.celular_1}</a></p>
-
+                                
                                 <p><strong>Pretensão Salarial(CLT): </strong>R$ {candidato?.pretensao_salarial_clt}</p>
                                 <p><strong>Pretensão Salarial(PJ): </strong>R$ {candidato?.pretensao_salarial_pj}</p>
                                 <div className='candidato-vaga-buttons'>
@@ -128,6 +126,6 @@ function CandidatoVagaContent() {
                     })}
                 </div>
             </div>
-        
+        </Main>
     )
 }
