@@ -1,5 +1,6 @@
-'use client'
-import { Suspense, useEffect, useState } from 'react'
+'use client' // 🔥 Isso garante que tudo será executado no cliente
+
+import { useEffect, useState } from 'react'
 import './page.scss'
 import { getAllProcessos, ProcessosProps } from '@/api/processos/api'
 import { getAllVagas, VagasProps } from '@/api/vagas/api'
@@ -7,26 +8,25 @@ import { CandidatosProps, EmpresaProps, getAllUsers, UserProps } from '@/api/use
 import Button from '@/components/button/component'
 import { useModal } from '@/components/modal/context'
 import Main from '@/layouts/headhunter/layout'
-import { useSearchParams } from 'next/navigation'
 
-export default function RenderCandidatoVaga() {
-    return (
-        <Suspense fallback={<div>Loading...</div>}>
-            <CandidatoVaga />
-        </Suspense>
-    )
-}
-
-function CandidatoVaga() {
+export default function CandidatoVaga() {
     const [processos, setProcessos] = useState<ProcessosProps[]>([])
-    const [vagas, setVagas] = useState<VagasProps[]>([]) // Dados das Vagas criadas pelo headhunter
-    const [candidatos, setCandidatos] = useState<CandidatosProps[]>([]) // Dados dos Candidatos
-    const [users, setUsers] = useState<UserProps[]>([]) // Dados gerais de todos os usuarios
-    const [empresa, setEmpresa] = useState<EmpresaProps[]>([]) // Dados da Empresa
-    const { showModal, hideModal } = useModal()
-    const searchParams = useSearchParams();
-    const idString = searchParams.get('id');
-    const id = parseInt(idString || '0');
+    const [vagas, setVagas] = useState<VagasProps[]>([]) 
+    const [candidatos, setCandidatos] = useState<CandidatosProps[]>([]) 
+    const [users, setUsers] = useState<UserProps[]>([]) 
+    const [empresa, setEmpresa] = useState<EmpresaProps[]>([]) 
+    const { showModal } = useModal()
+    
+    // 🔥 Pega o ID da URL manualmente para evitar erro no SSR
+    const [id, setId] = useState<number | null>(null)
+
+    useEffect(() => {
+        if (typeof window !== 'undefined') { // Garante que só executa no cliente
+            const searchParams = new URLSearchParams(window.location.search)
+            const idString = searchParams.get('id')
+            setId(idString ? parseInt(idString) : null)
+        }
+    }, [])
 
     useEffect(() => {
         const fetchUsers = async () => {
@@ -39,6 +39,7 @@ function CandidatoVaga() {
         }
 
         fetchUsers()
+
         const fetchProcessos = async () => {
             const response = await getAllProcessos()
             if (response) {
@@ -57,6 +58,8 @@ function CandidatoVaga() {
         FetchVagas()
     }, [])
 
+    if (id === null) return <div>Carregando...</div> // 🔥 Evita renderização antes do ID ser definido
+
     const candidatosProcessos = processos.filter(processo => processo.vaga_id === id)
     const vagasDados = vagas.find(vaga => vaga.id === id)
 
@@ -72,7 +75,7 @@ function CandidatoVaga() {
                         return (
                             <div className="candidato" key={processo.id}>
                                 <h2>{candidatoDados?.nome} {candidatoDados?.sobrenome}</h2>
-                                <p><strong>Curriculo :</strong> <a href={`${process.env.NEXT_PUBLIC_API_URL}/storage/${candidato?.cv}`} >Baixar Curriculo</a></p>
+                                <p><strong>Currículo :</strong> <a href={`${process.env.NEXT_PUBLIC_API_URL}/storage/${candidato?.cv}`} >Baixar Currículo</a></p>
                                 <p><strong>Link Telefone: </strong><a href={`https://wa.me/${candidatoDados?.celular_1}`}>{candidatoDados?.celular_1}</a></p>
                                 <p><strong>Pretensão Salarial(CLT): </strong>R$ {candidato?.pretensao_salarial_clt}</p>
                                 <p><strong>Pretensão Salarial(PJ): </strong>R$ {candidato?.pretensao_salarial_pj}</p>
