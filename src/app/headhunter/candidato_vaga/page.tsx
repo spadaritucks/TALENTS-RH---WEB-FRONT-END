@@ -1,5 +1,5 @@
 'use client'
-import { useEffect, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import './page.scss'
 import { getAllProcessos, ProcessosProps } from '@/api/processos/api'
 import { getAllVagas, VagasProps } from '@/api/vagas/api'
@@ -9,7 +9,19 @@ import { useModal } from '@/components/modal/context'
 import { useSearchParams } from 'next/navigation'
 import Main from '@/layouts/headhunter/layout'
 
+
 export default function CandidatoVaga() {
+
+    return (
+        <Main>
+            <Suspense fallback={<div>Carregando...</div>}>
+                <CandidatoVagaContent />
+            </Suspense>
+        </Main>
+    )
+}
+
+function CandidatoVagaContent() {
     const [processos, setProcessos] = useState<ProcessosProps[]>([])
     const [vagas, setVagas] = useState<VagasProps[]>([]) // Dados das Vagas criadas pelo headhunter
     const [candidatos, setCandidatos] = useState<CandidatosProps[]>([]) // Dados dos Candidatos
@@ -59,7 +71,7 @@ export default function CandidatoVaga() {
 
 
     return (
-        <Main>
+       
             <div className='candidados-vaga'>
                 <h1>Candidatos para a Vaga de {vagasDados?.titulo}</h1>
                 <div className="candidatos-container">
@@ -116,6 +128,6 @@ export default function CandidatoVaga() {
                     })}
                 </div>
             </div>
-        </Main>
+    
     )
 }
