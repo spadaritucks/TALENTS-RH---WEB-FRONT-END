@@ -10,6 +10,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Login } from '@/api/login/api'
 import { EmpresaProps, getAllUsers, HeadHunterProps, UserProps } from '@/api/users/api'
 import { HeartHandshake } from 'lucide-react'
+import { useModal } from '@/components/modal/context'
 
 
 export default function Home() {
@@ -18,6 +19,7 @@ export default function Home() {
 
   const [users, setUsers] = useState<UserProps[]>([])
   const [headhunters, setHeadHunters] = useState<HeadHunterProps[]>([])
+  const {showModal, hideModal} = useModal()
 
   useEffect(() => {
 
@@ -42,21 +44,21 @@ export default function Home() {
       const headhunterVerification = headhunters.find(headhunter => headhunter.user_id === userVerification?.id);
 
       if (!userVerification || !headhunterVerification) {
-        alert('Usuário não encontrado');
+        showModal('Erro', <p>Usuario não encontrado</p>)
         return;
       }
 
       const data = await Login(formData)
 
       if (data) {
-        console.log(data)
+    
         if (data.status === false) {
-          alert(data.message)
+          showModal('Erro', <p>{data.message}</p>)
         } else {
           sessionStorage.setItem('token', data.token)
           sessionStorage.setItem('user', JSON.stringify(data.user))
           window.location.href = '/headhunter/painel'
-          console.log(data)
+          
         }
       }
 

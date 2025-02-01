@@ -9,7 +9,7 @@ import useNumericInput from '@/hooks/NumericInput'
 import { Login } from '@/api/login/api'
 import { useEffect, useRef, useState } from 'react'
 import { ConsultorAndAdminProps, getAllUsers, UserProps } from '@/api/users/api'
-
+import { useModal } from '@/components/modal/context'
 
 
 export default function Home() {
@@ -17,6 +17,7 @@ export default function Home() {
     const formRef = useRef<HTMLFormElement>(null)
     const [users, setUsers] = useState<UserProps[]>([])
     const [admins, setAdmin] = useState<ConsultorAndAdminProps[]>([])
+    const { showModal } = useModal();
 
     useEffect(() => {
 
@@ -41,7 +42,7 @@ export default function Home() {
             const adminVerification = admins.find(admin => admin.user_id === userVerification?.id);
 
             if (!userVerification || !adminVerification) {
-                alert('Usuário não encontrado');
+                showModal('Erro', <p>Usuário não encontrado</p>);
                 return;
             }
             const data = await Login(formData)
@@ -49,12 +50,12 @@ export default function Home() {
             if (data) {
                 console.log(data)
                 if (data.status === false) {
-                    alert(data.message)
+                    showModal('Erro', <p>{data.message}</p>)
                 } else {
                     sessionStorage.setItem('token', data.token)
                     sessionStorage.setItem('user', JSON.stringify(data.user))
                     window.location.href = '/admin/painel'
-                    console.log(data)
+                    
                 }
             }
 

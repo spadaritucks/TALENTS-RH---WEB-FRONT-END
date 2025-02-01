@@ -9,13 +9,15 @@ import useNumericInput from '@/hooks/NumericInput'
 import { useEffect, useRef, useState } from 'react'
 import { Login } from '@/api/login/api'
 import { EmpresaProps, getAllUsers, UserProps } from '@/api/users/api'
-
+import { useModal } from '@/components/modal/context'
 
 export default function Home() {
 
   const formRef = useRef<HTMLFormElement>(null)
   const [users, setUsers] = useState<UserProps[]>([])
   const [empresas, setEmpresas] = useState<EmpresaProps[]>([])
+  const { showModal } = useModal();
+
 
   useEffect(() => {
 
@@ -42,7 +44,7 @@ export default function Home() {
       const empresaVerification = empresas.find(empresa => empresa.user_id === userVerification?.id);
 
       if (!userVerification || !empresaVerification) {
-        alert('Usuário não encontrado');
+        showModal('Erro', <p>Usuario não encontrado</p>);
         return;
       }
 
@@ -51,7 +53,7 @@ export default function Home() {
       if (data) {
 
         if (data.status === false) {
-          alert(data.message)
+          showModal('Erro', <p>{data.message}</p>)
         } else {
           sessionStorage.setItem('token', data.token)
           sessionStorage.setItem('user', JSON.stringify(data.user))
