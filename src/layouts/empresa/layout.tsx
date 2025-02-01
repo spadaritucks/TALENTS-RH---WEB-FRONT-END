@@ -25,9 +25,11 @@ export default function Main({ children }: { children: ReactNode }) {
             sessionStorage.removeItem('user');
             window.location.href = '/empresa/login'
         }
-        useAuthEmpresa()
+
     }
 
+    useAuthEmpresa() // Verifica se o Token Existe
+    
     // Consultar dados do usuario logado
     useEffect(() => {
         const userDados = sessionStorage.getItem('user')
@@ -38,7 +40,7 @@ export default function Main({ children }: { children: ReactNode }) {
 
     return (
         <>
-            
+
             <NavBar>
                 <div className="links-content">
                     <Link href='/empresa/vagas'><Image className="link-icon" src={BussinesBag} alt="" />Vagas</Link>

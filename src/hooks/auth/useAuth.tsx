@@ -38,3 +38,15 @@ export const useAuthEmpresa = () => {
     },[])
 
 }
+
+export const useAuthAdmin = () => {
+
+    useEffect(()=>{
+        const token = sessionStorage.getItem('token')
+
+        if(!token){
+            window.location.href = '/admin/login'
+        }
+    },[])
+
+}

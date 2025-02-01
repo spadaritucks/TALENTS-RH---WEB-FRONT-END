@@ -26,9 +26,11 @@ export default function Main({ children }: { children: ReactNode }) {
             window.location.href = '/candidato/login'
         }
 
-        useAuthCandidato()
+       
 
     }
+
+    useAuthCandidato() // Verifica se o Token Existe
 
 
     // Consultar dados do usuario logado

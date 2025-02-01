@@ -29,6 +29,8 @@ export default function Main({ children }: { children: ReactNode }) {
         }
     }
 
+    useAuthHeadhunter() // Verifica se o Token Existe
+
     //Consultar dados do usuario logado
     useEffect(() => {
         const userDados = sessionStorage.getItem('user')

@@ -5,7 +5,7 @@ import Link from "next/link"
 import { ReactNode, useEffect, useState } from "react"
 import './layout.scss'
 import Button from "@/components/button/component"
-import { useAuthHeadhunter } from "@/hooks/auth/useAuth"
+import { useAuthAdmin, useAuthHeadhunter } from "@/hooks/auth/useAuth"
 import BussinesBag from '../../../public/business-bag.png'
 import BussinesGuy from '../../../public/business-guy.png'
 import cargo from '../../../public/cargos.png'
@@ -16,6 +16,7 @@ import logo from '../../../public/logo.png'
 
 
 export default function Main({ children }: { children: ReactNode }) {
+
 
     const [user, setUser] = useState<UserProps>() //Dados do Usuario Logado
     const handleLogout = () => {
@@ -28,6 +29,8 @@ export default function Main({ children }: { children: ReactNode }) {
             window.location.href = '/headhunter/login'
         }
     }
+
+    useAuthAdmin() //Verifica se o token existe
 
     //Consultar dados do usuario logado
     useEffect(() => {
