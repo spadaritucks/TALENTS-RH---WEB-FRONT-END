@@ -21,8 +21,8 @@ export default function Home() {
 
     const fetchUsers = async () => {
       const response = await getAllUsers();
-      if(response){
-        setUsers(response.data.users) 
+      if (response) {
+        setUsers(response.data.users)
         setEmpresas(response.data.empresas);
       }
     }
@@ -32,7 +32,7 @@ export default function Home() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
+
 
     if (formRef.current) {
       const formData = new FormData(formRef.current)
@@ -41,7 +41,7 @@ export default function Home() {
       const userVerification = users.find(user => user.email === email);
       const empresaVerification = empresas.find(empresa => empresa.user_id === userVerification?.id);
 
-      if(!userVerification || !empresaVerification){
+      if (!userVerification || !empresaVerification) {
         alert('Usuário não encontrado');
         return;
       }
@@ -66,6 +66,11 @@ export default function Home() {
 
   return (
     <section className='login-area'>
+      <div className='btn-back'>
+        <Button ButtonName='Voltar ' type='button' variant='secondary' onClick={
+          () => { window.location.href = '/' }
+        } />
+      </div>
       <div className='login-content'>
         <Image width={80} height={80} src={logo} alt='Logo Talents RH'></Image>
         <h2>Login da Empresa</h2>

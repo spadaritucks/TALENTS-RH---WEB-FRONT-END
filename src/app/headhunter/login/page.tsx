@@ -41,7 +41,7 @@ export default function Home() {
       const userVerification = users.find(user => user.email === email);
       const headhunterVerification = headhunters.find(headhunter => headhunter.user_id === userVerification?.id);
 
-      if(!userVerification || !headhunterVerification){
+      if (!userVerification || !headhunterVerification) {
         alert('Usuário não encontrado');
         return;
       }
@@ -66,6 +66,11 @@ export default function Home() {
 
   return (
     <section className='login-area'>
+      <div className='btn-back'>
+        <Button ButtonName='Voltar ' type='button' variant='secondary' onClick={
+          () => { window.location.href = '/' }
+        } />
+      </div>
       <div className='login-content'>
         <Image width={80} height={80} src={logo} alt='Logo Talents RH'></Image>
         <h2>Login do Headhunter</h2>
