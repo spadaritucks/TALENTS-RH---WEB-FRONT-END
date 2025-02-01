@@ -75,8 +75,8 @@ export default function Home() {
         <Image width={80} height={80} src={logo} alt='Logo Talents RH'></Image>
         <h2>Login do Headhunter</h2>
         <form ref={formRef} onSubmit={handleSubmit}>
-          <Input label='Email' type='email' name='email'></Input>
-          <Input label='Senha' type='password' name='password'></Input>
+          <Input label='Email' type='email' name='email' placeholder='Email'></Input>
+          <Input label='Senha' type='password' name='password' placeholder='Sua Senha'></Input>
           <div className='form-footer'>
             <Button ButtonName='Login' type='submit' variant='primary' />
             <Link href='/headhunter/cadastro'>Crie sua Conta</Link>

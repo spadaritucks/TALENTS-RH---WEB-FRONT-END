@@ -15,21 +15,21 @@ import { ConsultorAndAdminProps, getAllUsers, UserProps } from '@/api/users/api'
 export default function Home() {
 
     const formRef = useRef<HTMLFormElement>(null)
-      const [users, setUsers] = useState<UserProps[]>([])
-      const [admins, setAdmin] = useState<ConsultorAndAdminProps[]>([])
-    
-      useEffect(() => {
-    
+    const [users, setUsers] = useState<UserProps[]>([])
+    const [admins, setAdmin] = useState<ConsultorAndAdminProps[]>([])
+
+    useEffect(() => {
+
         const fetchUsers = async () => {
-          const response = await getAllUsers();
-          if (response) {
-            setUsers(response.data.users)
-            setAdmin(response.data.admins);
-          }
+            const response = await getAllUsers();
+            if (response) {
+                setUsers(response.data.users)
+                setAdmin(response.data.admins);
+            }
         }
-    
+
         fetchUsers();
-      }, [])
+    }, [])
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -39,10 +39,10 @@ export default function Home() {
             const email = formData.get('email');
             const userVerification = users.find(user => user.email === email);
             const adminVerification = admins.find(admin => admin.user_id === userVerification?.id);
-      
-            if(!userVerification || !adminVerification){
-              alert('Usuário não encontrado');
-              return;
+
+            if (!userVerification || !adminVerification) {
+                alert('Usuário não encontrado');
+                return;
             }
             const data = await Login(formData)
 
@@ -67,9 +67,9 @@ export default function Home() {
             <div className='login-content'>
                 <Image width={80} height={80} src={logo} alt='Logo Talents RH'></Image>
                 <h2>Login do Admin</h2>
-                <form ref = {formRef} onSubmit={handleSubmit}>
-                    <Input label='Email' type='text' name='email'></Input>
-                    <Input label='Senha' type='password' name='password'></Input>
+                <form ref={formRef} onSubmit={handleSubmit}>
+                    <Input label='Email' type='email' name='email' placeholder='Email'></Input>
+                    <Input label='Senha' type='password' name='password' placeholder='Sua Senha'></Input>
                     <div className='form-footer'>
                         <Button ButtonName='Login' type='submit' variant='primary' />
 
