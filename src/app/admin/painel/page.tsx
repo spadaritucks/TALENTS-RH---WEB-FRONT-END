@@ -39,6 +39,7 @@ export default function Painel() {
     const [profissoes, setProfissoes] = useState<ProfissoesProps[]>([])
     const formRef = useRef<HTMLFormElement>(null)
     const { showModal, hideModal } = useModal()
+    const [formErrors, setFormErrors] = useState<{ [key: string]: string[] }>({}) //Objeto responsavel por validação do formulario
 
     //Requisições de dados
 
@@ -114,11 +115,15 @@ export default function Painel() {
             const data = await createUser(formdata)
 
             if (data) {
-                console.log(data)
                 if (data.status === false) {
-                    alert(data.message)
+                    if(typeof data.message === 'object' ){
+                        setFormErrors(data.message)
+                        showModal("Erro ", <p>Preencha os Campos Necessarios</p> )
+                    }else{
+                        showModal("Erro ", <p>{data.message}</p> )
+                    }
                 } else {
-                    alert('Consultor cadastrado com sucesso!')
+                    showModal("Sucesso ", <p>Consultor cadastrado com sucesso</p> )
 
                 }
             }
@@ -137,12 +142,16 @@ export default function Painel() {
                 const data = await updateUser(parseInt(id), formdata)
 
                 if (data) {
-                    console.log(data)
                     if (data.status === false) {
-                        alert(data.message)
+                        if(typeof data.message === 'object' ){
+                            setFormErrors(data.message)
+                            showModal("Erro ", <p>Preencha os Campos Necessarios</p> )
+                        }else{
+                            showModal("Erro ", <p>{data.message}</p> )
+                        }
                     } else {
-                        alert('Cargo Atualizado com sucesso!')
-
+                        showModal("Sucesso ", <p>Consultor atualizado com sucesso</p> )
+    
                     }
                 }
             }
@@ -161,9 +170,10 @@ export default function Painel() {
                     const response = await deleteUser(id);
                     if (response) {
                         if (response.status === false) {
-                            alert('Erro' + response?.data.message)
+                            showModal("Erro ", <p>{response?.data.message}</p> )
+                            
                         } else {
-                            alert('Consultor excluido com sucesso')
+                            showModal("Sucesso ", <p>Consultor excluido com sucesso</p> )
                         }
                     }
                 }} />
@@ -184,9 +194,15 @@ export default function Painel() {
 
                 if (data) {
                     if (data.status === false) {
-                        alert("Erro, " + data.message)
+                        if(typeof data.message === 'object' ){
+                            setFormErrors(data.message)
+                            showModal("Erro ", <p>Preencha os Campos Necessarios</p> )
+                        }else{
+                            showModal("Erro ", <p>{data.message}</p> )
+                        }
                     } else {
-                        alert("Sucesso, " + data.message)
+                        showModal("Sucesso ", <p>Chamado Atualizado com Sucesso</p> )
+    
                     }
                 }
             }
@@ -206,8 +222,6 @@ export default function Painel() {
                     <BarsChart />
                     <LineCharts />
                     <AreaBarChart />
-
-
                 </div>
                 <div className='chamado-area'>
                     <h2>Lista de Chamados</h2>
@@ -266,16 +280,7 @@ export default function Painel() {
                 </div>
 
                 <div className='operations-area'>
-                    <div className='profissoes-area'>
-                        <h2>Cargos</h2>
-                        <div className='profissoes-buttons'>
-                           
-                        </div>
-                        <div className='profissoes-list'>
-                            
-                        </div>
-                    </div>
-
+   
                     <div className='profissoes-area'>
                         <h2>Consultores</h2>
                         <div className='profissoes-buttons'>
