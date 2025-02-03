@@ -170,6 +170,7 @@ export default function Painel() {
                         <TableBody>
                             {chamados.map((chamado) => {
                                 const empresaSelecionada = empresa.find(empresas => empresas.id == chamado.empresa_id)
+                                
                                 const profissao = profissoes.find(profissao => profissao.id === chamado.profissao_id)
 
                                 return (

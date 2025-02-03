@@ -117,7 +117,7 @@ export default function Painel() {
 
         if (formRef.current) {
             const formdata = new FormData(formRef.current)
-            const id = user?.id
+            const id = empresaSelecionada?.id
             if (id) {
                 formdata.append('empresa_id', id?.toString());
             }
@@ -161,7 +161,7 @@ export default function Painel() {
 
     //Filtrações dos Chamados de acordo com a empresa logada
     const empresaSelecionada = empresa.find(empresas => empresas.user_id == user?.id)
-    const chamadoEmpresa = chamados.filter(chamado => chamado.empresa_id == empresaSelecionada?.user_id)
+    const chamadoEmpresa = chamados.filter(chamado => chamado.empresa_id == empresaSelecionada?.id)
 
 
 
