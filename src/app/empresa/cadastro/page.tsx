@@ -2,7 +2,7 @@
 
 import './page.scss'
 import Image from "next/image"
-import logo from '@/../public/logo.png'
+import logo from '@/../public/logo-not-background.png'
 import Input from "@/components/input/component"
 import useNumericInput from "@/hooks/NumericInput"
 import Select from "@/components/select/component"
