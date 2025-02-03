@@ -12,6 +12,7 @@ import Select from "@/components/select/component";
 import { useModal } from "@/components/modal/context";
 
 
+
 export default function Painel() {
 
   const [users, setUsers] = useState<UserProps[]>([])
@@ -132,13 +133,23 @@ export default function Painel() {
               //Verificação se o Usuario já se candidatou na vaga
               const candidato = candidatos.find(candidato => candidato.user_id === user?.id)
               const processoVaga = processos.filter(processo => processo.vaga_id === vaga.id)
-              const usuarioCandidatado = processoVaga.find(processo => processo.candidato_id === candidato?.id )
-              
+              const usuarioCandidatado = processoVaga.find(processo => processo.candidato_id === candidato?.id)
+
+              const headhunterId = headhunters.find(headhunter => headhunter.id === vaga.headhunter_id)
+              const headhunterUser = users.find(user => user.id === headhunterId?.user_id)
+
+              //Filtração para o Endereço da Empresa da vaga
+              const vagaEmpresa = empresa.find(vagaEmpresa => vagaEmpresa.id === vaga.empresa_id);
+              const userEmpresa = users.find(user => user.id == vagaEmpresa?.user_id);
+
               return (
                 <div key={vaga.id} className="vaga-card">
                   <h2>{vaga.titulo}</h2>
+                  <h3>{vagaEmpresa?.nome_fantasia}</h3>
+                  <p><strong>Responsavel: </strong>{headhunterUser?.nome} {headhunterUser?.sobrenome}</p>
+                  <p><strong>Região: </strong>{userEmpresa?.cidade} - {userEmpresa?.estado}</p>
                   <p><strong>Nivel :</strong> {vaga.nivel_senioridade}</p>
-                  {vaga.tipo_salario === "valor" ? <p><strong>Salario: </strong> De R${vaga.salario_minimo} até R${vaga.salario_maximo}</p> : <p><strong>Salario: </strong>{vaga.tipo_salario}</p> }
+                  {vaga.tipo_salario === "valor" ? <p><strong>Salario: </strong> De R${vaga.salario_minimo} até R${vaga.salario_maximo}</p> : <p><strong>Salario: </strong>{vaga.tipo_salario}</p>}
                   <p><strong>Publicada em:</strong> {new Date(vaga.created_at).toLocaleDateString('pt-BR')}</p>
                   <p><strong>Requisitos: </strong>{Array.isArray(vaga.competencias) ? vaga.competencias.join(', ') : vaga.competencias}</p>
                   <Button ButtonName="Exibir Descrição da Vaga" type="button" variant="secondary" onClick={() => {
