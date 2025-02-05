@@ -12,17 +12,18 @@ interface SelectProps{
     onChange?: (e:ChangeEvent<HTMLSelectElement>) => void
     children:ReactNode
     SelectKey?:string
-    
+    style?: React.CSSProperties
+    disabled?: boolean
 
 }
 
-export default function Select ({label,onChange, defaultValue,children,value,name,SelectKey}: SelectProps){
+export default function Select ({label,onChange, defaultValue,children,value,name,SelectKey, style, disabled}: SelectProps){
 
 
     return(
         <div className="select-wrapper" >
             <label htmlFor={label}>{label}</label>
-            <select name={name} defaultValue={defaultValue} value={value} onChange={onChange}>
+            <select disabled={disabled} style={style} name={name} defaultValue={defaultValue} value={value} onChange={onChange}>
                 {children}
             </select>
         </div>
