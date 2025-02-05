@@ -2,16 +2,6 @@
 
 import Main from "@/layouts/headhunter/layout"
 import './page.scss'
-import Link from "next/link"
-import {
-    Table,
-    TableBody,
-    TableCaption,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from "@/components/ui/table"
 import Button from "@/components/button/component"
 import Input from "@/components/input/component"
 import { useEffect, useRef, useState } from "react"

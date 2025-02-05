@@ -1,7 +1,7 @@
 'use client'
 
 import Button from "@/components/button/component";
-import Main from "@/layouts/empresa/layout"
+import Main from "@/layouts/headhunter/layout"
 import Image from "next/image";
 import Link from "next/link";
 import {
