@@ -26,43 +26,34 @@ export default function Painel() {
 
   //Requisição para os dados dos Usuarios
   useEffect(() => {
-
-    const fetchUsers = async () => {
-      const response = await getAllUsers()
-      if (response) {
-        setUsers(response.data.users)
-        setHeadHunters(response.data.headhunters)
-        setCandidatos(response.data.candidatos)
-        setEmpresa(response.data.empresas)
-
-
-      }
-    }
-
     fetchUsers()
-
-    const FetchVagas = async () => {
-      const response = await getAllVagas()
-      if (response) {
-        setVagas(response.data)
-      }
-    }
-
     FetchVagas()
-
-    const FetchProcessos = async () => {
-      const response = await getAllProcessos()
-      if (response) {
-        setProcessos(response.data)
-      }
-    }
-
     FetchProcessos()
-
-
-
-
   }, [])
+
+  const fetchUsers = async () => {
+    const response = await getAllUsers()
+    if (response) {
+      setUsers(response.data.users)
+      setHeadHunters(response.data.headhunters)
+      setCandidatos(response.data.candidatos)
+      setEmpresa(response.data.empresas)
+    }
+  }
+
+  const FetchVagas = async () => {
+    const response = await getAllVagas()
+    if (response) {
+      setVagas(response.data)
+    }
+  }
+
+  const FetchProcessos = async () => {
+    const response = await getAllProcessos()
+    if (response) {
+      setProcessos(response.data)
+    }
+  }
 
 
   //Consultar dados do usuario logado
@@ -90,9 +81,10 @@ export default function Painel() {
 
     if (response) {
       if (response.status == false) {
-        alert(response.message)
+        showModal('Erro', <p>{response.message}</p>)
       } else {
-        alert("Candidatura Realizada com Sucesso")
+        showModal('Sucesso', <p>Candidatura Realizada com Sucesso</p>)
+        FetchProcessos()
       }
     }
 

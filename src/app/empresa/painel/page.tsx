@@ -42,7 +42,7 @@ export default function Painel() {
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 1;
     const formRef = useRef<HTMLFormElement>(null)
-
+    const [formErrors, setFormErrors] = useState<{ [key: string]: string[] }>({})
 
 
     //Consultar dados do usuario logado
@@ -57,59 +57,50 @@ export default function Painel() {
     }, []);
 
     useEffect(() => {
-        const fetchChamados = async () => {
-            const response = await getChamados()
-            if (response) {
-                setChamados(response.data.chamados)
-            }
-        }
-
-        fetchChamados()
-
-        const fetchUsers = async () => {
-            const response = await getAllUsers()
-            if (response) {
-                setUsers(response.data.users)
-                setHeadHunters(response.data.headhunters)
-                setCandidatos(response.data.candidatos)
-                setEmpresa(response.data.empresas)
-            }
-        }
-
-        fetchUsers()
-
-        const fetchAtualizacoes = async () => {
-            const response = await getAtualizacoes()
-            if (response) {
-                setAtualizacoes(response.data.atualizacoes)
-            }
-        }
-
-        fetchAtualizacoes()
-
-        const fetchCargos = async () => {
-
-            const response = await getProfissoes()
-            if (response) {
-                setCargos(response.data.profissoes)
-            }
-        }
-
-        fetchCargos()
-
-        //Consultar Dados de Profissoes
-        const fetchProfissoes = async () => {
-            const response = await getProfissoes()
-
-            if (response) {
-                setProfissoes(response.data.profissoes)
-            }
-        }
-
-        fetchProfissoes()
-
-
+        fetchChamados();
+        fetchUsers();
+        fetchAtualizacoes();
+        fetchCargos();
+        fetchProfissoes();
     }, [])
+
+    const fetchChamados = async () => {
+        const response = await getChamados()
+        if (response) {
+            setChamados(response.data.chamados)
+        }
+    }
+
+    const fetchUsers = async () => {
+        const response = await getAllUsers()
+        if (response) {
+            setUsers(response.data.users)
+            setHeadHunters(response.data.headhunters)
+            setCandidatos(response.data.candidatos)
+            setEmpresa(response.data.empresas)
+        }
+    }
+
+    const fetchAtualizacoes = async () => {
+        const response = await getAtualizacoes()
+        if (response) {
+            setAtualizacoes(response.data.atualizacoes)
+        }
+    }
+
+    const fetchCargos = async () => {
+        const response = await getProfissoes()
+        if (response) {
+            setCargos(response.data.profissoes)
+        }
+    }
+
+    const fetchProfissoes = async () => {
+        const response = await getProfissoes()
+        if (response) {
+            setProfissoes(response.data.profissoes)
+        }
+    }
 
 
     const handleChamadosSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -125,19 +116,22 @@ export default function Painel() {
             const data = await createChamados(formdata)
 
             if (data) {
-                console.log(data)
                 if (data.status === false) {
-                    alert(data.message)
+                    if (typeof data.message === 'object') {
+                        setFormErrors(data.message)
+                        showModal("Erro ", <p>Preencha os Campos Necessarios</p>)
+                    } else {
+                        showModal("Erro ", <p>{data.message}</p>)
+                    }
                 } else {
-                    alert('Chamado Criado com sucesso!')
-
+                    showModal("Erro ", <p>Chamado criado com sucesso!</p>)
                 }
             }
         }
 
     }
 
-    const handleAtualizarChamados = async (e: React.FormEvent<HTMLFormElement>, idChamado: number, idUsuario:number | undefined ) => {
+    const handleAtualizarChamados = async (e: React.FormEvent<HTMLFormElement>, idChamado: number, idUsuario: number | undefined) => {
         e.preventDefault()
 
         if (formRef.current) {
@@ -207,7 +201,7 @@ export default function Painel() {
                             {
                                 chamadoEmpresa.map(chamado => {
 
-                                    const profissao = profissoes.find(profissao => profissao.id === chamado.profissao_id )
+                                    const profissao = profissoes.find(profissao => profissao.id === chamado.profissao_id)
                                     return (
                                         <TableRow key={chamado.id}>
                                             <TableCell>{chamado.id}</TableCell>

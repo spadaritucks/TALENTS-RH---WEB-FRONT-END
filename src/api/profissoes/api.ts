@@ -1,13 +1,18 @@
 import { api } from "@/api/axios"
+import { revalidateTag } from "next/cache";
 export interface ProfissoesProps {
-    id:number;
-    nome:string;
+    id: number;
+    nome: string;
 }
 
 export async function getProfissoes() {
 
     try {
-        const response = await api.get('/api/profissoes')
+        const response = await api.get('/api/profissoes', {
+            headers: {
+                'Cache-Control': 'no-store'
+            },
+        })
         return {
             status: true,
             data: response.data
@@ -25,6 +30,8 @@ export async function getProfissoes() {
 export async function createProfissoes(formData: FormData) {
     try {
         const response = await api.post('/api/profissoes', formData)
+
+
         return {
 
             status: true,

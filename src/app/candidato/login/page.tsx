@@ -18,17 +18,18 @@ export default function Home() {
   const [users, setUsers] = useState<UserProps[]>([])
   const [candidatos, setCandidatos] = useState<CandidatosProps[]>([])
   const { showModal } = useModal();
+  const [formErrors, setFormErrors] = useState<{ [key: string]: string[] }>({})
+
+  const fetchUsers = async () => {
+    const response = await getAllUsers();
+    if (response) {
+      setUsers(response.data.users)
+      setCandidatos(response.data.candidatos);
+    }
+  }
+
 
   useEffect(() => {
-
-    const fetchUsers = async () => {
-      const response = await getAllUsers();
-      if (response) {
-        setUsers(response.data.users)
-        setCandidatos(response.data.candidatos);
-      }
-    }
-
     fetchUsers();
   }, [])
 
@@ -42,21 +43,26 @@ export default function Home() {
       const candidatoVerification = candidatos.find(candidatos => candidatos.user_id === userVerification?.id);
 
       if (!userVerification || !candidatoVerification) {
-           showModal('Erro', <p>Usuário não encontrado</p>);
+        showModal('Erro', <p>Usuário não encontrado</p>);
         return;
       }
 
       const data = await Login(formData)
 
       if (data) {
-       
+
         if (data.status === false) {
-          showModal('Erro', <p>{data.message}</p>)
+          if (typeof data.message === 'object') {
+            setFormErrors(data.message)
+            showModal('Erro', <p>Preencha os campos necessarios!</p>);
+          } else {
+            showModal('Erro', <p>{data.message}</p>);
+          }
         } else {
           sessionStorage.setItem('token', data.token)
           sessionStorage.setItem('user', JSON.stringify(data.user))
           window.location.href = '/candidato/painel'
-         
+
         }
       }
 
@@ -68,7 +74,7 @@ export default function Home() {
     <section className='login-area'>
       <div className='btn-back'>
         <Button ButtonName='Voltar ' type='button' variant='secondary' onClick={
-          () => {window.location.href = '/'}
+          () => { window.location.href = '/' }
         } />
       </div>
       <div className='login-content'>

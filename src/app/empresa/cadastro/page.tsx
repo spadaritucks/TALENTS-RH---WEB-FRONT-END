@@ -11,6 +11,7 @@ import { profissoes } from '@/json/profissoes'
 import { useRef, useState } from 'react'
 import { consultores } from '@/json/consultores'
 import { createUser } from '@/api/users/api'
+import { useModal } from '@/components/modal/context'
 
 
 export default function Cadastro() {
@@ -19,6 +20,8 @@ export default function Cadastro() {
   const [formErrors, setFormErrors] = useState<{ [key: string]: string[] }>({})
   const filteredProfissoes = profissoes.filter((profissao) => profissao.toLowerCase().includes(search.toLowerCase()))
   const formRef = useRef<HTMLFormElement>(null);
+  const { showModal, hideModal } = useModal()
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -38,16 +41,17 @@ export default function Cadastro() {
           if (data.status === false) {
             if (typeof data.message === 'object') {
               setFormErrors(data.message)
+              showModal("Erro ", <p>Preencha os Campos Necessarios</p>)
             } else {
-              alert(data.message)
+              showModal("Erro ", <p>{data.message}</p>)
             }
           } else {
-            alert('Cadastro realizado com sucesso!')
+            showModal("Erro ", <p>Cadastro realizado com sucesso!</p>)
             window.location.href = '/empresa/login'
           }
         }
       } else {
-        alert('As senhas não correspondem!')
+        showModal("Erro ", <p>As senhas não correspondem!</p>)
       }
     }
   }

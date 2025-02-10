@@ -4,6 +4,7 @@ import { api } from "@/api/axios"
 export interface VagasProps{
     id: number
     headhunter_id: number;
+    admin_id : number;
     profissao_id:number;
     empresa_id:number;
     titulo: string;
@@ -21,7 +22,11 @@ export interface VagasProps{
 export async function getAllVagas() {
 
     try {
-        const response = await api.get('/api/vagas')
+        const response = await api.get('/api/vagas',{
+            headers: {
+                'Cache-Control': 'no-store'
+            },
+        })
         return {
             status: true,
             data: response.data.vagas

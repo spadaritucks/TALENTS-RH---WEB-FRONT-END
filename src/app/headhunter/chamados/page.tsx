@@ -42,6 +42,9 @@ export default function Chamados() {
     const itemsPerPage = 1;
     const formRef = useRef<HTMLFormElement>(null)
     const { showModal, hideModal } = useModal()
+    const [formErrors, setFormErrors] = useState<{ [key: string]: string[] }>({})
+
+  
     //Consultar dados do usuario logado
     useEffect(() => {
 
@@ -53,23 +56,23 @@ export default function Chamados() {
 
     }, []);
 
+    const fetchAtualizacoes = async () => {
+        const response = await getAtualizacoes()
+        if (response) {
+
+            setAtualizacoes(response.data.atualizacoes)
+        }
+    }
+
+    const fetchUsers = async () => {
+        const response = await getAllUsers()
+        if (response) {
+            setUsers(response.data.users)
+        }
+    }
+
     useEffect(() => {
-        const fetchAtualizacoes = async () => {
-            const response = await getAtualizacoes()
-            if (response) {
-
-                setAtualizacoes(response.data.atualizacoes)
-            }
-        }
-
         fetchAtualizacoes()
-
-        const fetchUsers = async () => {
-            const response = await getAllUsers()
-            if (response) {
-                setUsers(response.data.users)
-            }
-        }
         fetchUsers()
     }, [])
 
@@ -86,11 +89,20 @@ export default function Chamados() {
             const response = await updateAtualizacoes(id, formData);
             console.log(formData)
             if (response) {
-                if (response.status === false) {
-                    alert('Erro' + response?.data.message)
-                } else {
-                    alert('Atualização realizada com sucesso')
-                }
+               if (response.status === false) {
+                        if (typeof response.message === 'object') {
+                            setFormErrors(response.message)
+                            showModal("Erro ", <p>Preencha os Campos Necessarios</p>)
+                        } else {
+                            showModal("Erro ", <p>{response.message}</p>)
+                        }
+    
+                    } else {
+                        showModal("Sucesso ", <p>Atualização feita com sucesso</p>)
+                        
+    
+    
+                    }
             }
         }
     }
@@ -103,9 +115,9 @@ export default function Chamados() {
                     const response = await deleteAtualizacoes(id);
                     if (response) {
                         if (response.status === false) {
-                            alert('Erro' + response?.data.message)
+                            showModal("Sucesso ", <p>{response?.data.message}</p>)
                         } else {
-                            alert('Atualização excluida com sucesso')
+                            showModal("Sucesso ", <p>Atualização excluida com sucesso</p>)
                         }
                     }
                 }} />

@@ -75,7 +75,11 @@ export interface ConsultorAndAdminProps{
 export async function getAllUsers() {
 
     try {
-        const response = await api.get('/api/users')
+        const response = await api.get('/api/users',{
+            headers: {
+                'Cache-Control': 'no-store'
+            },
+        })
         return {
             status: true,
             data: response.data

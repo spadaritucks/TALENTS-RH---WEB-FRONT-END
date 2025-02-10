@@ -10,12 +10,16 @@ import Button from "@/components/button/component"
 import { useRef, useState } from 'react'
 import TextArea from '@/components/textarea/component'
 import { createUser } from '@/api/users/api'
+import { useModal } from '@/components/modal/context'
 
 
 export default function Cadastro() {
 
     const [search, setSearch] = useState('')
     const formRef = useRef<HTMLFormElement>(null);
+    const [formErrors, setFormErrors] = useState<{ [key: string]: string[] }>({})
+    const { showModal } = useModal();
+  
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
@@ -48,12 +52,20 @@ export default function Cadastro() {
                 const data = await createUser(formData)
 
                 if (data) {
-                    console.log(data)
+                    
                     if (data.status === false) {
-                        alert(data.message)
+                        if (typeof data.message === 'object') {
+                            setFormErrors(data.message)
+                            showModal("Erro ", <p>Preencha os Campos Necessarios</p>)
+                        } else {
+                            showModal("Erro ", <p>{data.message}</p>)
+                        }
+    
                     } else {
-                        alert('Cadastro realizado com sucesso!')
-                        window.location.href = '/headhunter/login'
+                        showModal("Sucesso ", <p>Cadastro feito com sucesso</p>)
+                        
+    
+    
                     }
                 }
             }

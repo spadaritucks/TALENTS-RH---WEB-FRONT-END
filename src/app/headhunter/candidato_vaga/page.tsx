@@ -1,4 +1,5 @@
 'use client'
+
 import { useEffect, useState } from 'react'
 import './page.scss'
 import { getAllProcessos, ProcessosProps } from '@/api/processos/api'
@@ -6,17 +7,27 @@ import { getAllVagas, VagasProps } from '@/api/vagas/api'
 import { CandidatosProps, EmpresaProps, getAllUsers, UserProps } from '@/api/users/api'
 import Button from '@/components/button/component'
 import { useModal } from '@/components/modal/context'
-import { useSearchParams } from 'next/navigation'
 import Main from '@/layouts/headhunter/layout'
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import Link from 'next/link'
+
 
 export default function CandidatoVaga() {
     const [processos, setProcessos] = useState<ProcessosProps[]>([])
-    const [vagas, setVagas] = useState<VagasProps[]>([]) // Dados das Vagas criadas pelo headhunter
-    const [candidatos, setCandidatos] = useState<CandidatosProps[]>([]) // Dados dos Candidatos
-    const [users, setUsers] = useState<UserProps[]>([]) // Dados gerais de todos os usuarios
-    const [empresa, setEmpresa] = useState<EmpresaProps[]>([]) // Dados da Empresa
-    const { showModal, hideModal } = useModal()
+    const [vagas, setVagas] = useState<VagasProps[]>([])
+    const [candidatos, setCandidatos] = useState<CandidatosProps[]>([])
+    const [users, setUsers] = useState<UserProps[]>([])
+    const [empresa, setEmpresa] = useState<EmpresaProps[]>([])
+    const { showModal } = useModal()
 
+    // 🔥 Pega o ID da URL manualmente para evitar erro no SSR
     const [id, setId] = useState<number | null>(null)
 
     useEffect(() => {
@@ -26,44 +37,40 @@ export default function CandidatoVaga() {
             setId(idString ? parseInt(idString) : null)
         }
     }, [])
-    
+
     useEffect(() => {
-
-        const fetchUsers = async () => {
-            const response = await getAllUsers()
-            if (response) {
-                setUsers(response.data.users)
-                setEmpresa(response.data.empresas)
-                setCandidatos(response.data.candidatos)
-            }
-        }
-
         fetchUsers()
-        const fetchProcessos = async () => {
-            const response = await getAllProcessos()
-            if (response) {
-                setProcessos(response.data)
-            }
-        }
         fetchProcessos()
-
-        const FetchVagas = async () => {
-            const response = await getAllVagas()
-            if (response) {
-                setVagas(response.data)
-            }
-        }
-
-        FetchVagas()
+        fetchVagas()
     }, [])
 
-    
+    const fetchUsers = async () => {
+        const response = await getAllUsers()
+        if (response) {
+            setUsers(response.data.users)
+            setEmpresa(response.data.empresas)
+            setCandidatos(response.data.candidatos)
+        }
+    }
+
+    const fetchProcessos = async () => {
+        const response = await getAllProcessos()
+        if (response) {
+            setProcessos(response.data)
+        }
+    }
+
+    const fetchVagas = async () => {
+        const response = await getAllVagas()
+        if (response) {
+            setVagas(response.data)
+        }
+    }
+
+    if (id === null) return <div>Carregando...</div> // 🔥 Evita renderização antes do ID ser definido
 
     const candidatosProcessos = processos.filter(processo => processo.vaga_id === id)
     const vagasDados = vagas.find(vaga => vaga.id === id)
-
-    
-
 
     return (
         <Main>
@@ -74,15 +81,11 @@ export default function CandidatoVaga() {
                         const candidato = candidatos.find(candidato => candidato.id === processo.candidato_id)
                         const candidatoDados = users.find(user => user.id === candidato?.user_id)
 
-                      
-                       
-
                         return (
                             <div className="candidato" key={processo.id}>
                                 <h2>{candidatoDados?.nome} {candidatoDados?.sobrenome}</h2>
-                                <p><strong>Curriculo :</strong> <a href={`${process.env.NEXT_PUBLIC_API_URL}/storage/${candidato?.cv}`} >Baixar Curriculo</a></p>
+                                <p><strong>Currículo :</strong> <a href={`${process.env.NEXT_PUBLIC_API_URL}/storage/${candidato?.cv}`} >Baixar Currículo</a></p>
                                 <p><strong>Link Telefone: </strong><a href={`https://wa.me/${candidatoDados?.celular_1}`}>{candidatoDados?.celular_1}</a></p>
-                                
                                 <p><strong>Pretensão Salarial(CLT): </strong>R$ {candidato?.pretensao_salarial_clt}</p>
                                 <p><strong>Pretensão Salarial(PJ): </strong>R$ {candidato?.pretensao_salarial_pj}</p>
                                 <div className='candidato-vaga-buttons'>
@@ -101,7 +104,6 @@ export default function CandidatoVaga() {
                                     }} />
                                     <Button ButtonName="Informações" type="button" variant="secondary" onClick={() => {
                                         showModal('Informações do Candidato', <div className="modal_dados">
-
                                             <p> Ultimo Cargo: {candidato?.ultimo_cargo}</p>
                                             <p> Ultimo Salario:  R$ {candidato?.ultimo_salario}</p>
                                             <p> Pretensao Salarial (CLT) :  R$ {candidato?.pretensao_salarial_clt}</p>
@@ -115,9 +117,18 @@ export default function CandidatoVaga() {
                                             <p> Cerficacações : {candidato?.certificacoes}</p>
                                         </div>)
                                     }} />
+                                    <DropdownMenu>
+                                        <DropdownMenuTrigger className='border border-[#fd8409] cursor-pointer outline-none'>Ações</DropdownMenuTrigger>
+                                        <DropdownMenuContent>
+                                            <DropdownMenuLabel>Ações</DropdownMenuLabel>
+                                            <DropdownMenuSeparator />
+                                            <DropdownMenuItem><Link href = {`/headhunter/sendEmail?id=${candidatoDados?.id}`}>Enviar Email Personalizado</Link></DropdownMenuItem>
+                                            <DropdownMenuItem>Enviar Email de Reprovação</DropdownMenuItem>
+                                            
+                                        </DropdownMenuContent>
+                                    </DropdownMenu>
+
                                 </div>
-
-
                             </div>
                         )
                     })}

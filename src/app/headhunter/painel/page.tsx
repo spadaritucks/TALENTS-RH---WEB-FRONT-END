@@ -31,7 +31,7 @@ import { getAllProcessos, ProcessosProps } from "@/api/processos/api"
 
 
 export default function Painel() {
-   
+
     const { showModal, hideModal } = useModal();
     const formRef = useRef<HTMLFormElement>(null) //Buscar os dados do formulario
     const [formErrors, setFormErrors] = useState<{ [key: string]: string[] }>({}) //Objeto responsavel por validação do formulario
@@ -46,56 +46,49 @@ export default function Painel() {
     const [processos, setProcessos] = useState<ProcessosProps[]>([])
 
     //Requisição para os dados dos Usuarios
+    const fetchUsers = async () => {
+        const response = await getAllUsers()
+        if (response) {
+            setUsers(response.data.users)
+            setHeadHunters(response.data.headhunters)
+            setCandidatos(response.data.candidatos)
+            setEmpresa(response.data.empresas)
+        }
+    }
+
+    const fetchProfissoes = async () => {
+        const response = await getProfissoes()
+        if (response) {
+            setProfissoes(response.data.profissoes)
+        }
+    }
+
+    const FetchVagas = async () => {
+        const response = await getAllVagas()
+        if (response) {
+            setVagas(response.data)
+        }
+    }
+
+    const fetchChamados = async () => {
+        const response = await getChamados()
+        if (response) {
+            setChamados(response.data.chamados)
+        }
+    }
+
+    const fetchProcessos = async () => {
+        const response = await getAllProcessos()
+        if (response) {
+            setProcessos(response.data.processos)
+        }
+    }
     useEffect(() => {
-
-        const fetchUsers = async () => {
-            const response = await getAllUsers()
-            if (response) {
-                setUsers(response.data.users)
-                setHeadHunters(response.data.headhunters)
-                setCandidatos(response.data.candidatos)
-                setEmpresa(response.data.empresas)
-
-
-            }
-        }
-
         fetchUsers()
-
-        const fetchProfissoes = async () => {
-            const response = await getProfissoes()
-            if (response) {
-                setProfissoes(response.data.profissoes)
-            }
-        }
         fetchProfissoes()
-
-        const FetchVagas = async () => {
-            const response = await getAllVagas()
-            if (response) {
-                setVagas(response.data)
-            }
-        }
-
         FetchVagas()
-
-        const fetchChamados = async () => {
-            const response = await getChamados()
-            if (response) {
-                setChamados(response.data.chamados)
-            }
-        }
         fetchChamados()
-
-        const fetchProcessos = async () => {
-            const response = await getAllProcessos()
-            if (response) {
-                setProcessos(response.data.processos)
-            }
-        }
         fetchProcessos()
-
-
     }, [])
 
 
@@ -111,40 +104,6 @@ export default function Painel() {
 
 
 
-
-
-    const handleAtualizarChamados = async (e: React.FormEvent<HTMLFormElement>, idChamado: number, idUsuario: number | undefined) => {
-        e.preventDefault()
-
-        if (formRef.current) {
-            const formdata = new FormData(formRef.current)
-            formdata.append('user_id', idUsuario?.toString() || '')
-            formdata.append('chamados_id', idChamado.toString());
-            if (idChamado && idUsuario) {
-                const data = await createAtualizacoes(formdata)
-
-                if (data) {
-                    if (data.status === false) {
-                        if (typeof data.message === 'object') {
-                            setFormErrors(data.message)
-                            showModal("Erro ", <p>Preencha os Campos Necessarios</p>)
-                        } else {
-                            showModal("Erro ", <p>{data.message}</p>)
-                        }
-                    } else {
-                        showModal("Sucesso ", <p>Chamado Atualizado com Sucesso</p>)
-
-                    }
-                }
-            }
-
-        }
-    }
-
-
-    //Filtração das Vagas de acordo com o recrutador logado
-    const headhunter = headhunters.find(headhunter => headhunter.user_id === user?.id);
- 
 
 
     return (
@@ -170,7 +129,7 @@ export default function Painel() {
                         <TableBody>
                             {chamados.map((chamado) => {
                                 const empresaSelecionada = empresa.find(empresas => empresas.id == chamado.empresa_id)
-                                
+
                                 const profissao = profissoes.find(profissao => profissao.id === chamado.profissao_id)
 
                                 return (
@@ -187,15 +146,9 @@ export default function Painel() {
                                                     window.location.href = `/headhunter/chamados?id=${chamado.id}`
                                                 }} />
                                                 <Button ButtonName='Atualizar Chamado' type='button' variant='primary' onClick={() => {
-                                                    showModal('Atualizar Chamado',
-                                                        <form className='chamado-form' ref={formRef} onSubmit={(e) => handleAtualizarChamados(e, chamado.id, user?.id)}>
-                                                            <Input label='Titulo' type='text' name='titulo' />
-                                                            <Input label='Descrição' type='text' name='atualizacoes' />
-                                                            <Input label='Anexo' type='file' name='anexo' />
-                                                            <Button ButtonName='Enviar' type='submit' variant='primary' />
-                                                        </form>
-                                                    )
+                                                    window.location.href = `/headhunter/atualizar_chamado?id=${chamado.id}`
                                                 }} />
+
 
                                             </div>
                                         </TableCell>

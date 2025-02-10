@@ -1,4 +1,4 @@
-'use client' 
+'use client'
 
 import { useEffect, useState } from 'react'
 import './page.scss'
@@ -7,16 +7,26 @@ import { getAllVagas, VagasProps } from '@/api/vagas/api'
 import { CandidatosProps, EmpresaProps, getAllUsers, UserProps } from '@/api/users/api'
 import Button from '@/components/button/component'
 import { useModal } from '@/components/modal/context'
-import Main from '@/layouts/headhunter/layout'
+import Main from '@/layouts/admin/layout'
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import Link from 'next/link'
+
 
 export default function CandidatoVaga() {
     const [processos, setProcessos] = useState<ProcessosProps[]>([])
-    const [vagas, setVagas] = useState<VagasProps[]>([]) 
-    const [candidatos, setCandidatos] = useState<CandidatosProps[]>([]) 
-    const [users, setUsers] = useState<UserProps[]>([]) 
-    const [empresa, setEmpresa] = useState<EmpresaProps[]>([]) 
+    const [vagas, setVagas] = useState<VagasProps[]>([])
+    const [candidatos, setCandidatos] = useState<CandidatosProps[]>([])
+    const [users, setUsers] = useState<UserProps[]>([])
+    const [empresa, setEmpresa] = useState<EmpresaProps[]>([])
     const { showModal } = useModal()
-    
+
     // 🔥 Pega o ID da URL manualmente para evitar erro no SSR
     const [id, setId] = useState<number | null>(null)
 
@@ -29,34 +39,33 @@ export default function CandidatoVaga() {
     }, [])
 
     useEffect(() => {
-        const fetchUsers = async () => {
-            const response = await getAllUsers()
-            if (response) {
-                setUsers(response.data.users)
-                setEmpresa(response.data.empresas)
-                setCandidatos(response.data.candidatos)
-            }
-        }
-
         fetchUsers()
-
-        const fetchProcessos = async () => {
-            const response = await getAllProcessos()
-            if (response) {
-                setProcessos(response.data)
-            }
-        }
         fetchProcessos()
-
-        const FetchVagas = async () => {
-            const response = await getAllVagas()
-            if (response) {
-                setVagas(response.data)
-            }
-        }
-
-        FetchVagas()
+        fetchVagas()
     }, [])
+
+    const fetchUsers = async () => {
+        const response = await getAllUsers()
+        if (response) {
+            setUsers(response.data.users)
+            setEmpresa(response.data.empresas)
+            setCandidatos(response.data.candidatos)
+        }
+    }
+
+    const fetchProcessos = async () => {
+        const response = await getAllProcessos()
+        if (response) {
+            setProcessos(response.data)
+        }
+    }
+
+    const fetchVagas = async () => {
+        const response = await getAllVagas()
+        if (response) {
+            setVagas(response.data)
+        }
+    }
 
     if (id === null) return <div>Carregando...</div> // 🔥 Evita renderização antes do ID ser definido
 
@@ -108,6 +117,17 @@ export default function CandidatoVaga() {
                                             <p> Cerficacações : {candidato?.certificacoes}</p>
                                         </div>)
                                     }} />
+                                    <DropdownMenu>
+                                        <DropdownMenuTrigger className='border border-[#fd8409] cursor-pointer outline-none'>Ações</DropdownMenuTrigger>
+                                        <DropdownMenuContent>
+                                            <DropdownMenuLabel>Ações</DropdownMenuLabel>
+                                            <DropdownMenuSeparator />
+                                            <DropdownMenuItem><Link href = {`/admin/sendEmail?id=${candidatoDados?.id}`}>Enviar Email Personalizado</Link></DropdownMenuItem>
+                                            <DropdownMenuItem>Enviar Email de Reprovação</DropdownMenuItem>
+                                            
+                                        </DropdownMenuContent>
+                                    </DropdownMenu>
+
                                 </div>
                             </div>
                         )

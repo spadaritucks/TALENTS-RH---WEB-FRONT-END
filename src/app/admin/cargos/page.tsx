@@ -8,6 +8,7 @@ import Select from "@/components/select/component"
 import Main from "@/layouts/admin/layout"
 import { useEffect, useRef, useState } from "react"
 import './page.scss'
+import { useRouter } from "next/navigation"
 
 
 export default function Cargos() {
@@ -15,17 +16,19 @@ export default function Cargos() {
     const [profissoes, setProfissoes] = useState<ProfissoesProps[]>([])
     const formRef = useRef<HTMLFormElement>(null)
     const { showModal, hideModal } = useModal()
+    const [formErrors, setFormErrors] = useState<{ [key: string]: string[] }>({}) //Objeto responsavel por validação do formulario
+    
+
+    //Consultar Dados de Profissoes
+    const fetchProfissoes = async () => {
+        const response = await getProfissoes()
+
+        if (response) {
+            setProfissoes(response.data.profissoes)
+        }
+    }
 
     useEffect(() => {
-        //Consultar Dados de Profissoes
-        const fetchProfissoes = async () => {
-            const response = await getProfissoes()
-
-            if (response) {
-                setProfissoes(response.data.profissoes)
-            }
-        }
-
         fetchProfissoes()
     }, [])
 
@@ -43,9 +46,17 @@ export default function Cargos() {
             if (data) {
                 console.log(data)
                 if (data.status === false) {
-                    alert(data.message)
+                    if (typeof data.message === 'object') {
+                        setFormErrors(data.message)
+                        showModal("Erro ", <p>Preencha os Campos Necessarios</p>)
+                    } else {
+                        showModal("Erro ", <p>{data.message}</p>)
+                    }
+
                 } else {
-                    alert('Cargo Criado com sucesso!')
+                    showModal("Sucesso ", <p>Cargo Criado com sucesso</p>)
+                    fetchProfissoes()
+
 
                 }
             }
@@ -66,10 +77,18 @@ export default function Cargos() {
                 if (data) {
                     console.log(data)
                     if (data.status === false) {
-                        alert(data.message)
+                        if (typeof data.message === 'object') {
+                            setFormErrors(data.message)
+                            showModal("Erro ", <p>Preencha os Campos Necessarios</p>)
+                        } else {
+                            showModal("Erro ", <p>{data.message}</p>)
+                        }
+    
                     } else {
-                        alert('Cargo Atualizado com sucesso!')
-
+                        showModal("Sucesso ", <p>Cargo Atualizado com sucesso</p>)
+                        fetchProfissoes()
+    
+    
                     }
                 }
             }
@@ -88,9 +107,10 @@ export default function Cargos() {
                     const response = await deleteProfissoes(id);
                     if (response) {
                         if (response.status === false) {
-                            alert('Erro' + response?.data.message)
+                            showModal("Erro ", <p>{response.message}</p>)
                         } else {
-                            alert('Cargo excluido com sucesso')
+                            showModal("Erro ", <p>Cargo excluido com sucesso</p>)
+                            fetchProfissoes()
                         }
                     }
                 }} />

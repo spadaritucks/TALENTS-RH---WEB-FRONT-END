@@ -16,19 +16,18 @@ export default function Home() {
   const formRef = useRef<HTMLFormElement>(null)
   const [users, setUsers] = useState<UserProps[]>([])
   const [empresas, setEmpresas] = useState<EmpresaProps[]>([])
+  const [formErrors, setFormErrors] = useState<{ [key: string]: string[] }>({})
   const { showModal } = useModal();
 
+  const fetchUsers = async () => {
+    const response = await getAllUsers();
+    if (response) {
+      setUsers(response.data.users)
+      setEmpresas(response.data.empresas);
+    }
+  }
 
   useEffect(() => {
-
-    const fetchUsers = async () => {
-      const response = await getAllUsers();
-      if (response) {
-        setUsers(response.data.users)
-        setEmpresas(response.data.empresas);
-      }
-    }
-
     fetchUsers();
   }, [])
 
@@ -53,7 +52,12 @@ export default function Home() {
       if (data) {
 
         if (data.status === false) {
-          showModal('Erro', <p>{data.message}</p>)
+          if (typeof data.message === 'object') {
+            setFormErrors(data.message)
+            showModal('Erro', <p>Preencha os campos necessarios!</p>);
+          } else {
+            showModal('Erro', <p>{data.message}</p>);
+          }
         } else {
           sessionStorage.setItem('token', data.token)
           sessionStorage.setItem('user', JSON.stringify(data.user))

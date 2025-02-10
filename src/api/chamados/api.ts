@@ -23,7 +23,11 @@ export interface AtualizacoesProps{
 export async function getChamados() {
 
     try {
-        const response = await api.get('/api/chamados')
+        const response = await api.get('/api/chamados',{
+            headers: {
+                'Cache-Control': 'no-store'
+            },
+        })
         return {
             status: true,
             data: response.data
@@ -93,7 +97,11 @@ export async function deleteChamados(id: number) {
 export async function getAtualizacoes() {
 
     try {
-        const response = await api.get('/api/atualizacoes')
+        const response = await api.get('/api/atualizacoes',{
+            headers: {
+                'Cache-Control': 'no-store'
+            },
+        })
         return {
             status: true,
             data: response.data

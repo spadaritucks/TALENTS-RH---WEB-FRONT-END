@@ -2,86 +2,92 @@
 
 import Main from "@/layouts/headhunter/layout"
 import './page.scss'
+import Link from "next/link"
 import Button from "@/components/button/component"
 import Input from "@/components/input/component"
-import { useEffect, useRef, useState } from "react"
+import { ReactNode, useEffect, useRef, useState } from "react"
 import { useModal } from "@/components/modal/context"
 import Select from "@/components/select/component"
 import TextArea from "@/components/textarea/component"
 import useNumericInput from "@/hooks/NumericInput"
-import { CandidatosProps, EmpresaProps, getAllUsers, HeadHunterProps, UserProps } from "@/api/users/api"
+import { CandidatosProps, ConsultorAndAdminProps, EmpresaProps, getAllUsers, HeadHunterProps, UserProps } from "@/api/users/api"
 import { createVagas, deleteVagas, getAllVagas, updateVagas, VagasProps } from "@/api/vagas/api"
 import { getProfissoes, ProfissoesProps } from "@/api/profissoes/api"
 import { ChamadoProps, createAtualizacoes, getChamados } from "@/api/chamados/api"
 import TagsInput from "@/components/tagsinput/component"
 import { getAllProcessos, ProcessosProps } from "@/api/processos/api"
 
+
 export default function PainelAdmin() {
     const [descricaoVaga, setDescricaoVaga] = useState<boolean>(false);
     const [criarVaga, setCriarVaga] = useState<boolean>(false);
     const { showModal, hideModal } = useModal();
     const formRef = useRef<HTMLFormElement>(null) //Buscar os dados do formulario
-    const [formErrors, setFormErrors] = useState<{ [key: string]: string[] }>({}) //Objeto responsavel por validação do formulario
     const modalOpened = descricaoVaga || criarVaga
     const [user, setUser] = useState<UserProps>() //Dados do Usuario Logado
     const [users, setUsers] = useState<UserProps[]>([]) // Dados gerais de todos os usuarios
-    const [headhunters, setHeadHunters] = useState<HeadHunterProps[]>([]); // Dados dos Head Hunters
+    const [admins, setAdmins] = useState<ConsultorAndAdminProps[]>([]); // Dados dos Head Hunters
     const [candidatos, setCandidatos] = useState<CandidatosProps[]>([]) // Dados dos Candidatos
-    const [vagas, setVagas] = useState<VagasProps[]>([]) // Dados das Vagas criadas pelo headhunter
+    const [headhunters, setHeadHunters] = useState<HeadHunterProps[]>([])
+    const [vagas, setVagas] = useState<VagasProps[]>([]) // Dados das Vagas criadas pelo admin
     const [chamados, setChamados] = useState<ChamadoProps[]>([]);
     const [empresa, setEmpresa] = useState<EmpresaProps[]>([]) // Dados da Empresa
     const [profissoes, setProfissoes] = useState<ProfissoesProps[]>([])
     const [processos, setProcessos] = useState<ProcessosProps[]>([])
 
+
     //Requisição para os dados dos Usuarios
+    const fetchUsers = async () => {
+        const response = await getAllUsers()
+        if (response) {
+            setUsers(response.data.users)
+            setAdmins(response.data.admins)
+            setCandidatos(response.data.candidatos)
+            setEmpresa(response.data.empresas)
+            setHeadHunters(response.data.headhunters)
+        }
+    }
+
+    //Requisição para os dados das Profissões
+    const fetchProfissoes = async () => {
+        const response = await getProfissoes()
+        if (response) {
+            setProfissoes(response.data.profissoes)
+        }
+    }
+
+    //Requisição para os dados das Vagas
+    const FetchVagas = async () => {
+        const response = await getAllVagas()
+        if (response) {
+            setVagas(response.data)
+        }
+    }
+
+    //Requisição para os dados dos Chamados
+    const fetchChamados = async () => {
+        const response = await getChamados()
+        if (response) {
+            setChamados(response.data.chamados)
+        }
+    }
+
+    //Requisição para os dados dos Processos
+    const fetchProcessos = async () => {
+        const response = await getAllProcessos()
+        if (response) {
+            setProcessos(response.data.processos)
+        }
+    }
+
     useEffect(() => {
-
-        const fetchUsers = async () => {
-            const response = await getAllUsers()
-            if (response) {
-                setUsers(response.data.users)
-                setHeadHunters(response.data.headhunters)
-                setCandidatos(response.data.candidatos)
-                setEmpresa(response.data.empresas)
-            }
-        }
-
         fetchUsers()
-
-        const fetchProfissoes = async () => {
-            const response = await getProfissoes()
-            if (response) {
-                setProfissoes(response.data.profissoes)
-            }
-        }
         fetchProfissoes()
-
-        const FetchVagas = async () => {
-            const response = await getAllVagas()
-            if (response) {
-                setVagas(response.data)
-            }
-        }
-
         FetchVagas()
-
-        const fetchChamados = async () => {
-            const response = await getChamados()
-            if (response) {
-                setChamados(response.data.chamados)
-            }
-        }
         fetchChamados()
-
-        const fetchProcessos = async () => {
-            const response = await getAllProcessos()
-            if (response) {
-                setProcessos(response.data.processos)
-            }
-        }
         fetchProcessos()
-
     }, [])
+
 
     //Consultar dados do usuario logado
     useEffect(() => {
@@ -97,7 +103,15 @@ export default function PainelAdmin() {
     const handleCriarVaga = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         setCriarVaga(!criarVaga);
-        showModal('Criar Vaga de Emprego', <CriarVagaForm />);
+        showModal('Criar Vaga de Emprego', <CriarVagaForm
+            empresas={empresa}
+            formRef={formRef}
+            headhunters={headhunters}
+            profissoes={profissoes}
+            user={user}
+            fetchVagas={FetchVagas}
+            showModal={showModal}
+        />);
     }
 
     return (
@@ -122,15 +136,17 @@ export default function PainelAdmin() {
                             <option value="selecione">Modalidade</option>
                         </Select>
                         <Select label="Nivel de Senoriedade" defaultValue="selecione" name="nivel_senoriedade">
-                            <option value="selecione">Nivel de Senoridade</option>
+                            <option value="selecione">Nivel de Senoriedade</option>
                         </Select>
                     </div>
                 </div>
                 <div className="vagas-container">
                     <Button ButtonName="Criar Vaga" variant="primary" type="button" onClick={handleCriarVaga} />
                     {vagas.map((vaga) => {
-                        const headhunterId = headhunters.find(headhunter => headhunter.id === vaga.headhunter_id)
-                        const headhunterUser = users.find(user => user.id === headhunterId?.user_id)
+                        const adminId = admins.find(admin => admin.id === vaga.admin_id)
+                        const headHunterId = headhunters.find(headhunter => headhunter.id === vaga.headhunter_id)
+                        const adminUser = users.find(user => user.id === adminId?.user_id)
+                        const headHunterUser = users.find(user => user.id === headHunterId?.user_id)
 
                         //Filtração para o Endereço da Empresa da vaga
                         const vagaEmpresa = empresa.find(vagaEmpresa => vagaEmpresa.id === vaga.empresa_id);
@@ -138,23 +154,26 @@ export default function PainelAdmin() {
 
                         return (
                             <div key={vaga.id} className="vaga-card">
-                                <h2>{vaga.titulo}</h2>
-                                        <h3>{vagaEmpresa?.nome_fantasia}</h3>
-                                        <p><strong>Responsavel: </strong>{headhunterUser?.nome} {headhunterUser?.sobrenome}</p>
-                                        <p><strong>Região: </strong>{userEmpresa?.cidade} - {userEmpresa?.estado}</p>
-                                        <p><strong>Nivel :</strong> {vaga.nivel_senioridade}</p>
-                                        {vaga.tipo_salario === "valor" ? <p><strong>Salario: </strong> De R${vaga.salario_minimo} até R${vaga.salario_maximo}</p> : <p><strong>Salario: </strong>{vaga.tipo_salario}</p>}
-                                        <p><strong>Publicada em:</strong> {new Date(vaga.created_at).toLocaleDateString('pt-BR')}</p>
-                                        <p><strong>Requisitos: </strong>{Array.isArray(vaga.competencias) ? vaga.competencias.join(', ') : vaga.competencias}</p>
-                                        <Button ButtonName="Exibir Descrição da Vaga" type="button" variant="secondary" onClick={() => {
-                                            showModal("Descrição da Vaga",
-                                                <p>{vaga.descricao}</p>
-                                            )
-                                        }} />
+                                
+                                    <h2>{vaga.titulo}</h2>
+                                    <h3>{vagaEmpresa?.nome_fantasia}</h3>
+                                    <p><strong>Responsavel: </strong>{adminId ? adminUser?.nome + ' ' + adminUser?.sobrenome : headHunterUser?.nome + ' ' + headHunterUser?.sobrenome}</p>
+                                    <p><strong>Região: </strong>{userEmpresa?.cidade} - {userEmpresa?.estado}</p>
+                                    <p><strong>Nivel :</strong> {vaga.nivel_senioridade}</p>
+                                    {vaga.tipo_salario === "valor" ? <p><strong>Salario: </strong> De R${vaga.salario_minimo} até R${vaga.salario_maximo}</p> : <p><strong>Salario: </strong>{vaga.tipo_salario}</p>}
+                                    <p><strong>Publicada em:</strong> {new Date(vaga.created_at).toLocaleDateString('pt-BR')}</p>
+                                    <p><strong>Requisitos: </strong>{Array.isArray(vaga.competencias) ? vaga.competencias.join(', ') : vaga.competencias}</p>
+                                    <Button ButtonName="Exibir Descrição da Vaga" type="button" variant="secondary" onClick={() => {
+                                        showModal("Descrição da Vaga",
+                                            <p>{vaga.descricao}</p>
+                                        )
+                                    }} />
                                     <Button ButtonName="Ver Candidatos" type="button" variant="primary" onClick={() => {
                                         window.location.href = `/headhunter/candidato_vaga?id=${vaga.id}`
                                     }} />
-                            </div>
+                                </div>
+                              
+                           
                         )
                     })}
                 </div>
@@ -165,53 +184,23 @@ export default function PainelAdmin() {
     )
 }
 
+interface CriarVagaProps {
+    profissoes: ProfissoesProps[];
+    headhunters: HeadHunterProps[];
+    empresas: EmpresaProps[]
+    formRef: React.RefObject<HTMLFormElement>
+    user: UserProps | undefined
+    fetchVagas: () => Promise<void>
+    showModal: (title: string, body: ReactNode) => void
+}
+
 
 //Formulario de Criação de Vaga de Emprego
-const CriarVagaForm = () => {
+const CriarVagaForm = ({ profissoes, headhunters, empresas, formRef, user, fetchVagas, showModal }: CriarVagaProps) => {
 
     const [isSalario, setIsSalario] = useState<boolean>(false);
-    const [profissoes, setProfissoes] = useState<ProfissoesProps[]>([])
     const [competencias, setCompetencias] = useState<string[]>([]);
     const [formErrors, setFormErrors] = useState<{ [key: string]: string[] }>({}) //Objeto responsavel por validação do formulario
-    const [headhunters, setHeadHunters] = useState<HeadHunterProps[]>([]); // Dados dos Head Hunters
-    const [user, setUser] = useState<UserProps>() //Dados do Usuario Logado
-    const formRef = useRef<HTMLFormElement>(null) //Buscar os dados do formulario
-    const [empresa, setEmpresa] = useState<EmpresaProps[]>([]) // Dados da Empresa
-    const { showModal, hideModal } = useModal()
-
-    useEffect(() => {
-        //Consultar Dados de Profissoes
-        const fetchProfissoes = async () => {
-            const response = await getProfissoes()
-
-            if (response) {
-                setProfissoes(response.data.profissoes)
-            }
-        }
-
-        fetchProfissoes()
-
-        const fetchUsers = async () => {
-            const response = await getAllUsers()
-            if (response) {
-                setHeadHunters(response.data.headhunters)
-                setEmpresa(response.data.empresas)
-            }
-        }
-
-        fetchUsers()
-    }, [])
-
-    //Consultar dados do usuario logado
-    useEffect(() => {
-        const userDados = sessionStorage.getItem('user')
-        if (userDados) {
-            setUser(JSON.parse(userDados))
-        }
-
-
-    }, []);
-
 
     //Função onChange para Exibição Condicional do Input do Valor do Salario
     const handleInputSalario = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -230,9 +219,11 @@ const CriarVagaForm = () => {
     const HandleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        //Buscar id do Headhunters
-        const headhunter = headhunters.find(headhunter => headhunter.user_id === user?.id)
-        const id = headhunter?.id
+        //Buscar id do admins
+        const Admin = headhunters.find(headhunter => headhunter.user_id === user?.id)
+        const id = Admin?.id
+
+
 
         if (id) {
             if (formRef.current) {
@@ -246,17 +237,20 @@ const CriarVagaForm = () => {
 
                 const data = await createVagas(formdata);
                 if (data) {
+
                     if (data.status === false) {
                         if (typeof data.message === 'object') {
                             setFormErrors(data.message)
-                            showModal("Erro ", <p>Preencha os Campos Necessarios</p>)
+                            showModal('Erro', <p>Preencha os Campos Necessarios</p>)
                         } else {
-                            showModal("Erro ", <p>{data.message}</p>)
+                            showModal('Erro', <p>{data.message}</p>)
                         }
                     } else {
-                        showModal("Sucesso ", <p>Vaga Criada com Sucesso</p>)
-
+                        showModal('Sucesso', <p>Vaga criada com sucesso!</p>);
+                        fetchVagas();
                     }
+                } else {
+                    showModal('Erro', <p>Erro ao submeter o formulario</p>)
                 }
 
 
@@ -274,16 +268,16 @@ const CriarVagaForm = () => {
                 <option value="selecione">Selecione</option>
                 {
                     profissoes.map((profissao) => (
-                        <option value={profissao.id}>{profissao.nome}</option>
+                        <option key={profissao.id} value={profissao.id}>{profissao.nome}</option>
                     ))
 
                 }
             </Select>
-            <Select label="Selecione a Profissão" defaultValue="selecione" name="empresa_id">
+            <Select label="Selecione a Empresa" defaultValue="selecione" name="empresa_id">
                 <option value="selecione">Selecione</option>
                 {
-                    empresa.map((empresa) => (
-                        <option value={empresa.id}>{empresa.nome_fantasia}</option>
+                    empresas.map((empresa) => (
+                        <option key={empresa.id} value={empresa.id}>{empresa.nome_fantasia}</option>
                     ))
 
                 }

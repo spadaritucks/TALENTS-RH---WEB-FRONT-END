@@ -21,15 +21,15 @@ export default function HeadHuntersPanel() {
     const [headhunters, setHeadHunters] = useState<HeadHunterProps[]>([])
     const { showModal, hideModal } = useModal();
 
-    useEffect(() => {
-        const fetchUsers = async () => {
-            const response = await getAllUsers()
-            if (response) {
-                setUsers(response.data.users)
-                setHeadHunters(response.data.headhunters)
-            }
+    const fetchUsers = async () => {
+        const response = await getAllUsers()
+        if (response) {
+            setUsers(response.data.users)
+            setHeadHunters(response.data.headhunters)
         }
+    }
 
+    useEffect(() => {
         fetchUsers()
     }, [])
 

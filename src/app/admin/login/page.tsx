@@ -19,16 +19,15 @@ export default function Home() {
     const [admins, setAdmin] = useState<ConsultorAndAdminProps[]>([])
     const { showModal } = useModal();
 
-    useEffect(() => {
-
-        const fetchUsers = async () => {
-            const response = await getAllUsers();
-            if (response) {
-                setUsers(response.data.users)
-                setAdmin(response.data.admins);
-            }
+    const fetchUsers = async () => {
+        const response = await getAllUsers();
+        if (response) {
+            setUsers(response.data.users)
+            setAdmin(response.data.admins);
         }
+    }
 
+    useEffect(() => {
         fetchUsers();
     }, [])
 

@@ -1,6 +1,6 @@
 'use client'
 
-import { createProfissoes, deleteProfissoes, getProfissoes, ProfissoesProps, updateProfissoes } from "@/api/profissoes/api"
+
 import Button from "@/components/button/component"
 import Input from "@/components/input/component"
 import { useModal } from "@/components/modal/context"
@@ -12,7 +12,7 @@ import { ConsultorAndAdminProps, createUser, deleteUser, getAllUsers, updateUser
 import useNumericInput from "@/hooks/NumericInput"
 
 
-export default function Cargos() {
+export default function Consultores() {
 
     const [users, setUsers] = useState<UserProps[]>([])
     const [consultores, setConsultores] = useState<ConsultorAndAdminProps[]>([])
@@ -20,17 +20,16 @@ export default function Cargos() {
     const [formErrors, setFormErrors] = useState<{ [key: string]: string[] }>({}) //Objeto responsavel por validação do formulario
     const { showModal, hideModal } = useModal()
 
-    useEffect(() => {
-        //Consultar Dados de Profissoes
-        const fetchConsultores = async () => {
-            const response = await getAllUsers()
+    const fetchConsultores = async () => {
+        const response = await getAllUsers()
 
-            if (response) {
-                setConsultores(response.data.consultores)
-                setUsers(response.data.users)
-            }
+        if (response) {
+            setConsultores(response.data.consultores)
+            setUsers(response.data.users)
         }
+    }
 
+    useEffect(() => {
         fetchConsultores()
     }, [])
 
@@ -56,6 +55,7 @@ export default function Cargos() {
                     }
                 } else {
                     showModal("Sucesso ", <p>Consultor cadastrado com sucesso</p>)
+                    fetchConsultores()
 
                 }
             }
@@ -83,6 +83,7 @@ export default function Cargos() {
                         }
                     } else {
                         showModal("Sucesso ", <p>Consultor atualizado com sucesso</p>)
+                        fetchConsultores()
 
                     }
                 }
@@ -106,6 +107,8 @@ export default function Cargos() {
 
                         } else {
                             showModal("Sucesso ", <p>Consultor excluido com sucesso</p>)
+                            fetchConsultores()
+                            
                         }
                     }
                 }} />

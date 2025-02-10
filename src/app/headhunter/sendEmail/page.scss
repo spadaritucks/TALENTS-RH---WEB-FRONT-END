@@ -1,0 +1,30 @@
+.enviar-email-menu{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 100%;
+    gap: 10px;
+
+    h1{
+        font-size: 40px;
+        font-weight: bold;
+    }
+
+    .usuario-dados{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 30px;
+    }
+
+    .sendEmail-form{
+        width: 550px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 20px;
+    }
+}

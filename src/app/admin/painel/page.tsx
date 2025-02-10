@@ -53,51 +53,42 @@ export default function Painel() {
     }, []);
 
     useEffect(() => {
-
-
-        const fetchChamados = async () => {
-            const response = await getChamados()
-            if (response) {
-                setChamados(response.data.chamados)
-            }
-        }
-
         fetchChamados()
-
-                //Consultar Dados de Profissoes
-                const fetchProfissoes = async () => {
-                    const response = await getProfissoes()
-        
-                    if (response) {
-                        setProfissoes(response.data.profissoes)
-                    }
-                }
-        
-                fetchProfissoes()
-
-        const fetchUsers = async () => {
-            const response = await getAllUsers()
-            if (response) {
-                setUsers(response.data.users)
-                setHeadHunters(response.data.headhunters)
-                setCandidatos(response.data.candidatos)
-                setEmpresa(response.data.empresas)
-
-            }
-        }
-
+        fetchProfissoes()
         fetchUsers()
-
-        const fetchAtualizacoes = async () => {
-            const response = await getAtualizacoes()
-            if (response) {
-                setAtualizacoes(response.data.atualizacoes)
-            }
-        }
-
         fetchAtualizacoes()
     }, [])
 
+    const fetchChamados = async () => {
+        const response = await getChamados()
+        if (response) {
+            setChamados(response.data.chamados)
+        }
+    }
+
+    const fetchProfissoes = async () => {
+        const response = await getProfissoes()
+        if (response) {
+            setProfissoes(response.data.profissoes)
+        }
+    }
+
+    const fetchUsers = async () => {
+        const response = await getAllUsers()
+        if (response) {
+            setUsers(response.data.users)
+            setHeadHunters(response.data.headhunters)
+            setCandidatos(response.data.candidatos)
+            setEmpresa(response.data.empresas)
+        }
+    }
+
+    const fetchAtualizacoes = async () => {
+        const response = await getAtualizacoes()
+        if (response) {
+            setAtualizacoes(response.data.atualizacoes)
+        }
+    }
 
     return (
         <Main>

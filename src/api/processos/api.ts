@@ -13,7 +13,11 @@ export interface ProcessosProps{
 export async function getAllProcessos() {
 
     try {
-        const response = await api.get('/api/processos')
+        const response = await api.get('/api/processos',{
+            headers: {
+                'Cache-Control': 'no-store'
+            },
+        })
         return {
             status: true,
             data: response.data.processos

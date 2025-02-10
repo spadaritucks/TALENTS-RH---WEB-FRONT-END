@@ -40,6 +40,7 @@ export default function Chamados() {
     const [users, setUsers] = useState<UserProps[]>([]) //Dados de todos os usuarios
     const itemsPerPage = 1;
     const formRef = useRef<HTMLFormElement>(null)
+    const [formErrors, setFormErrors] = useState<{ [key: string]: string[] }>({}) //Objeto responsavel por validação do formulario
     const { showModal, hideModal } = useModal()
     //Consultar dados do usuario logado
     useEffect(() => {
@@ -53,24 +54,24 @@ export default function Chamados() {
     }, []);
 
     useEffect(() => {
-        const fetchAtualizacoes = async () => {
-            const response = await getAtualizacoes()
-            if (response) {
+        fetchAtualizacoes();
+        fetchUsers();
+    }, []);
 
-                setAtualizacoes(response.data.atualizacoes)
-            }
+    const fetchAtualizacoes = async () => {
+        const response = await getAtualizacoes()
+        if (response) {
+
+            setAtualizacoes(response.data.atualizacoes)
         }
+    }
 
-        fetchAtualizacoes()
-
-        const fetchUsers = async () => {
-            const response = await getAllUsers()
-            if (response) {
-                setUsers(response.data.users)
-            }
+    const fetchUsers = async () => {
+        const response = await getAllUsers()
+        if (response) {
+            setUsers(response.data.users)
         }
-        fetchUsers()
-    }, [])
+    }
 
     const handlePageChange = (page: number) => {
         setCurrentPage(page);
@@ -83,12 +84,21 @@ export default function Chamados() {
             formData.append('user_id', id.toString() || '')
             formData.append('_method, ', 'PUT')
             const response = await updateAtualizacoes(id, formData);
-            console.log(formData)
+          
             if (response) {
                 if (response.status === false) {
-                    alert('Erro' + response?.data.message)
+                    if (typeof response.message === 'object') {
+                        setFormErrors(response.message)
+                        showModal("Erro ", <p>Preencha os Campos Necessarios</p>)
+                    } else {
+                        showModal("Erro ", <p>{response.message}</p>)
+                    }
+
                 } else {
-                    alert('Atualização realizada com sucesso')
+                    showModal("Sucesso ", <p>Atualização feita com sucesso</p>)
+                    fetchAtualizacoes()
+
+
                 }
             }
         }
@@ -102,9 +112,10 @@ export default function Chamados() {
                     const response = await deleteAtualizacoes(id);
                     if (response) {
                         if (response.status === false) {
-                            alert('Erro' + response?.data.message)
+                            showModal("Erro ", <p>{response.message}</p>)
                         } else {
-                            alert('Atualização excluida com sucesso')
+                            showModal("Sucesso ", <p>Atualização excluida com sucesso</p>)
+                            fetchAtualizacoes();
                         }
                     }
                 }} />
@@ -116,8 +127,7 @@ export default function Chamados() {
     const atualizacaoChamado = atualizacoes.filter(atualizacao => atualizacao.chamados_id === id)
     const paginatedAtualizacoes = atualizacaoChamado.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
-    //Nome do Usuario Logado
-    const userLogado = users.find(userLogado => userLogado.id === user?.id);
+
 
 
 
