@@ -1,171 +1,150 @@
-import { api } from "@/api/axios"
-
-export interface ChamadoProps {
-    id:number;
-    empresa_id:number;
-    profissao_id:number;
-    numero_vagas: number;
-    descricao:string;
-    created_at: string
-    status: string;
-}
-
-export interface AtualizacoesProps{
-    id: number;
-    chamados_id: number;
-    user_id: number;
-    titulo:string;
-    atualizacoes: string;
-    anexo:string;
-    created_at: string;
-}
-
 export async function getChamados() {
-
     try {
-        const response = await api.get('/api/chamados',{
+        const response = await fetch(`${process.env.API_URL}/api/chamados`, {
             headers: {
                 'Cache-Control': 'no-store'
             },
-        })
-        return {
-            status: true,
-            data: response.data
-        }
+        });
+        const data = await response.json();
+        return data
     } catch (error: any) {
-        if (error.response && error.response.data && error.response.data.message) {
-            return {
-                status: false,
-                message: error.response.data.message
-            }
-        }
+        return { success: false, message: error.message };
     }
 }
 
+export async function getChamadoById(id:number) {
+    try {
+        const response = await fetch(`${process.env.API_URL}/api/chamados/${id}`, {
+            headers: {
+                'Cache-Control': 'no-store'
+            },
+        });
+        const data = await response.json();
+        
+        return data
+    } catch (error: any) {
+        return { success: false, message: error.message };
+    }
+}
+
+
 export async function createChamados(formData: FormData) {
     try {
-        const response = await api.post('/api/chamados', formData)
-        return {
-
-            status: true,
-            data: response.data
-        }
+        const response = await fetch(`${process.env.API_URL}/api/chamados`, {
+            method: 'POST',
+            body: formData
+        });
+        const data = await response.json();
+        return data
     } catch (error: any) {
-        if (error.response && error.response.data && error.response.data.message) {
-            return {
-                status: false,
-                message: error.response.data.message
-            }
-        }
+        return { success: false, message: error.message };
     }
 }
 
 export async function updateChamados(id: number, formData: FormData) {
     try {
-        const response = await api.put(`/api/chamados/${id}`, formData)
-        return {
-            status: true,
-            data: response.data
-        }
+        const response = await fetch(`${process.env.API_URL}/api/chamados/${id}?_method=POST`, {
+            method: 'POST',
+            body: formData
+        });
+        const data = await response.json();
+        return data
     } catch (error: any) {
-        if (error.response && error.response.data && error.response.data.message) {
-            return {
-                status: false,
-                message: error.response.data.message
-            }
-        }
+        return { success: false, message: error.message };
     }
 }
 
 export async function deleteChamados(id: number) {
     try {
-        const response = await api.delete(`/api/chamados/${id}`)
-        return {
-            status: true,
-            data: response.data
-        }
+        const response = await fetch(`${process.env.API_URL}/api/chamados/${id}`, {
+            method: 'DELETE'
+        });
+        const data = await response.json();
+        return data
     } catch (error: any) {
-        if (error.response && error.response.data && error.response.data.message) {
-            return {
-                status: false,
-                message: error.response.data.message
-            }
-        }
+        return { success: false, message: error.message };
     }
 }
 
 export async function getAtualizacoes() {
-
     try {
-        const response = await api.get('/api/atualizacoes',{
+        const response = await fetch(`${process.env.API_URL}/api/atualizacoes`, {
             headers: {
                 'Cache-Control': 'no-store'
             },
-        })
-        return {
-            status: true,
-            data: response.data
-        }
+        });
+        const data = await response.json();
+        return data
     } catch (error: any) {
-        if (error.response && error.response.data && error.response.data.message) {
-            return {
-                status: false,
-                message: error.response.data.message
-            }
-        }
+        return { success: false, message: error.message };
+    }
+}
+
+export async function getAtualizacaoById(id:number) {
+    try {
+        const response = await fetch(`${process.env.API_URL}/api/chamados/${id}`, {
+            headers: {
+                'Cache-Control': 'no-store'
+            },
+        });
+        const data = await response.json();
+        
+        return data
+    } catch (error: any) {
+        return { success: false, message: error.message };
     }
 }
 
 export async function createAtualizacoes(formData: FormData) {
     try {
-        const response = await api.post('/api/atualizacoes', formData)
-        return {
-
-            status: true,
-            data: response.data
-        }
+        const response = await fetch(`${process.env.API_URL}/api/atualizacoes`, {
+            method: 'POST',
+            body: formData
+        });
+        const data = await response.json();
+        return data
     } catch (error: any) {
-        if (error.response && error.response.data && error.response.data.message) {
-            return {
-                status: false,
-                message: error.response.data.message
-            }
-        }
+        return { success: false, message: error.message };
     }
-    
 }
 
 export async function updateAtualizacoes(id: number, formData: FormData) {
     try {
-        const response = await api.post(`/api/atualizacoes/${id}?_method=PUT`, formData)
-        return {
-            status: true,
-            data: response.data
-        }
+        const response = await fetch(`${process.env.API_URL}/api/atualizacoes/${id}`, {
+            method: 'POST',
+            body: formData
+        });
+        const data = await response.json();
+        return data
     } catch (error: any) {
-        if (error.response && error.response.data && error.response.data.message) {
-            return {
-                status: false,
-                message: error.response.data.message
-            }
-        }
+        return { success: false, message: error.message };
     }
 }
 
 export async function deleteAtualizacoes(id: number) {
     try {
-        const response = await api.delete(`/api/atualizacoes/${id}`)
-        return {
-            status: true,
-            data: response.data
-        }
+        const response = await fetch(`${process.env.API_URL}/api/atualizacoes/${id}`, {
+            method: 'DELETE'
+        });
+        const data = await response.json();
+        return data
     } catch (error: any) {
-        if (error.response && error.response.data && error.response.data.message) {
-            return {
-                status: false,
-                message: error.response.data.message
-            }
-        }
+        return { success: false, message: error.message };
+    }
+}
+
+export async function getChamadosByQueryString(filtros: Record<string, string>) {
+    try {
+        const queryString = new URLSearchParams(filtros).toString();
+        const response = await fetch(`${process.env.API_URL}/api/chamados?${queryString}`, {
+            headers: {
+                'Cache-Control': 'no-store'
+            },
+        });
+        const data = await response.json();
+        return data
+    } catch (error: any) {
+        return { success: false, message: error.message };
     }
 }
 

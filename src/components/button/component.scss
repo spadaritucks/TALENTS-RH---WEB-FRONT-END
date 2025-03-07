@@ -26,3 +26,8 @@ button{
 .secondary:hover{
     opacity: 0.5;
 }
+
+button:disabled{
+    opacity: 0.5;
+    cursor: not-allowed;
+}

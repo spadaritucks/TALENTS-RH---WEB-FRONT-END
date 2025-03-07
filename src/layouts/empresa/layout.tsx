@@ -1,42 +1,30 @@
-'use client'
-
+'use server'
 import NavBar from "@/components/navbar/component"
 import Link from "next/link"
 import { ReactNode, useEffect, useState } from "react"
 import './layout.scss'
 import Button from "@/components/button/component"
-import { useAuthHeadhunter } from "@/hooks/auth/useAuth"
 import BussinesBag from '../../../public/business-bag.png'
 import BussinesGuy from '../../../public/business-guy.png'
-import cargo from '../../../public/cargos.png'
+
 import Image from "next/image"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { UserProps } from "@/api/users/api"
-import logo from '../../../public/logo.png'
-import { useAuthEmpresa } from "@/hooks/auth/useAuth"
+import { cookies } from "next/headers"
+import { LogoutAction } from "@/server actions/login.action"
 
-export default function Main({ children }: { children: ReactNode }) {
+export default async function Main({ children }: { children: ReactNode }) {
 
-    const [user, setUser] = useState<UserProps>() // Dados do Usuario Logado
-    const handleLogout = () => {
-        const token = sessionStorage.getItem('token')
-        if (token) {
-            sessionStorage.removeItem('token');
-            sessionStorage.removeItem('user');
-            window.location.href = '/empresa/login'
-        }
-
+    const cookiesStore = await cookies();
+    const requestCookie = cookiesStore.get('user')?.value
+    let userLogged = null;
+  
+    try {
+      if (requestCookie) {
+        userLogged = JSON.parse(requestCookie);
+      }
+    } catch (error) {
+      console.error("Erro ao parsear cookie 'user':", error);
     }
-
-    useAuthEmpresa() // Verifica se o Token Existe
-    
-    // Consultar dados do usuario logado
-    useEffect(() => {
-        const userDados = sessionStorage.getItem('user')
-        if (userDados) {
-            setUser(JSON.parse(userDados))
-        }
-    }, []);
 
     return (
         <>
@@ -53,9 +41,9 @@ export default function Main({ children }: { children: ReactNode }) {
                             <AvatarImage src="https://github.com/shadcn.png" />
                             <AvatarFallback>CN</AvatarFallback>
                         </Avatar>
-                        <h3>{user?.nome}</h3>
+                        <h3>{userLogged?.nome}</h3>
                     </div>
-                    <Button type="button" variant="primary" ButtonName="Logout" onClick={handleLogout} />
+                    <Button type="button" variant="primary" ButtonName="Logout" onClick={LogoutAction} />
                 </div>
 
             </NavBar>

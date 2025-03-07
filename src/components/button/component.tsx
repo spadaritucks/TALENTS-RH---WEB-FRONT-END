@@ -14,10 +14,10 @@ interface ButtonProps{
 }
 
 
-export default function Button({type,variant, ButtonName, onClick}: ButtonProps){
+export default function Button({type,variant, ButtonName, onClick,disabled}: ButtonProps){
 
     return(
-        <button type={type} className={variant} onClick={onClick}>{ButtonName}</button>
+        <button type={type} className={variant} onClick={onClick} disabled={disabled}>{ButtonName}</button>
     )
 
 }

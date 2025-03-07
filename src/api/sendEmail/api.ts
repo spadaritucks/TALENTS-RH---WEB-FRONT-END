@@ -1,24 +1,13 @@
-import { api } from "@/api/axios"
-
-
 
 export async function sendEmail(formdata: FormData) {
     try {
-
-        const response = await api.post('/api/sendEmail', formdata)
-
-        return {
-            status: true,
-            message: response.data.message
-        }
-
+        const response = await fetch(`${process.env.API_URL}/api/sendEmail`, {
+            method: 'POST',
+            body: formdata
+        });
+        const data = await response.json();
+        return data
     } catch (error: any) {
-        if (error.response && error.response.data && error.response.data.message) {
-            return {
-                status: false,
-                message: error.response.data.message
-            }
-        }
-
+        return { success: false, message: error.message };
     }
 }

@@ -5,6 +5,8 @@
     align-items: center;
     justify-content: center;
     color: $secondary-color;
+    width: 100%;
+    padding: 50px 50px ;
 
     .cadastro-content{
         display: flex;
@@ -16,6 +18,7 @@
         padding: 10px 15px;
         margin-top: 40px;
         text-align: center;
+        max-width: 70%;
         
 
         h2{
@@ -29,30 +32,19 @@
             grid-template-columns: repeat(3, 1fr); // Duas colunas
             gap: 15px; // Espaçamento entre os inputs
             color: $secondary-color;
-            place-items: end;
+            place-items: start;
 
-            .checkboxes-content{
-                grid-column: span 3; 
+            div{
+                width: 100%;
                 display: flex;
                 flex-direction: column;
                 align-items: center;
                 justify-content: center;
-                gap: 10px;
-                max-width: 350px;
-
-                .checkboxes{
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    justify-content: center;
-                    gap: 10px;
-                }
+                gap: 5px;
             }
 
-            .textarea-content{
-                grid-column: span 3;
-                width: 100%;
-            }
+           
+
         }
     }
 }
@@ -61,8 +53,9 @@
 @media (max-width: 768px) {
 
     .cadastro-area{
+
         .cadastro-content{
-            
+            max-width: 90%;
             form{
                 grid-template-columns: repeat(2, 1fr);
 

@@ -8,7 +8,7 @@ import Link from 'next/link'
 import useNumericInput from '@/hooks/NumericInput'
 import { useEffect, useRef, useState } from 'react'
 import { Login } from '@/api/login/api'
-import { EmpresaProps, getAllUsers, HeadHunterProps, UserProps } from '@/api/users/api'
+import { EmpresaProps, getAllUsers, HeadHunterProps, UserProps } from '@/api/candidatos/api'
 import { HeartHandshake } from 'lucide-react'
 import { useModal } from '@/components/modal/context'
 

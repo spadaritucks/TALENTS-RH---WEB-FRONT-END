@@ -24,11 +24,11 @@
         justify-content: center;
         gap: 10px;
 
-        .busca-localizacao-div, .filtracao-div{
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
+        form{
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            place-items: center;
+            gap: 20px;
         }
         
     }

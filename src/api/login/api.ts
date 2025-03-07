@@ -1,21 +1,17 @@
 
-import { api } from "@/api/axios"
+export const Login = async (formdata: FormData) => {
+    try {
+        const response = await fetch(`${process.env.API_URL}/api/login`, {
+            method: 'POST',
+            body: formdata
+            
+        });
 
-export const Login = async (formdata:FormData) => {
-    try{
-        const response = await api.post('/api/login', formdata)
-        return {
-            status: true,
-            message: response.data.message,
-            user: response.data.user,
-            token: response.data.token
-        }
-    }catch(error:any){
-        if(error.response && error.response.data && error.response.data.message){
-            return {
-                status: false,
-                message: error.response.data.message
-            }
-        }
-    }   
-}
+        const data = await response.json();
+        
+        return data;
+
+    } catch (error:any) {
+        return { success: false, message: error.message };
+    }
+};

@@ -22,11 +22,11 @@
         justify-content: center;
         gap: 10px;
 
-        .busca-localizacao-div, .filtracao-div{
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
+        form{
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            place-items: center;
+            gap: 20px;
         }
         
     }
@@ -96,44 +96,7 @@
     }
 }
 
-.criar-vaga-form {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
 
-    .textarea-container {
-        width: 100%;
-    }
-
-    .palavras-chaves {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-
-
-        h2 {
-            font-size: 18px;
-            font-weight: bold;
-        }
-
-        
-
-        .competencias-container {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            place-items: center;
-        }
-    }
-
-    .salario-inputs,
-    .competencias-input-btn {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
-    }
-}
 
 @media (max-width: 800px) {
     .headhunter-area {
