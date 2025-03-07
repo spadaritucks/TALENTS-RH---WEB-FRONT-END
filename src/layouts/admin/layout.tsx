@@ -4,7 +4,6 @@ import Link from "next/link"
 import { ReactNode } from "react"
 import './layout.scss'
 import Button from "@/components/button/component"
-import { useAuthAdmin, useAuthHeadhunter } from "@/hooks/auth/useAuth"
 import BussinesBag from '../../../public/business-bag.png'
 import BussinesGuy from '../../../public/business-guy.png'
 import cargo from '../../../public/cargos.png'

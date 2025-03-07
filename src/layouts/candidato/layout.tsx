@@ -6,7 +6,6 @@ import './layout.scss'
 import Button from "@/components/button/component"
 import BussinesBag from '../../../public/business-bag.png'
 import BussinesGuy from '../../../public/business-guy.png'
-import cargo from '../../../public/cargos.png'
 import Image from "next/image"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
