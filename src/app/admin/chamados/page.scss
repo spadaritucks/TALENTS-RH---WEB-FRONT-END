@@ -1,4 +1,4 @@
-@import '../../../styles/color-variables.scss';
+@use "../../../styles/color-variables.scss" as *;
 
 .acompamhamento-div{
     display: flex;
