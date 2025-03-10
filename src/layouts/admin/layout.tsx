@@ -19,6 +19,7 @@ export default async function Main({ children }: { children: ReactNode }) {
     const cookiesStore = await cookies();
     const requestCookie = cookiesStore.get('user')?.value
     let userLogged = null;
+    
   
     try {
       if (requestCookie) {
