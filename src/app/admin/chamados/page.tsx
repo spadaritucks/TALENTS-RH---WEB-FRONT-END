@@ -1,10 +1,9 @@
-
 import Main from "@/layouts/admin/layout"
 import './page.scss'
 import { Usuarios } from "@/models/usuarios";
 import { getUsersAction } from "@/server actions/users.action";
 import { ChamadosAtualizacoes } from "@/models/chamados";
-import { getAllAtualizacoesAction, getAtualizacoesByIdAction } from "@/server actions/chamados.action";
+import { getAllAtualizacoesAction} from "@/server actions/chamados.action";
 import { cookies } from "next/headers";
 import Atualizacoes from "./Atualizacoes";
 
