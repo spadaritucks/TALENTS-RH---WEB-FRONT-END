@@ -4,7 +4,7 @@ import './page.scss'
 import SendEmailForm from "./SendEmail"
 import { Usuarios } from "@/models/usuarios"
 import { getUsersAction } from "@/server actions/users.action"
-
+export const dynamic = "force-dynamic";
 
 export default async function enviarEmail() {
 

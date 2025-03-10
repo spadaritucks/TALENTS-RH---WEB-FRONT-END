@@ -1,7 +1,7 @@
 import Main from "@/layouts/admin/layout";
 import CriarConsultorForm from "./CriarConsultorForm";
 import './page.scss'
-
+export const dynamic = "force-dynamic";
 
 export default function CriarConsultorPage() {
 

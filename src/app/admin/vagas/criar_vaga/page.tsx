@@ -8,6 +8,7 @@ import Main from "@/layouts/admin/layout";
 import { getHeadhuntersAction } from "@/server actions/headhunters.action";
 import { Headhunters } from "@/models/headhunter";
 import { cookies } from "next/headers";
+export const dynamic = "force-dynamic";
 
 export default async function CriarVagas() {
     const profissoes: Cargos[] = await getProfissoesAction();

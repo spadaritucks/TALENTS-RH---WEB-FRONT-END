@@ -15,7 +15,7 @@ import { Chamados, ChamadosAtualizacoes } from '@/models/chamados'
 import { getAllAtualizacoesAction, getChamadosAction } from '@/server actions/chamados.action'
 import { cookies } from 'next/headers'
 import Dashboard from './Dashboard'
-
+export const dynamic = "force-dynamic";
 
 
 export default async function Painel() {

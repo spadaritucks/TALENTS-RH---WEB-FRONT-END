@@ -18,7 +18,7 @@ import { Vagas } from "@/models/vagas"
 import Link from "next/link"
 import getEstadoAction from "@/server actions/estado.action"
 import { Estados } from "@/models/estados"
-
+export const dynamic = "force-dynamic";
 
 
 export default async function PainelVagas() {

@@ -5,7 +5,7 @@ import ConsultoresList from "./ConsultoresList"
 import { getConsultoresAction } from "@/server actions/consultores.action"
 import { Consultores } from "@/models/consultores"
 import { Usuarios } from "@/models/usuarios"
-
+export const dynamic = "force-dynamic";
 
 export default async function ConsultoresPage() {
     const consultoresAction = await getConsultoresAction()

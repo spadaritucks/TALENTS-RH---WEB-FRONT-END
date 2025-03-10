@@ -17,6 +17,7 @@ import { getChamadosAction } from "@/server actions/chamados.action"
 import { Chamados } from "@/models/chamados"
 import getEstadoAction from "@/server actions/estado.action"
 import { Estados } from "@/models/estados"
+export const dynamic = "force-dynamic";
 
 
 

@@ -3,7 +3,7 @@ import Image from 'next/image'
 import './page.scss'
 import logo from '@/../public/logo-not-background.png'
 import { LoginForm } from './LoginForm'
-
+export const dynamic = "force-dynamic";
 
 export default function Home() {
 

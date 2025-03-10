@@ -3,7 +3,7 @@ import './page.scss'
 import Image from "next/image"
 import logo from '@/../public/logo-not-background.png'
 import { CadastroForm } from './CadastroForm'
-
+export const dynamic = "force-dynamic";
 
 export default function Cadastro() {
 

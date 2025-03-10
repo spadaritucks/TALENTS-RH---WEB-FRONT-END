@@ -8,6 +8,7 @@ import { Chamados } from '@/models/chamados'
 import Main from '@/layouts/headhunter/layout'
 import AtualizacaoForm from './AtualizacaoForm'
 import { cookies } from 'next/headers'
+export const dynamic = "force-dynamic";
 
 export default async function AtualizarChamado() {
   

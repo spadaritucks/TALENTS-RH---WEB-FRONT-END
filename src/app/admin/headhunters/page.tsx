@@ -7,6 +7,7 @@ import HeadhuntersList from "./HeadhuntersList"
 import { getHeadhuntersAction } from "@/server actions/headhunters.action"
 import { Headhunters } from "@/models/headhunter"
 import { Usuarios } from "@/models/usuarios"
+export const dynamic = "force-dynamic";
 
 export default async function HeadHuntersPanel() {
    

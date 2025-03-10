@@ -11,6 +11,7 @@ import Image from "next/image"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { cookies } from "next/headers"
 import { LogoutAction } from "@/server actions/login.action"
+export const dynamic = "force-dynamic";
 
 export default async function Main({ children }: { children: ReactNode }) {
 

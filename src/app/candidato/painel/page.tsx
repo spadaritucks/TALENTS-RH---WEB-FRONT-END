@@ -16,7 +16,7 @@ import { Usuarios } from "@/models/usuarios";
 import { cookies } from "next/headers";
 import getEstadoAction from "@/server actions/estado.action";
 import { Estados } from "@/models/estados";
-
+export const dynamic = "force-dynamic";
 
 
 

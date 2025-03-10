@@ -3,7 +3,7 @@ import EditarConsultorForm from "./EditarConsultorForm";
 import { Consultores } from "@/models/consultores";
 import { Usuarios } from "@/models/usuarios";
 import Main from "@/layouts/admin/layout";
-
+export const dynamic = "force-dynamic";
 
 
 

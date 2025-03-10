@@ -11,6 +11,7 @@ import { Chamados, ChamadosAtualizacoes } from "@/models/chamados";
 import { getProfissoesAction } from "@/server actions/profissoes.action";
 import { getAllAtualizacoesAction, getChamadosAction } from "@/server actions/chamados.action";
 import { cookies } from "next/headers";
+export const dynamic = "force-dynamic";
 
 export default async function Painel() {
 

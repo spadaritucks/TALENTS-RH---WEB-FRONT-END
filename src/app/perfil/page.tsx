@@ -2,7 +2,7 @@ import Image from 'next/image'
 import './page.scss'
 import logo from '@/../public/logo-not-background.png'
 import Link from 'next/link'
-
+export const dynamic = "force-dynamic";
 
 export default function Home() {
 
