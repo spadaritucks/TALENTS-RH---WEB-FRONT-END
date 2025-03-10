@@ -1,4 +1,4 @@
-'use server'
+
 import Main from "@/layouts/empresa/layout"
 import ClientPanel from "./ClientPanel"
 import { getEmpresasAction } from "@/server actions/empresas.action";

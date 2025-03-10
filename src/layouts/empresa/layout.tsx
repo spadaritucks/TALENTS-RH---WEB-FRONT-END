@@ -1,4 +1,4 @@
-'use server'
+
 import NavBar from "@/components/navbar/component"
 import Link from "next/link"
 import { ReactNode, useEffect, useState } from "react"
