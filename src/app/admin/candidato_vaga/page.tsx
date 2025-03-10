@@ -11,6 +11,7 @@ import { getProcessosAction } from '@/server actions/processos.action'
 import { Vagas } from '@/models/vagas'
 import { getVagasAction } from '@/server actions/vagas.action'
 import CandidatoVaga from './CandidatoVaga'
+export const dynamic = "force-dynamic";
 
 
 export default async function CandidatoVagaPage() {

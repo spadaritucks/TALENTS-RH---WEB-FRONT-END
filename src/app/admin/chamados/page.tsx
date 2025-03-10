@@ -6,6 +6,7 @@ import { ChamadosAtualizacoes } from "@/models/chamados";
 import { getAllAtualizacoesAction} from "@/server actions/chamados.action";
 import { cookies } from "next/headers";
 import Atualizacoes from "./Atualizacoes";
+export const dynamic = "force-dynamic";
 
 
 export default async function ChamadosPage() {
