@@ -38,7 +38,7 @@ export default function ChamadoTable({chamados, empresas, profissoes} : ChamadoT
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {chamados.length > 0 ? chamados.map((chamado) => {
+                    {chamados && chamados.length > 0 ? chamados.map((chamado) => {
                         const empresaSelecionada = empresas.find(empresa => empresa.id == chamado.empresa_id)
                         console.log(empresaSelecionada)
                         const profissao = profissoes.find(profissao => profissao.id === chamado.profissao_id)

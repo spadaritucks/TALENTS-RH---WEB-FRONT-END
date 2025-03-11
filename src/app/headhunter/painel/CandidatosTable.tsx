@@ -79,7 +79,7 @@ export default function CandidatoTable({ candidatos, estados }: CandidatoTablePr
                 </TableHeader>
                 <TableBody>
 
-                    {candidatosFiltrados.length > 0 ? candidatosFiltrados.map((user) => {
+                    {candidatosFiltrados && candidatosFiltrados.length > 0 ? candidatosFiltrados.map((user) => {
 
                         const candidato = candidatos.filter(candidato => candidato.user_id === user.id);
                         return (

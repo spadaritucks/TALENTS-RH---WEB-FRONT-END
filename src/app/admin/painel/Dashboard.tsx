@@ -66,7 +66,7 @@ export default function Dashboard({
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {chamados.length > 0 ? chamados.map((chamado) => {
+                        {chamados && chamados.length > 0 ? chamados.map((chamado) => {
 
                             const empresaSelecionada = empresas.find(empresa => empresa.id == chamado.empresa_id)
                             const profissao = profissoes.find(profissao => profissao.id === chamado.profissao_id)
