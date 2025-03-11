@@ -91,7 +91,7 @@ export default function Atualizacoes({ usuarios, atualizacoes }: AtualizacoesPro
 
     return (
         <>
-            {paginatedAtualizacoes.map(atualizacao => {
+            { paginatedAtualizacoes.length > 0 ? paginatedAtualizacoes.map(atualizacao => {
 
                 const userChamado = usuarios.find(user => user.id === atualizacao.user_id);
 
@@ -126,7 +126,7 @@ export default function Atualizacoes({ usuarios, atualizacoes }: AtualizacoesPro
                         </div>
                     </div>
                 )
-            })}
+            }) : <p className="text-center text-2xl">Nenhum dado encontrado</p>}
             <Pagination>
                 <PaginationPrevious onClick={() => handlePageChange(currentPage - 1)} />
                 <PaginationContent>

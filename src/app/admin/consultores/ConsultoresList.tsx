@@ -50,7 +50,7 @@ export default function ConsultoresList({
                 <h2>Lista de Consultores</h2>
                 <div className="container">
                     {
-                        consultores.map((consultor) => {
+                       consultores.length > 0 ?  consultores.map((consultor) => {
                             const userConsultor = userConsultores.find(user => user.id === consultor.user_id)
                             return (
                                 <div className="div-line" key={consultor.id}>
@@ -65,7 +65,7 @@ export default function ConsultoresList({
                             )
                         }
 
-                        )
+                        ) : <p className="text-center text-2xl">Nenhum dado encontrado</p>
 
                     }
                 </div>

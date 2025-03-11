@@ -67,7 +67,7 @@ export default function AtualizacaoForm({ empresas, chamados, profissoes, userLo
     const chamadoDados = chamados.find(chamado => chamado.id === id)
     const chamadoEmpresa = empresas.find(empresa => empresa.id == chamadoDados?.empresa_id)
     const chamadoCargo = profissoes.find(cargo => cargo.id === chamadoDados?.profissao_id)
-    console.log(chamadoEmpresa)
+   
 
     return (
         <>

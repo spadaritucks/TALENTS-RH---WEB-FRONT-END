@@ -10,12 +10,12 @@ import { createProfissoesAction, deleteProfissoesAction, updateProfissoesAction 
 import { useRouter } from "next/navigation"
 import { useActionState, useEffect, useRef, useState } from "react"
 
-interface CargosListProps{
+interface CargosListProps {
     profissoes: Cargos[]
 }
 
-export default function CargosList({profissoes} : CargosListProps) {
- 
+export default function CargosList({ profissoes }: CargosListProps) {
+
 
     const { showModal, hideModal } = useModal()
     const [formErrors, setFormErrors] = useState<{ [key: string]: string[] }>({})
@@ -25,62 +25,62 @@ export default function CargosList({profissoes} : CargosListProps) {
     const [dataEdit, handleEditarProfissao, isPendingEdit] = useActionState(updateProfissoesAction, null)
     const [dataDelete, handleDeletarProfissao, isPendingDelete] = useActionState(deleteProfissoesAction, null)
 
-     // Atualiza os erros quando há resposta da API
+    // Atualiza os erros quando há resposta da API
     useEffect(() => {
         if (dataCreate) {
-            if(dataCreate.error){
+            if (dataCreate.error) {
                 if (typeof dataCreate.error === "object") {
                     setFormErrors(dataCreate.error);
                     return
                 } else {
-                     showModal("Erro", dataCreate.error)
-                     dataCreate.error = null
-                     return
+                    showModal("Erro", dataCreate.error)
+                    dataCreate.error = null
+                    return
                 }
-                
+
             }
             showModal("Sucesso", dataCreate.message)
             router.refresh()
         }
-    }, [dataCreate]); 
+    }, [dataCreate]);
 
-         // Atualiza os erros quando há resposta da API
-         useEffect(() => {
-            if (dataEdit) {
-                if(dataEdit.error){
-                    if (typeof dataEdit.error === "object") {
-                        setFormErrors(dataEdit.error);
-                        return
-                    } else {
-                         showModal("Erro", dataEdit.error)
-                         dataEdit.error = null
-                         return
-                    }
+    // Atualiza os erros quando há resposta da API
+    useEffect(() => {
+        if (dataEdit) {
+            if (dataEdit.error) {
+                if (typeof dataEdit.error === "object") {
+                    setFormErrors(dataEdit.error);
+                    return
+                } else {
+                    showModal("Erro", dataEdit.error)
+                    dataEdit.error = null
+                    return
                 }
-                showModal("Sucesso", dataEdit.message)
-                router.refresh()
             }
-            
-        }, [dataEdit]); 
+            showModal("Sucesso", dataEdit.message)
+            router.refresh()
+        }
 
-        
-             // Atualiza os erros quando há resposta da API
+    }, [dataEdit]);
+
+
+    // Atualiza os erros quando há resposta da API
     useEffect(() => {
         if (dataDelete) {
-            if(dataDelete.error){
+            if (dataDelete.error) {
                 if (typeof dataDelete.error === "object") {
                     setFormErrors(dataDelete.error);
                     return
                 } else {
-                     showModal("Erro", dataDelete.error)
-                     dataDelete.error = null
-                     return
+                    showModal("Erro", dataDelete.error)
+                    dataDelete.error = null
+                    return
                 }
             }
             showModal("Sucesso", dataDelete.message)
             router.refresh()
         }
-    }, [dataDelete]); 
+    }, [dataDelete]);
 
 
 
@@ -116,16 +116,16 @@ export default function CargosList({profissoes} : CargosListProps) {
                 <div className="list">
                     <h2>Lista de Cargos</h2>
                     <div className="container">
-                        {profissoes.map((profissão) => (
+                        {profissoes.length > 0 ? profissoes.map((profissão) => (
                             <div className='div-line' key={profissão.id}>
                                 <p>{profissão.nome}</p>
                                 <form action={handleDeletarProfissao} key={profissão.id}>
-                                    <Input type="hidden" name="id" value={profissão.id.toString()}  />
+                                    <Input type="hidden" name="id" value={profissão.id.toString()} />
                                     <Button ButtonName='Excluir' type='submit' variant='primary' disabled={isPendingDelete} />
-                                    
+
                                 </form>
                             </div>
-                        ))}
+                        )) : <p className="text-center text-xl">Nenhum dado encontrado</p>}
                     </div>
                 </div>
             </div>

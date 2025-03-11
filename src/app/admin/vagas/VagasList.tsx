@@ -117,7 +117,7 @@ export default function VagasList({
                                 )
                             }} />
                             <Button ButtonName="Ver Candidatos" type="button" variant="primary" onClick={() => {
-                                window.location.href = `/headhunter/candidato_vaga?id=${vaga.id}`
+                                window.location.href = `/admin/candidato_vaga?id=${vaga.id}`
                             }} />
 
                         </div>

@@ -86,7 +86,7 @@ export default function ClientPanel({
                 </TableHeader>
                 <TableBody>
                     {
-                        chamadoEmpresa.map(chamado => {
+                        chamadoEmpresa.length > 0 ? chamadoEmpresa.map(chamado => {
 
                             const profissao = profissoes.find(profissao => profissao.id === chamado.profissao_id)
                             return (
@@ -112,7 +112,7 @@ export default function ClientPanel({
                                 </TableRow>
 
                             )
-                        })
+                        }) : <TableRow><TableCell className="text-sm text-center" colSpan={7}>Nenhum dado encontrado </TableCell></TableRow>
                     }
 
 

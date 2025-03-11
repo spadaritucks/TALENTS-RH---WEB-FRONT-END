@@ -53,7 +53,7 @@ export default function CandidatoVaga({
         <>
             <h1>Candidatos para a Vaga de {vagasDados?.titulo}</h1>
             <div className="candidatos-container">
-                {candidatosProcessos.map((processo) => {
+                { candidatosProcessos.length > 0 ? candidatosProcessos.map((processo) => {
                     const candidato = candidatos.find(candidato => candidato.id === processo.candidato_id)
                     const candidatoDados = userCandidatos.find(user => user.id === candidato?.user_id)
 
@@ -111,7 +111,7 @@ export default function CandidatoVaga({
                             </div>
                         </div>
                     )
-                })}
+                }) : <p className="text-center text-xl">Nenhum dado encontrado</p>}
             </div>
 
 

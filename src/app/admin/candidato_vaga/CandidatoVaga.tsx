@@ -29,7 +29,6 @@ interface CandidatoVagaProps {
 
 export default function CandidatoVaga({
     empresas,
-    userEmpresas,
     candidatos,
     userCandidatos,
     processos,
@@ -42,25 +41,27 @@ export default function CandidatoVaga({
     const vagasDados = vagas.find(vaga => vaga.id === id)
 
     useEffect(() => {
+
         if (typeof window !== 'undefined') { // Garante que só executa no cliente
             const searchParams = new URLSearchParams(window.location.search)
             const idString = searchParams.get('id')
             setId(idString ? parseInt(idString) : null)
         }
+
     }, [])
 
     return (
         <>
             <h1>Candidatos para a Vaga de {vagasDados?.titulo}</h1>
             <div className="candidatos-container">
-                {candidatosProcessos.map((processo) => {
+                {candidatosProcessos.length > 0 ? candidatosProcessos.map((processo) => {
                     const candidato = candidatos.find(candidato => candidato.id === processo.candidato_id)
                     const candidatoDados = userCandidatos.find(user => user.id === candidato?.user_id)
 
                     return (
                         <div className="candidato" key={processo.id}>
                             <h2>{candidatoDados?.nome} {candidatoDados?.sobrenome}</h2>
-                            <p><strong>Currículo :</strong> <a href={`${process.env.NEXT_PUBLIC_API_URL}/storage/${candidato?.cv}`} >Baixar Currículo</a></p>
+                            <p><strong>Currículo :</strong> <a href={`${process.env.API_URL}/storage/${candidato?.cv}`} >Baixar Currículo</a></p>
                             <p><strong>Link Telefone: </strong><a href={`https://wa.me/${candidatoDados?.celular_1}`}>{candidatoDados?.celular_1}</a></p>
                             <p><strong>Pretensão Salarial(CLT): </strong>R$ {candidato?.pretensao_salarial_clt}</p>
                             <p><strong>Pretensão Salarial(PJ): </strong>R$ {candidato?.pretensao_salarial_pj}</p>
@@ -111,7 +112,7 @@ export default function CandidatoVaga({
                             </div>
                         </div>
                     )
-                })}
+                }) : <p className="text-center text-xl">Nenhum dado encontrado</p>}
             </div>
 
 

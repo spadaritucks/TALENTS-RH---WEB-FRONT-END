@@ -38,7 +38,7 @@ export default function HeadhuntersList({
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {headhunters.map((headhunter) => {
+                    {headhunters.length > 0 ? headhunters.map((headhunter) => {
                         const user = userHeadhunters.find(user => user.id === headhunter.user_id)
                         return (
                             <TableRow key={headhunter.id}>
@@ -79,7 +79,7 @@ export default function HeadhuntersList({
 
                             </TableRow>
                         )
-                    })}
+                    }) : <TableRow><TableCell className="text-sm text-center" colSpan={7}>Nenhum dado encontrado </TableCell></TableRow>}
                 </TableBody>
             </Table>
         </div>
