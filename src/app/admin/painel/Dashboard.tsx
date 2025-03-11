@@ -27,7 +27,7 @@ interface DashboardProps {
     headhunters: Headhunters[]
     userHeadhunters: Usuarios[]
     profissoes: Cargos[]
-    chamados: Chamados[]
+    chamados: Chamados[] 
     atualizacoes: ChamadosAtualizacoes[]
 
 }
@@ -66,7 +66,7 @@ export default function Dashboard({
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {chamados.map((chamado) => {
+                        {chamados ? chamados.map((chamado) => {
 
                             const empresaSelecionada = empresas.find(empresa => empresa.id == chamado.empresa_id)
                             const profissao = profissoes.find(profissao => profissao.id === chamado.profissao_id)
@@ -95,7 +95,7 @@ export default function Dashboard({
 
                                 </TableRow>
                             )
-                        })}
+                        }) : <TableRow><TableCell className="text-sm text-center" colSpan={7}>Nenhum dado encontrado </TableCell></TableRow>}
                     </TableBody>
                 </Table>
 
