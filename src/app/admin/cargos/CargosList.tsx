@@ -116,7 +116,7 @@ export default function CargosList({ profissoes }: CargosListProps) {
                 <div className="list">
                     <h2>Lista de Cargos</h2>
                     <div className="container">
-                        {profissoes.length > 0 ? profissoes.map((profissão) => (
+                        { profissoes && profissoes.length > 0 ? profissoes.map((profissão) => (
                             <div className='div-line' key={profissão.id}>
                                 <p>{profissão.nome}</p>
                                 <form action={handleDeletarProfissao} key={profissão.id}>

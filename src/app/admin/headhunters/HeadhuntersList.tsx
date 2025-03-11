@@ -38,7 +38,7 @@ export default function HeadhuntersList({
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {headhunters.length > 0 ? headhunters.map((headhunter) => {
+                    { headhunters && headhunters.length > 0 ? headhunters.map((headhunter) => {
                         const user = userHeadhunters.find(user => user.id === headhunter.user_id)
                         return (
                             <TableRow key={headhunter.id}>

@@ -91,7 +91,7 @@ export default function Atualizacoes({ usuarios, atualizacoes }: AtualizacoesPro
 
     return (
         <>
-            { paginatedAtualizacoes.length > 0 ? paginatedAtualizacoes.map(atualizacao => {
+            { paginatedAtualizacoes && paginatedAtualizacoes.length > 0 ? paginatedAtualizacoes.map(atualizacao => {
 
                 const userChamado = usuarios.find(user => user.id === atualizacao.user_id);
 

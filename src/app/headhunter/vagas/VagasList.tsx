@@ -92,7 +92,7 @@ export default function VagasList({
                 </form>
             </div>
             <div className="vagas-container">
-                {vagasFiltradas ? vagasFiltradas.map((vaga) => {
+                {vagasFiltradas && vagasFiltradas.length > 0 ? vagasFiltradas.map((vaga) => {
 
 
                     const headhunterId = headhunters.find(headhunter => headhunter.id === vaga.headhunter_id)

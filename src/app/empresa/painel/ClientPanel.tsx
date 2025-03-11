@@ -86,7 +86,7 @@ export default function ClientPanel({
                 </TableHeader>
                 <TableBody>
                     {
-                        chamadoEmpresa.length > 0 ? chamadoEmpresa.map(chamado => {
+                         chamadoEmpresa && chamadoEmpresa.length > 0 ? chamadoEmpresa.map(chamado => {
 
                             const profissao = profissoes.find(profissao => profissao.id === chamado.profissao_id)
                             return (

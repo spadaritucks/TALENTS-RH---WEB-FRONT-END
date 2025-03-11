@@ -109,7 +109,7 @@ export default function VagasList({
                 </form>
             </div>
             <div className="vagas-container">
-                {vagasFiltradas ? vagasFiltradas.map((vaga) => {
+                {vagasFiltradas && vagasFiltradas.length > 0 ? vagasFiltradas.map((vaga) => {
 
                     //Verificação se o Usuario já se candidatou na vaga
                     const candidato = candidatos.find(candidato => candidato.user_id === userLogged?.id)
