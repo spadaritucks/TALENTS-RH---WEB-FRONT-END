@@ -39,6 +39,7 @@ export default async function Main({ children }: { children: ReactNode }) {
                     <Link href='/admin/vagas'><Image className="link-icon" src={BussinesBag} alt="" />Vagas</Link>
                     <Link href='/admin/cargos'><Image className="link-icon" src={cargo} alt="" />Cargos</Link>
                     <Link href='/admin/consultores'><Image className="link-icon" src={BussinesGuy} alt="" />Consultores</Link>
+                    <Link href='/admin/administradores'><Image className="link-icon" src={BussinesGuy} alt="" />Admins</Link>
                 </div>
 
                 <div className="user-content">

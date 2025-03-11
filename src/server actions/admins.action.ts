@@ -29,7 +29,7 @@ export async function getAdminsByQueryStringAction(_: unknown, formData: FormDat
 }
 
 // Função para criar um novo admin
-export async function createAdminController(_:unknown,formData: FormData) {
+export async function createAdminAction(_:unknown,formData: FormData) {
 
    if(formData.get('password') != formData.get('password_confirm')){
         const data = {error: "As senhas não conferem"}
@@ -39,17 +39,38 @@ export async function createAdminController(_:unknown,formData: FormData) {
     console.log(formData)
     const data = await createAdmins(formData);
 
+    if (!data.success) {
+        return { error: data.message };
+    }
+
     return data; // Retorna o resultado da criação
 }
 
 // Função para atualizar um admin existente
-export async function updateAdminController(id: number, formData: FormData) {
+export async function updateAdminAction(_: unknown, formData: FormData) {
+
+    const idString = formData.get('id')?.toString()
+    const id = parseInt(idString || '')
+    formData.append('_method', 'PATCH');
+   
     const data = await updateAdmins(id, formData);
+
+    if (!data.success) {
+        return { error: data.message };
+    }
+    
     return data; // Retorna o resultado da atualização
 }
 
 // Função para deletar um admin
-export async function deleteAdminController(id: number) {
+export async function deleteAdminAction(_: unknown, formData: FormData) {
+    const idString = formData.get('id')?.toString()
+    const id = parseInt(idString || '')
     const data = await deleteAdmins(id);
+
+    if (!data.success) {
+        return { error: data.message };
+    }
+    
     return data; // Retorna o resultado da deleção
 }

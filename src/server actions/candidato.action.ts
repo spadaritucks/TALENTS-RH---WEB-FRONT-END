@@ -55,14 +55,20 @@ export async function createCandidatoAction(_: unknown, formData: FormData) {
 }
 
 // Função para atualizar um candidato existente
-export async function updateCandidatoAction(id: number, formData: FormData) {
+export async function updateCandidatoAction(_: unknown, formData: FormData) {
+    const idString = formData.get('id')?.toString()
+    const id = parseInt(idString || '')
+    formData.append('_method', 'PATCH');
     const data = await updateCandidatos(id, formData);
     return data; // Retorna o resultado da atualização
 }
 
 // Função para deletar um candidato
-export async function deleteCandidatoAction(id: number) {
+export async function deleteCandidatoAction(_: unknown, formData: FormData) {
+    const idString = formData.get('id')?.toString()
+    const id = parseInt(idString || '')
     const data = await deleteCandidatos(id);
     return data; // Retorna o resultado da deleção
 }
+
 
