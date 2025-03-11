@@ -56,7 +56,7 @@ export default async function Painel() {
                 <h1>Painel do Admin</h1>
                 <Dashboard
                     atualizacoes={atualizacoes}
-                    
+                    chamados={chamados}
                     candidatos={candidatos}
                     empresas={empresas}
                     headhunters={headhunters}
