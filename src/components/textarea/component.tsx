@@ -14,7 +14,7 @@ interface TextAreaProps{
     rows?: number
     style?: React.CSSProperties
     disabled?: boolean
-    defaultValue: string
+    defaultValue?: string
   
 }
 

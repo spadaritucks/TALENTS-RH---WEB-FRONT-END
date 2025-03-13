@@ -6,7 +6,7 @@ import { ChangeEvent, ReactNode } from "react"
 
 interface SelectProps{
     name?: string;
-    defaultValue: string
+    defaultValue?: string
     label: string
     value?: string
     onChange?: (e:ChangeEvent<HTMLSelectElement>) => void
