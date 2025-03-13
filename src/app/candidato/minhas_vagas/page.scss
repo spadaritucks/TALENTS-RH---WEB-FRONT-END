@@ -1,0 +1,55 @@
+@use "../../../styles/color-variables.scss" as *;
+
+
+.vagas-area{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    width: 100%;
+    color: $secondary-color;
+    padding: 0 5vw;
+
+    h1{
+        font-size: 55px;
+        font-weight: 700;
+    }
+
+
+
+    .vagas-container{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        width: 100%;
+
+        .vaga-card{
+            width: 80%;
+            height: 450px;
+            border: 1px solid $primary-color;
+            padding: 5px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: flex-start;
+            gap: 10px;
+
+            h2{
+                font-size: 40px;
+                font-weight: 700;
+            }
+
+            p{
+                font-size: 18px;
+            }
+
+            span{
+                font-size: 18px;
+                font-weight: 700;
+            }
+        }
+    }
+}

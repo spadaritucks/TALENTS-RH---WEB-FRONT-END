@@ -11,6 +11,7 @@ import Image from "next/image"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { LogoutAction } from "@/server actions/login.action"
 import { cookies } from "next/headers"
+import UserAvatarPanel from "./UserAvatarPanel"
 export const dynamic = "force-dynamic";
 
 export default async function Main({ children }: { children: ReactNode }) {
@@ -19,14 +20,14 @@ export default async function Main({ children }: { children: ReactNode }) {
     const cookiesStore = await cookies();
     const requestCookie = cookiesStore.get('user')?.value
     let userLogged = null;
-    
-  
+
+
     try {
-      if (requestCookie) {
-        userLogged = JSON.parse(requestCookie);
-      }
+        if (requestCookie) {
+            userLogged = JSON.parse(requestCookie);
+        }
     } catch (error) {
-      console.error("Erro ao parsear cookie 'user':", error);
+        console.error("Erro ao parsear cookie 'user':", error);
     }
 
 
@@ -43,16 +44,10 @@ export default async function Main({ children }: { children: ReactNode }) {
                 </div>
 
                 <div className="user-content">
-                    <div className="user-avatar-name">
-                        <Avatar>
-                            <AvatarImage src="https://github.com/shadcn.png" />
-                            <AvatarFallback>CN</AvatarFallback>
-                        </Avatar>
-                        <h3>{userLogged?.nome}</h3>
-                    </div>
+                    <UserAvatarPanel userLogged={userLogged} />
                     <Button type="button" variant="primary" ButtonName="Logout" onClick={LogoutAction} />
                 </div>
-                
+
             </NavBar>
             {children}
 

@@ -16,27 +16,30 @@ interface InputProps {
     style?: React.CSSProperties
     readOnly?: boolean
     maxlength?: number
+    defaultValue?: string
 }
 
 
 
-export default function Input({ placeholder, label, onChange, type, value, name, onInput, disabled, style, readOnly, maxlength }: InputProps) {
+export default function Input({ placeholder, label, onChange, type, value, name, onInput, disabled, style, readOnly, maxlength, defaultValue }: InputProps) {
 
 
     return (
         <div className={`${type === "checkbox" ? "input-wrapper-checkbox" : "input-wrapper"}`}>
             <label htmlFor={label}>{label}</label>
             <input
-                style={style} 
-                type={type} 
-                name={name} 
-                placeholder={placeholder} 
-                value={value} 
-                onChange={onChange} 
-                onInput={onInput} 
+                defaultValue={defaultValue}
+                style={style}
+                type={type}
+                name={name}
+                placeholder={placeholder}
+                value={value}
+                onChange={onChange}
+                onInput={onInput}
                 readOnly={readOnly}
                 maxLength={maxlength}
-                disabled={disabled} />
+                disabled={disabled}
+            />
         </div>
     )
 }
