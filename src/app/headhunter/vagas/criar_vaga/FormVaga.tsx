@@ -24,7 +24,7 @@ interface CriarVagaProps {
 }
 
 
-export default function CriarVagaForm({ empresas, profissoes, userLogged }: CriarVagaProps) {
+export default function CriarVagaForm({ empresas, profissoes, userLogged,headhunters }: CriarVagaProps) {
 
 
     const [isSalario, setIsSalario] = useState<boolean>(false);
@@ -32,6 +32,7 @@ export default function CriarVagaForm({ empresas, profissoes, userLogged }: Cria
     const [formErrors, setFormErrors] = useState<{ [key: string]: string[] }>({}) //Objeto responsavel por validação do formulario
     const [data, handleCriarVaga, isPending] = useActionState(createVagasAction, null)
     const { showModal } = useModal()
+    const headhunterLogged = headhunters.find(headhunter => headhunter.user_id == userLogged.id)
     
 
     //Função onChange para Exibição Condicional do Input do Valor do Salario
@@ -152,7 +153,7 @@ export default function CriarVagaForm({ empresas, profissoes, userLogged }: Cria
                 <Input label="Data de Fechamento" type="date" name="data_final" />
                 {formErrors ? formErrors.data_final?.map((error, index) => <p className="text-red-400 text-sm" key={index}>{error}</p>) : null}
             </div>
-            <Input type="hidden" name="headhunter_id" value={userLogged?.id.toString()} />
+            <Input type="hidden" name="headhunter_id" value={headhunterLogged?.id.toString()} />
             
             <div style={{ gridColumn: '1/-1' }}>
                 <Button ButtonName="Criar Vaga" type="submit" variant="primary" />

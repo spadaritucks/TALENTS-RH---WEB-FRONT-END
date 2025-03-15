@@ -8,6 +8,8 @@ import Main from "@/layouts/admin/layout";
 import { getHeadhuntersAction } from "@/server actions/headhunters.action";
 import { Headhunters } from "@/models/headhunter";
 import { cookies } from "next/headers";
+import { getAdminsAction } from "@/server actions/admins.action";
+import { Admins } from "@/models/admins";
 export const dynamic = "force-dynamic";
 
 export default async function CriarVagas() {
@@ -15,8 +17,9 @@ export default async function CriarVagas() {
     const empresasAction = await getEmpresasAction();
     const empresas: Empresas[] = empresasAction.empresas
 
-    const headhuntersAction = await getHeadhuntersAction();
-    const headhunters: Headhunters[] = headhuntersAction.headhunters
+    const adminAction = await getAdminsAction()
+    const admins : Admins[] = adminAction.admins
+    
 
     const cookiesStore = await cookies();
     const requestCookie = cookiesStore.get('user')?.value
@@ -34,7 +37,7 @@ export default async function CriarVagas() {
         <Main>
             <section className="vagas-section">
                 <h1>Criar Vagas</h1>
-                <CriarVagaForm empresas={empresas} profissoes={profissoes} headhunters={headhunters} userLogged={userLogged} />
+                <CriarVagaForm empresas={empresas} profissoes={profissoes} admins={admins} userLogged={userLogged} />
             </section>
         </Main>
     )

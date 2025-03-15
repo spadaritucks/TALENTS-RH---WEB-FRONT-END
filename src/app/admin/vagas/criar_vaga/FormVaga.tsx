@@ -8,6 +8,7 @@ import TagsInput from "@/components/tagsinput/component";
 import TextArea from "@/components/textarea/component";
 import { Spinner } from "@/components/ui/spinner";
 import useNumericInput from "@/hooks/NumericInput";
+import { Admins } from "@/models/admins";
 import { Cargos } from "@/models/cargos";
 import { Empresas } from "@/models/empresas";
 import { Headhunters } from "@/models/headhunter";
@@ -19,12 +20,12 @@ import { useActionState, useEffect, useState } from "react";
 interface CriarVagaProps {
     empresas: Empresas[]
     profissoes: Cargos[]
-    headhunters : Headhunters[]
+    admins: Admins[]
     userLogged: Usuarios
 }
 
 
-export default function CriarVagaForm({ empresas, profissoes, userLogged }: CriarVagaProps) {
+export default function CriarVagaForm({ empresas, profissoes, userLogged, admins }: CriarVagaProps) {
 
 
     const [isSalario, setIsSalario] = useState<boolean>(false);
@@ -32,7 +33,7 @@ export default function CriarVagaForm({ empresas, profissoes, userLogged }: Cria
     const [formErrors, setFormErrors] = useState<{ [key: string]: string[] }>({}) //Objeto responsavel por validação do formulario
     const [data, handleCriarVaga, isPending] = useActionState(createVagasAction, null)
     const { showModal } = useModal()
-    
+    const adminLogged = admins.find(admin => admin.user_id == userLogged.id)
 
     //Função onChange para Exibição Condicional do Input do Valor do Salario
     const handleInputSalario = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -51,9 +52,11 @@ export default function CriarVagaForm({ empresas, profissoes, userLogged }: Cria
             if (data.error) {
                 if (typeof data.error === 'object') {
                     setFormErrors(data.error)
+                    return
                 } else {
                     showModal("Erro", data.error)
                     data.error = null
+                    return
                 }
 
             }
@@ -70,7 +73,7 @@ export default function CriarVagaForm({ empresas, profissoes, userLogged }: Cria
 
     return (
         <form className="criar-vaga-form" action={handleCriarVaga}>
-            
+
             <div>
                 <Select label="Selecione a Profissão" defaultValue="selecione" name="profissao_id">
                     <option value="selecione">Selecione</option>
@@ -152,8 +155,8 @@ export default function CriarVagaForm({ empresas, profissoes, userLogged }: Cria
                 <Input label="Data de Fechamento" type="date" name="data_final" />
                 {formErrors ? formErrors.data_final?.map((error, index) => <p className="text-red-400 text-sm" key={index}>{error}</p>) : null}
             </div>
-            <Input type="hidden" name="headhunter_id" value={userLogged?.id.toString()} />
-            
+            <Input type="hidden" name="admin_id" value={adminLogged?.id.toString()} />
+
             <div style={{ gridColumn: '1/-1' }}>
                 <Button ButtonName="Criar Vaga" type="submit" variant="primary" />
                 {isPending && <Spinner size="lg" className="bg-black dark:bg-white" />}

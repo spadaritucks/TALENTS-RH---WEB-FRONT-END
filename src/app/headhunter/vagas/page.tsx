@@ -18,6 +18,8 @@ import { Vagas } from "@/models/vagas"
 import Link from "next/link"
 import getEstadoAction from "@/server actions/estado.action"
 import { Estados } from "@/models/estados"
+import { getAdminsAction } from "@/server actions/admins.action"
+import { Admins } from "@/models/admins"
 export const dynamic = "force-dynamic";
 
 
@@ -30,9 +32,9 @@ export default async function PainelVagas() {
     const usersEmpresas: Usuarios[] = empresasAction.users
     const empresas: Empresas[] = empresasAction.empresas
 
-    const candidatosAction = await getCandidatosAction();
-    const usersCandidatos: Usuarios[] = candidatosAction.users
-    const candidatos: Candidatos[] = candidatosAction.candidatos
+    const adminAction = await getAdminsAction()
+    const admins : Admins[] = adminAction.admins
+    const userAdmins : Usuarios[] = adminAction.users
 
     const processos: Processos[] = await getProcessosAction();
     const estados : Estados[] = await getEstadoAction()
@@ -69,10 +71,10 @@ export default async function PainelVagas() {
                     headhunters={headhunters}
                     empresas={empresas}
                     processos={processos}
-                    candidatos={candidatos}
-                    usersCandidatos={usersCandidatos}
                     usersEmpresas={usersEmpresas}
                     usersHeadhunters={usersHeadhunters}
+                    admins={admins}
+                    userAdmins={userAdmins}
                     estados={estados}
                     userLogged={userLogged}
                 />

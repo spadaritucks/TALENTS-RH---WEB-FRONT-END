@@ -16,6 +16,7 @@ import { Link } from "lucide-react";
 interface HeadhuntersListProps {
     headhunters: Headhunters[]
     userHeadhunters: Usuarios[]
+    
 
 }
 
@@ -44,8 +45,8 @@ export default function HeadhuntersList({
                             <TableRow key={headhunter.id}>
                                 <TableCell>{headhunter.id}</TableCell>
                                 <TableCell>{user?.nome} {user?.sobrenome}</TableCell>
-                                <TableCell><Link href={`https://wa.me/${user?.celular_1} `}><Button ButtonName="Telefone" type="button" variant="primary" /></Link></TableCell>
-                                <TableCell><Link href={`${process.env.API_URL}/storage/${headhunter.cv}`} >Baixar o Curriculo</Link></TableCell>
+                                <TableCell><a href={`https://wa.me/${user?.celular_1} `}><Button ButtonName="Telefone" type="button" variant="primary" /></a></TableCell>
+                                <TableCell><a href={`${process.env.API_URL}/storage/${headhunter.cv}`} ><Button ButtonName="Baixar Curriculo" type="button" variant="secondary" /></a></TableCell>
                                 <TableCell className="table-cell"><div className="table-actions">
                                     <Button ButtonName="Dados Pessoais" type="button" variant="primary" onClick={() => {
                                         showModal('Dados Pessoais', <div className="modal_dados">

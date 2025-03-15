@@ -18,6 +18,8 @@ import { Vagas } from "@/models/vagas"
 import Link from "next/link"
 import getEstadoAction from "@/server actions/estado.action"
 import { Estados } from "@/models/estados"
+import { getAdminsAction } from "@/server actions/admins.action"
+import { Admins } from "@/models/admins"
 export const dynamic = "force-dynamic";
 
 
@@ -33,6 +35,10 @@ export default async function PainelVagas() {
     const candidatosAction = await getCandidatosAction();
     const usersCandidatos: Usuarios[] = candidatosAction.users
     const candidatos: Candidatos[] = candidatosAction.candidatos
+
+    const adminAction = await getAdminsAction()
+    const admins : Admins[] = adminAction.admins
+    const userAdmins : Usuarios[] = adminAction.users
 
     const processos: Processos[] = await getProcessosAction();
     const estados : Estados[] = await getEstadoAction()
@@ -63,7 +69,7 @@ export default async function PainelVagas() {
 
             <section className="vagas-area">
                 <h1>Vagas de Emprego</h1>
-                <Link href='/headhunter/vagas/criar_vaga'><Button ButtonName="Criar Vaga" type="button" variant="primary" /></Link>
+                <Link href='/admin/vagas/criar_vaga'><Button ButtonName="Criar Vaga" type="button" variant="primary" /></Link>
                 <VagasList
                     vagas={vagas}
                     headhunters={headhunters}
@@ -74,6 +80,8 @@ export default async function PainelVagas() {
                     usersEmpresas={usersEmpresas}
                     usersHeadhunters={usersHeadhunters}
                     estados={estados}
+                    admins={admins}
+                    userAdmins={userAdmins}
                     userLogged={userLogged}
                 />
             </section>

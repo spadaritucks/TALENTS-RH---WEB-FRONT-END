@@ -7,6 +7,7 @@ import { useModal } from "@/components/modal/context"
 import Select from "@/components/select/component"
 import { Spinner } from "@/components/ui/spinner"
 import useNumericInput from "@/hooks/NumericInput"
+import { Admins } from "@/models/admins"
 import { Candidatos } from "@/models/candidatos"
 import { Cidades } from "@/models/cidades"
 import { Empresas } from "@/models/empresas"
@@ -25,31 +26,32 @@ import { useActionState, useState } from "react"
 interface VagasListProps {
     vagas: Vagas[]
     processos: Processos[]
-    candidatos: Candidatos[]
     empresas: Empresas[]
     headhunters: Headhunters[]
-    usersCandidatos: Usuarios[];
     usersEmpresas: Usuarios[];
     usersHeadhunters: Usuarios[];
     userLogged: Usuarios
     estados: Estados[]
+    admins: Admins[]
+    userAdmins: Usuarios[]
+    
 }
 
 export default function VagasList({
-    processos,
-    candidatos,
     empresas,
     headhunters,
     usersEmpresas,
     usersHeadhunters,
-    userLogged,
-    estados
+    estados,
+    admins,
+    userAdmins
 
 }: VagasListProps) {
     const { showModal } = useModal()
     const [dataVagas, HandleFiltragemAction, isPendingVagas] = useActionState(getVagaByQueryStringAction, null)
     const vagasFiltradas: Vagas[] = dataVagas
     const [cidades, setCidades] = useState<Cidades[] | []>([]);
+    
 
     const handleBuscaCidades = async (uf: string) => {
         const response = await getCidadesAction(uf)
@@ -95,7 +97,11 @@ export default function VagasList({
                 {vagasFiltradas && vagasFiltradas.length > 0 ? vagasFiltradas.map((vaga) => {
 
 
+                    //Tanto Admin, quanto Headhunters, podem ser responsaveis pela vaga 
+                    // atraves do id da tabela headhunters e admin
+                    const adminId = admins.find(admin => admin.id === vaga.admin_id)
                     const headhunterId = headhunters.find(headhunter => headhunter.id === vaga.headhunter_id)
+                    const adminUser = userAdmins.find(user => user.id === adminId?.user_id)
                     const headhunterUser = usersHeadhunters.find(user => user.id === headhunterId?.user_id)
 
                     //Filtração para o Endereço da Empresa da vaga
@@ -106,7 +112,8 @@ export default function VagasList({
                         <div key={vaga.id} className="vaga-card">
                             <h2>{vaga.titulo}</h2>
                             <h3>{vagaEmpresa?.nome_fantasia}</h3>
-                            <p><strong>Responsavel: </strong>{headhunterUser?.nome} {headhunterUser?.sobrenome}</p>
+                            {headhunterId ? <p><strong>Responsavel: </strong>{headhunterUser?.nome} {headhunterUser?.sobrenome}</p> : null}
+                            {adminId ? <p><strong>Responsavel: </strong> {adminUser?.nome} {adminUser?.sobrenome}</p> : null}
                             <p><strong>Região: </strong>{userEmpresa?.cidade} - {userEmpresa?.estado}</p>
                             <p><strong>Nivel :</strong> {vaga.nivel_senioridade}</p>
                             {vaga.tipo_salario === "valor" ? <p><strong>Salario: </strong> De R${vaga.salario_minimo} até R${vaga.salario_maximo}</p> : <p><strong>Salario: </strong>{vaga.tipo_salario}</p>}

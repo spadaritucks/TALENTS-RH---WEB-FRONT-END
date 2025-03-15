@@ -15,7 +15,8 @@ export default async function HeadHuntersPanel() {
     const headhunterAction = await getHeadhuntersAction()
     const headhunters : Headhunters[] = headhunterAction.headhunters
     const userHeadhunters : Usuarios[] = headhunterAction.users
-
+    
+    
     return (
         <Main>
             <section className="headhunter-area">
