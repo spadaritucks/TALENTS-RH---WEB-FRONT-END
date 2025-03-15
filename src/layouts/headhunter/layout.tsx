@@ -16,38 +16,38 @@ export const dynamic = "force-dynamic";
 
 export default async function Main({ children }: { children: ReactNode }) {
 
-    const cookiesStore = await cookies();
-    const requestCookie = cookiesStore.get('user')?.value
-    let userLogged = null;
-  
-    try {
-      if (requestCookie) {
-        userLogged = JSON.parse(requestCookie);
-      }
-    } catch (error) {
-      console.error("Erro ao parsear cookie 'user':", error);
+  const cookiesStore = await cookies();
+  const requestCookie = cookiesStore.get('user')?.value
+  let userLogged = null;
+
+  try {
+    if (requestCookie) {
+      userLogged = JSON.parse(requestCookie);
     }
+  } catch (error) {
+    console.error("Erro ao parsear cookie 'user':", error);
+  }
+  const foto_url = `${process.env.API_URL}/storage/${userLogged.foto_usuario}`
 
+  return (
+    <>
+      <NavBar>
+        <div className="links-content">
+          <Link href='/headhunter/vagas'><Image className="link-icon" src={BussinesBag} alt="" />Vagas</Link>
+          <Link href='/headhunter/perfil'><Image className="link-icon" src={BussinesGuy} alt="" />Perfil</Link>
+        </div>
 
-    return (
-        <>
-            <NavBar>
-                <div className="links-content">
-                    <Link href='/headhunter/vagas'><Image className="link-icon" src={BussinesBag} alt="" />Vagas</Link>
-                    <Link href='/headhunter/perfil'><Image className="link-icon" src={BussinesGuy} alt="" />Perfil</Link>
-                </div>
+        <div className="user-content">
+          <UserAvatarPanel userLogged={userLogged} foto_usuario={foto_url} />
+          <Button type="button" variant="primary" ButtonName="Logout" onClick={LogoutAction} />
+        </div>
 
-                <div className="user-content">
-                    <UserAvatarPanel userLogged={userLogged} />
-                    <Button type="button" variant="primary" ButtonName="Logout" onClick={LogoutAction} />
-                </div>
+      </NavBar>
+      {children}
 
-            </NavBar>
-            {children}
+    </>
 
-        </>
-
-    )
+  )
 }
 
 

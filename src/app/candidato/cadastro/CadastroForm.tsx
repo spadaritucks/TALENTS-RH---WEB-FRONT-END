@@ -11,7 +11,6 @@ import { consultores } from "@/json/consultores"
 import { Cargos } from "@/models/cargos"
 import { createCandidatoAction } from "@/server actions/candidato.action"
 import getCepAction from "@/server actions/cep.action"
-import { createEmpresaAction } from "@/server actions/empresas.action"
 import { useActionState, useState, useEffect } from "react"
 
 interface FormProps {
@@ -35,18 +34,22 @@ export function CadastroForm({ cargos }: FormProps) {
 
 
 
-    // Atualiza os erros quando há resposta da API
-    useEffect(() => {
+      // Atualiza os erros quando há resposta da API
+      useEffect(() => {
         if (data) {
             if (data.error) {
                 if (typeof data.error === "object") {
                     setFormErrors(data.error);
+                    return
                 } else {
 
                     showModal("Erro", data.error)
                     data.error = null
+                    return
                 }
             }
+            showModal("Sucesso", data.message)
+            
         }
     }, [data]); // Dependência para executar o efeito quando 'data' mudar
 
@@ -66,6 +69,7 @@ export function CadastroForm({ cargos }: FormProps) {
 
                 })
         }
+
     }
 
 

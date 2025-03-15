@@ -16,34 +16,36 @@ export const dynamic = "force-dynamic";
 
 export default async function Main({ children }: { children: ReactNode }) {
 
-    const cookiesStore = await cookies();
-    const requestCookie = cookiesStore.get('user')?.value
-    let userLogged = null;
-  
-    try {
-      if (requestCookie) {
-        userLogged = JSON.parse(requestCookie);
-      }
-    } catch (error) {
-      console.error("Erro ao parsear cookie 'user':", error);
+  const cookiesStore = await cookies();
+  const requestCookie = cookiesStore.get('user')?.value
+  let userLogged = null;
+
+  try {
+    if (requestCookie) {
+      userLogged = JSON.parse(requestCookie);
     }
+  } catch (error) {
+    console.error("Erro ao parsear cookie 'user':", error);
+  }
 
-    return (
-        <>
+  const foto_url = `${process.env.API_URL}/storage/${userLogged.foto_usuario}`
 
-            <NavBar>
-                <div className="links-content">
-                    <Link href='/empresa/painel'><Image className="link-icon" src={BussinesBag} alt="" />Chamado</Link>
-                    
-                </div>
-                
-                <div className="user-content">
-                    <UserAvatarPanel userLogged={userLogged} />
-                    <Button type="button" variant="primary" ButtonName="Logout" onClick={LogoutAction} />
-                </div>
+  return (
+    <>
 
-            </NavBar>
-            {children}
-        </>
-    )
+      <NavBar>
+        <div className="links-content">
+          <Link href='/empresa/painel'><Image className="link-icon" src={BussinesBag} alt="" />Chamado</Link>
+
+        </div>
+
+        <div className="user-content">
+          <UserAvatarPanel userLogged={userLogged} foto_usuario={foto_url} />
+          <Button type="button" variant="primary" ButtonName="Logout" onClick={LogoutAction} />
+        </div>
+
+      </NavBar>
+      {children}
+    </>
+  )
 }

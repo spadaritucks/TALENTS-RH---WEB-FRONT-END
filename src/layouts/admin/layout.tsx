@@ -29,7 +29,7 @@ export default async function Main({ children }: { children: ReactNode }) {
     } catch (error) {
         console.error("Erro ao parsear cookie 'user':", error);
     }
-
+    const foto_url = `${process.env.API_URL}/storage/${userLogged.foto_usuario}`
 
 
     return (
@@ -44,7 +44,7 @@ export default async function Main({ children }: { children: ReactNode }) {
                 </div>
 
                 <div className="user-content">
-                    <UserAvatarPanel userLogged={userLogged} />
+                    <UserAvatarPanel userLogged={userLogged} foto_usuario={foto_url} />
                     <Button type="button" variant="primary" ButtonName="Logout" onClick={LogoutAction} />
                 </div>
 

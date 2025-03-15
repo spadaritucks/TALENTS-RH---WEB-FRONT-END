@@ -30,9 +30,10 @@
     .user-avatar-name {
         display: flex;
         align-items: center;
-        gap: 5px;
+        gap: 10px;
         transition: 0.3s ease-in-out;
         cursor: pointer;
+        outline: none;
     }
 
     .user-avatar-name:hover {

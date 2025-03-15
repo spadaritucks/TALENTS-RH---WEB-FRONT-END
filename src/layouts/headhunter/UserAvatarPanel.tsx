@@ -15,20 +15,21 @@ import { Link } from "lucide-react"
 
 interface UserAvatarPanelProps {
     userLogged: Usuarios
+    foto_usuario: string
 }
 
-export default function UserAvatarPanel({ userLogged }: UserAvatarPanelProps) {
+export default function UserAvatarPanel({ userLogged, foto_usuario }: UserAvatarPanelProps) {
+
+    
 
     return (
-        <div className="user-avatar-name">
-
-
+        <div>
             <DropdownMenu>
 
                 <DropdownMenuTrigger>
                     <div className="user-avatar-name">
                         <Avatar>
-                            <AvatarImage src={`${process.env.API_URL}/storage/${userLogged.foto_usuario}`} />
+                            <img src={foto_usuario} alt=""/>
                             <AvatarFallback>CN</AvatarFallback>
                         </Avatar>
                         <h3>{userLogged.nome}</h3>

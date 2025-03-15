@@ -33,12 +33,16 @@ export function CadastroForm() {
             if (data.error) {
                 if (typeof data.error === "object") {
                     setFormErrors(data.error);
+                    return
                 } else {
 
                     showModal("Erro", data.error)
                     data.error = null
+                    return
                 }
             }
+            showModal("Sucesso", data.message)
+            
         }
     }, [data]); // Dependência para executar o efeito quando 'data' mudar
 
@@ -139,6 +143,14 @@ export function CadastroForm() {
             <div>
                 <Input label='Número de Funcionários' type='text' name='numero_funcionarios' placeholder='Número de Funcionários' />
                 {formErrors ? formErrors.numero_funcionarios?.map((error, index) => <p className="text-red-400 text-sm" key={index}>{error}</p>) : null}
+            </div>
+            <div>
+                <Input label="Senha para Acesso ao Painel" type='password' name='password' />
+                {formErrors ? formErrors.password?.map((error, index) => <p className="text-red-400 text-sm" key={index}>{error}</p>) : null}
+            </div>
+            <div>
+                <Input label="Confirme sua Senha" type='password' name='password_confirm' />
+                {formErrors ? formErrors.error?.map((error, index) => <p className="text-red-400 text-sm" key={index}>{error}</p>) : null}
             </div>
             <Input type="hidden" name="tipo_usuario" value="empresa" readOnly />
             <Input type="hidden" name="latitude" value={form.latitude} readOnly />

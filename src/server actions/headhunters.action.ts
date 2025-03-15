@@ -28,7 +28,7 @@ export async function createHeadhunterAction(_:unknown,formData: FormData) {
         return data
     }
     formData.delete('password_confirm')
-    console.log(formData)
+    
     const data = await createHeadhunters(formData);
 
     if(!data.success){

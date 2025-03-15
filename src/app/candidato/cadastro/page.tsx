@@ -11,6 +11,7 @@ export default async function Cadastro() {
 
   const cargos : Cargos[] = await getProfissoesAction()
   
+  
 
   return (
     <section className='cadastro-area'>
