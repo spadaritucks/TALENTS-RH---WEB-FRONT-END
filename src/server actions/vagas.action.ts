@@ -45,13 +45,18 @@ export async function createVagasAction(_: unknown, formData: FormData) {
 }
 
 // Função para atualizar uma vaga existente
-export async function updateVagasAction(id: number, formData: FormData) {
+export async function updateVagasAction(_: unknown, formData: FormData) {
+    const idString = formData.get('id')?.toString()
+    const id = parseInt(idString || '')
+    formData.append('_method', 'PATCH');
     const data = await updateVagas(id, formData);
     return data; // Retorna o resultado da atualização
 }
 
 // Função para deletar uma vaga
-export async function deleteVagasAction(id: number) {
+export async function deleteVagasAction(_: unknown, formData: FormData) {
+    const idString = formData.get('id')?.toString()
+    const id = parseInt(idString || '')
     const data = await deleteVagas(id);
     return data; // Retorna o resultado da deleção
 }

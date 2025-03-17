@@ -39,13 +39,18 @@ export async function createHeadhunterAction(_:unknown,formData: FormData) {
 }
 
 // Função para atualizar um headhunter existente
-export async function updateHeadhunterAction(id: number, formData: FormData) {
+export async function updateHeadhunterAction(_: unknown, formData: FormData) {
+    const idString = formData.get('id')?.toString()
+    const id = parseInt(idString || '')
+    formData.append('_method', 'PATCH');
     const data = await updateHeadhunters(id, formData);
     return data; // Retorna o resultado da atualização
 }
 
 // Função para deletar um headhunter
-export async function deleteHeadhunterAction(id: number) {
+export async function deleteHeadhunterAction(_: unknown, formData: FormData) {
+    const idString = formData.get('id')?.toString()
+    const id = parseInt(idString || '')
     const data = await deleteHeadhunters(id);
     return data; // Retorna o resultado da deleção
 }

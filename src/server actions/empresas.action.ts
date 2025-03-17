@@ -50,13 +50,18 @@ export async function createEmpresaAction(_:unknown,formData: FormData) {
 }
 
 // Função para atualizar uma empresa existente
-export async function updateEmpresaAction(id: number, formData: FormData) {
+export async function updateEmpresaAction(_: unknown, formData: FormData) {
+    const idString = formData.get('id')?.toString()
+    const id = parseInt(idString || '')
+    formData.append('_method', 'PATCH');
     const data = await updateEmpresas(id, formData);
     return data; // Retorna o resultado da atualização
 }
 
 // Função para deletar uma empresa
-export async function deleteEmpresaAction(id: number) {
+export async function deleteEmpresaAction(_: unknown, formData: FormData) {
+    const idString = formData.get('id')?.toString()
+    const id = parseInt(idString || '')
     const data = await deleteEmpresas(id);
     return data; // Retorna o resultado da deleção
 }

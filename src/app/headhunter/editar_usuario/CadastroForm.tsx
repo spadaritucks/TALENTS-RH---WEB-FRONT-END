@@ -71,12 +71,16 @@ export function CadastroForm({ cargos, headhunters, userHeadhunters }: FormProps
             if (data.error) {
                 if (typeof data.error === "object") {
                     setFormErrors(data.error);
+                    return
                 } else {
 
                     showModal("Erro", data.error)
                     data.error = null
+                    return
                 }
+              
             }
+            showModal("Sucesso", data.message)
         }
     }, [data]); // Dependência para executar o efeito quando 'data' mudar
 
