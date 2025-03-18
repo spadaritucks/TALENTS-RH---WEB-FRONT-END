@@ -16,6 +16,11 @@ export async function getChamadoByIdAction(id: number) {
 // Função para criar um novo chamado
 export async function createChamadosAction(_: unknown, formData: FormData) {
     const data = await createChamados(formData);
+
+    if (!data.success) {
+        return { error: data.message };
+    }
+    
     return data; // Retorna o resultado da criação
 }
 
@@ -24,6 +29,7 @@ export async function updateChamadosAction(_: unknown, formData: FormData) {
     const idString = formData.get('id')?.toString()
     const id = parseInt(idString || '')
     formData.append('_method', 'PATCH');
+    console.log(formData)
     const data = await updateChamados(id, formData);
     return data; // Retorna o resultado da atualização
 }

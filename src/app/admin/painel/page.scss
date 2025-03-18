@@ -26,6 +26,8 @@
         justify-content: center;
         gap: 20px;
         margin-top: 30px;
+        max-width: 90%;
+        overflow: auto;
 
         h2 {
             font-weight: bold;

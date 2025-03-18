@@ -36,6 +36,7 @@ export default async function Main({ children }: { children: ReactNode }) {
         <>
             <NavBar>
                 <div className="links-content">
+                    <Link href='/admin/painel'><Image className="link-icon" src={BussinesBag} alt="" />Dashboard</Link>
                     <Link href='/admin/headhunters'><Image className="link-icon" src={BussinesGuy} alt="" />Headhunters</Link>
                     <Link href='/admin/vagas'><Image className="link-icon" src={BussinesBag} alt="" />Vagas</Link>
                     <Link href='/admin/cargos'><Image className="link-icon" src={cargo} alt="" />Cargos</Link>

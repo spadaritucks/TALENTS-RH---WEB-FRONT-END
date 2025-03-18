@@ -9,6 +9,7 @@ import { cookies } from "next/headers";
 import Atualizacoes from "./Atualizacoes";
 export const dynamic = "force-dynamic";
 
+
 export default async function ChamadosPage() {
    
    
@@ -28,12 +29,12 @@ export default async function ChamadosPage() {
     }
 
     
-    
+     const apiStorage = `${process.env.API_URL}/storage`
 
     return (
         <Main>
             <section className="acompamhamento-div">
-               <Atualizacoes atualizacoes={atualizacoes} usuarios={usuarios} />
+               <Atualizacoes atualizacoes={atualizacoes} usuarios={usuarios} apiStorage = {apiStorage} userLogged={userLogged} />
             </section>
         </Main>
     )

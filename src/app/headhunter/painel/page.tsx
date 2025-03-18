@@ -33,6 +33,10 @@ export default async function Painel() {
     const usersCandidatos: Usuarios[] = candidatosAction.users
     const candidatos: Candidatos[] = candidatosAction.candidatos
 
+    const headhunterAction = await getHeadhuntersAction()
+    const headhunters : Headhunters[] = headhunterAction.headhunters
+    const userHeadhunters : Usuarios[] = headhunterAction.users
+
     const profissoes: Cargos[] = await getProfissoesAction()
     const chamados: Chamados[] = await getChamadosAction()
 
@@ -61,7 +65,7 @@ export default async function Painel() {
 
             <section className="headhunter-area" id="headhunter-area">
                 <h1>Painel do Headhunter</h1>
-                <ChamadoTable profissoes={profissoes} chamados={chamados} empresas={empresas} />
+                <ChamadoTable profissoes={profissoes} chamados={chamados} empresas={empresas} headhunters={headhunters} userLogged={userLogged} />
 
 
             </section>

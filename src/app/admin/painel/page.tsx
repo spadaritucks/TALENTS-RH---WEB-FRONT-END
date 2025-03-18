@@ -1,7 +1,5 @@
 import Main from '@/layouts/admin/layout'
 import './page.scss'
-
-
 import { getCandidatosAction } from '@/server actions/candidato.action'
 import { getEmpresasAction } from '@/server actions/empresas.action'
 import { getHeadhuntersAction } from '@/server actions/headhunters.action'

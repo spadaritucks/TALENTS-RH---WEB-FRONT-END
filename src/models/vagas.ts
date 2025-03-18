@@ -1,3 +1,9 @@
+export enum VagaStatus {
+    Ativa = "Ativa",
+    Suspensa = "Suspensa",
+    Cancelada = "Cancelada",
+}
+
 export type Vagas = {
     id: number; // Adicione o campo id se necessário
     headhunter_id: number;
@@ -12,6 +18,6 @@ export type Vagas = {
     salario_minimo: number;
     salario_maximo: number;
     data_final: string; // Pode ser ajustado para Date se necessário
-    status: string;
+    status: VagaStatus;
     created_at: string;
 }

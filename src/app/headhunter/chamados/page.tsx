@@ -19,6 +19,7 @@ export default async function ChamadosPage() {
     const requestCookie = cookiesStore.get('user')?.value
     let userLogged = null;
 
+
     try {
         if (requestCookie) {
             userLogged = JSON.parse(requestCookie);
@@ -27,13 +28,14 @@ export default async function ChamadosPage() {
         console.error("Erro ao parsear cookie 'user':", error);
     }
 
+    const apiStorage = `${process.env.API_URL}/storage`
     
     
 
     return (
         <Main>
             <section className="acompamhamento-div">
-               <Atualizacoes atualizacoes={atualizacoes} usuarios={usuarios} />
+               <Atualizacoes atualizacoes={atualizacoes} usuarios={usuarios} apiStorage={apiStorage} userLogged={userLogged}/>
             </section>
         </Main>
     )

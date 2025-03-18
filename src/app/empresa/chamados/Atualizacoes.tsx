@@ -18,11 +18,12 @@ import { useEffect, useState } from "react"
 interface AtualizacoesProps {
     usuarios: Usuarios[]
     atualizacoes: ChamadosAtualizacoes[]
- 
+    userLogged : Usuarios
+    apiStorage: string 
 }
 
 
-export default function Atualizacoes({ usuarios, atualizacoes }: AtualizacoesProps) {
+export default function Atualizacoes({ usuarios, atualizacoes, apiStorage, userLogged }: AtualizacoesProps) {
 
     
     const [id, setId] = useState<number | null>(null)
@@ -54,11 +55,11 @@ export default function Atualizacoes({ usuarios, atualizacoes }: AtualizacoesPro
                 return (
                     <div className="registro" key={atualizacao.id}>
                         <h1>{atualizacao.titulo}</h1>
-                        <p>Data: {new Date(atualizacao.created_at).toLocaleDateString('pt-BR')}</p>
-                        <p>Responsavel: {userChamado?.nome}</p>
-                        <p>Descrição: {atualizacao.atualizacoes} </p>
-                        {atualizacao.anexo ? <img src={`${process.env.API_URL}/storage/${atualizacao.anexo}`} width={400} height={200} alt="" className="chamado-anexo" /> : ''}
-                        {atualizacao.anexo ? <Link href={`${process.env.API_URL}/storage/${atualizacao.anexo}`}>Clique para ver a Imagem</Link> : ''}
+                        <p><strong>Data:</strong> {new Date(atualizacao.created_at).toLocaleDateString('pt-BR')}</p>
+                        <p><strong>Responsavel:</strong> {userChamado?.nome} {userChamado?.sobrenome} - ({userChamado?.tipo_usuario})</p>
+                        <p><strong>Descrição:</strong> {atualizacao.atualizacoes} </p>
+                        {atualizacao.anexo ? <a href={`${apiStorage}/${atualizacao.anexo}`}>
+                        <img src={`${apiStorage}/${atualizacao.anexo}`} alt="" className="chamado-anexo" /></a> : ''}
                     
                     </div>
                 )

@@ -2,6 +2,7 @@
 import Button from "@/components/button/component";
 import Input from "@/components/input/component";
 import { useModal } from "@/components/modal/context";
+import TextArea from "@/components/textarea/component";
 import {
     Pagination,
     PaginationContent,
@@ -24,18 +25,20 @@ import { useActionState, useEffect, useState } from "react"
 interface AtualizacoesProps {
     usuarios: Usuarios[]
     atualizacoes: ChamadosAtualizacoes[]
- 
+    apiStorage: string
+    userLogged: Usuarios
+
 }
 
 
-export default function Atualizacoes({ usuarios, atualizacoes }: AtualizacoesProps) {
+export default function Atualizacoes({ usuarios, atualizacoes, apiStorage, userLogged }: AtualizacoesProps) {
 
-    
+
     const [id, setId] = useState<number | null>(null)
-   
+
     const { showModal } = useModal()
     const [dataEdit, handleEditAtualizacao, isPendingEdit] = useActionState(updateAtualizacoesAction, null)
-    const [dataDelete, handleDeleteAtualizacao, isPendingDelete] = useActionState(deleteAtualizacoesAction,null)
+    const [dataDelete, handleDeleteAtualizacao, isPendingDelete] = useActionState(deleteAtualizacoesAction, null)
     const router = useRouter()
 
     const [currentPage, setCurrentPage] = useState(1);
@@ -52,7 +55,7 @@ export default function Atualizacoes({ usuarios, atualizacoes }: AtualizacoesPro
             const searchParams = new URLSearchParams(window.location.search)
             const idString = searchParams.get('id')
             setId(idString ? parseInt(idString) : null)
-            console.log(idString)
+
         }
     }, [])
 
@@ -64,12 +67,12 @@ export default function Atualizacoes({ usuarios, atualizacoes }: AtualizacoesPro
             }
             showModal("Sucesso", dataEdit.message)
             router.refresh()
-            
+
 
         }
     }, [dataEdit]); // Dependência para executar o efeito quando 'data' mudar
 
-    
+
     useEffect(() => {
         if (dataDelete) {
             if (dataDelete.error) {
@@ -78,51 +81,56 @@ export default function Atualizacoes({ usuarios, atualizacoes }: AtualizacoesPro
             }
             showModal("Sucesso", dataDelete.message)
             router.refresh()
-            
+
 
         }
     }, [dataDelete]); // Dependência para executar o efeito quando 'data' mudar
 
 
 
-    
-    
+
+
 
 
     return (
         <>
             {paginatedAtualizacoes && paginatedAtualizacoes.length > 0 ? paginatedAtualizacoes.map(atualizacao => {
 
-                const userChamado = usuarios.find(user => user.id === atualizacao.user_id);
+                const userChamado = usuarios.find(user => user.id == atualizacao.user_id);
+
+
+
+
+
 
                 return (
                     <div className="registro" key={atualizacao.id}>
                         <h1>{atualizacao.titulo}</h1>
-                        <p>Data: {new Date(atualizacao.created_at).toLocaleDateString('pt-BR')}</p>
-                        <p>Responsavel: {userChamado?.nome}</p>
-                        <p>Descrição: {atualizacao.atualizacoes} </p>
-                        {atualizacao.anexo ? <img src={`${process.env.API_URL}/storage/${atualizacao.anexo}`} width={400} height={200} alt="" className="chamado-anexo" /> : ''}
-                        {atualizacao.anexo ? <Link href={`${process.env.API_URL}/storage/${atualizacao.anexo}`}>Clique para ver a Imagem</Link> : ''}
-                        <div className="acompanhamento-buttons">
+                        <p><strong>Data:</strong> {new Date(atualizacao.created_at).toLocaleDateString('pt-BR')}</p>
+                        <p><strong>Responsavel:</strong> {userChamado?.nome} {userChamado?.sobrenome} - ({userChamado?.tipo_usuario})</p>
+                        <p><strong>Descrição:</strong> {atualizacao.atualizacoes} </p>
+                        {atualizacao.anexo ? <a href={`${apiStorage}/${atualizacao.anexo}`}>
+                            <img src={`${apiStorage}/${atualizacao.anexo}`} alt="" className="chamado-anexo" /></a> : ''}
+                        {atualizacao.user_id == userLogged.id ? <div className="acompanhamento-buttons">
                             <Button ButtonName="Editar" type="button" variant="primary" onClick={() => {
                                 {
                                     showModal('Editar Atualização',
                                         <form className='chamado-form' action={handleEditAtualizacao}>
                                             <Input type="hidden" name="id" value={atualizacao.id.toString()} />
-                                            <Input label='Titulo' type='text' name='titulo' />
-                                            <Input label='Descrição' type='text' name='atualizacoes' />
+                                            <Input label='Titulo' type='text' name='titulo' defaultValue={atualizacao.titulo} />
+                                            <TextArea label='Descrição' cols={40} rows={10} name='atualizacoes' defaultValue={atualizacao.atualizacoes} />
                                             <Input label='Anexo' type='file' name='anexo' />
                                             <Button ButtonName='Enviar' type='submit' variant='primary' />
                                         </form>)
                                 }
                             }} />
                             <form action={handleDeleteAtualizacao}>
-                                <Input type="hidden" name="id" value={atualizacao.id.toString()} /> 
+                                <Input type="hidden" name="id" value={atualizacao.id.toString()} />
                                 <Button ButtonName="Excluir" type="submit" variant="secondary" />
                             </form>
                             {isPendingDelete ? <Spinner size="lg" className="bg-black dark:bg-white" /> : null}
-                      
-                        </div>
+
+                        </div> : null}
                     </div>
                 )
             }) : <p className="text-center text-2xl">Nenhum dado encontrado</p>}
@@ -137,7 +145,7 @@ export default function Atualizacoes({ usuarios, atualizacoes }: AtualizacoesPro
                         <PaginationLink onClick={() => handlePageChange(Math.ceil(atualizacaoChamado.length / itemsPerPage))}>{Math.ceil(atualizacaoChamado.length / itemsPerPage)}</PaginationLink>
                     </PaginationItem>
                 </PaginationContent>
-                <PaginationNext onClick={() => handlePageChange(currentPage + 1)}  />
+                <PaginationNext onClick={() => handlePageChange(currentPage + 1)} />
             </Pagination>
 
 
