@@ -5,16 +5,17 @@
     align-items: center;
     justify-content: center;
     gap: 20px;
-    margin: 10px;
+   
+
     
     a {
         display: flex;
         align-items: center;
-        margin: 5px;
+        margin: 10px;
 
         .link-icon {
             width: 30px;
-            margin-right: 7px;
+            margin-right: 5px;
         }
     }
 

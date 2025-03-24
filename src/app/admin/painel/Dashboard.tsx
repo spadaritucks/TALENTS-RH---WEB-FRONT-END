@@ -101,7 +101,7 @@ export default function Dashboard({
                 <DashboardTable
                     title="N° de Chamados Atribuidos por Headhunter"
                     tableHeads={['Nome', 'Chamados Atribuidos', 'Em Andamento', 'Concluídos']}
-                    tableBody={headhunters.map((headhunter) => {
+                    tableBody={ headhunters && headhunters.length > 0 ? headhunters.map((headhunter) => {
                         const chamadoAtribuidos = chamados.filter(chamado => chamado.headhunter_id == headhunter.id)
                         const chamadosEmAndamento = chamadoAtribuidos.filter(chamado => chamado.status == ChamadoStatus.Andamento)
                         const chamadosConcluidos = chamadoAtribuidos.filter(chamado => chamado.status == ChamadoStatus.Concluido)
@@ -114,13 +114,13 @@ export default function Dashboard({
                                 {chamadosConcluidos && chamadosConcluidos.length > 0 ? <TableCell>{chamadosConcluidos.length}</TableCell> : <TableCell>0 </TableCell>}
                             </TableRow>
                         )
-                    })}
+                    }): <TableRow><TableCell className="text-sm text-center" colSpan={7}>Nenhum dado encontrado </TableCell></TableRow>}
                 />
 
                 <DashboardTable
                     title="N° de Chamados abertos por Empresa "
                     tableHeads={['Nome', 'Chamados Atribuidos', 'Em Andamento', 'Concluídos']}
-                    tableBody={empresas.map((empresa) => {
+                    tableBody={headhunters && headhunters.length > 0 ? empresas.map((empresa) => {
                         const chamadoAbertos = chamados.filter(chamado => chamado.empresa_id == empresa.id)
                         const chamadosEmAndamento = chamadoAbertos.filter(chamado => chamado.status == ChamadoStatus.Andamento)
                         const chamadosConcluidos = chamadoAbertos.filter(chamado => chamado.status == ChamadoStatus.Concluido)
@@ -134,7 +134,7 @@ export default function Dashboard({
                                 {chamadosConcluidos && chamadosConcluidos.length > 0 ? <TableCell>{chamadosConcluidos.length}</TableCell> : <TableCell>0 </TableCell>}
                             </TableRow>
                         )
-                    })}
+                    }) : <TableRow><TableCell className="text-sm text-center" colSpan={7}>Nenhum dado encontrado </TableCell></TableRow>}
                 />
 
 
