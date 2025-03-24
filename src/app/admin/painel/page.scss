@@ -6,17 +6,23 @@
     align-items: center;
     justify-content: center;
     color: $secondary-color;
+    width: 100%;
+    
 
-    .dashboard-area{
+    .dashboard-area {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         gap: 20px;
         margin-top: 40px;
+        width: 100%;
+        padding: 0 10vw;
+
+        
     }
-    
 
     h1 {
         font-size: 30px;
+        font-weight: bold;
     }
 
     .chamado-area {
@@ -28,6 +34,8 @@
         margin-top: 30px;
         max-width: 90%;
         overflow: auto;
+        padding: 10px 20px;
+        
 
         h2 {
             font-weight: bold;
@@ -47,75 +55,15 @@
     }
 }
 
-.operations-area {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    .profissoes-area {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: flex-start;
-        color: $secondary-color;
-        border: 2px solid $primary-color;
-        width: 380px;
-        height: 380px;
-        border-radius: 8px;
-        padding: 10px;
-        gap: 10px;
-        margin: 20px;
-        overflow-y: auto;
-        h2 {
-            font-size: 28px;
-            font-weight: 500;
-        }
-
-        .profissoes-buttons {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .profissoes-list {
-            width: 95%;
-            height: 100%;
+@media (max-width: 990px) {
+    .admin-area {
+       
+        .dashboard-area {
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: flex-start;
-            gap: 10px;
-            
-
-           
-
-            
+            justify-content: center;
+            max-height: 400vh;
         }
     }
-
-}
-
-
-
-.chamado-form{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-}
-
-.consultor-form{
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    place-items: center;
-    gap: 10px;
-}
-
-.div-excluir{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
 }

@@ -8,10 +8,11 @@
     width: 80%;
     color: $secondary-color;
     padding: 0 5vw;
+    text-align: center;
     
 
     h1{
-        font-size: 55px;
+        font-size: 32px;
         font-weight: 700;
     }
 
@@ -47,9 +48,10 @@
             justify-content: flex-start;
             gap: 10px;
             width: 80%;
-            height: 450px;
+            max-height: 750px;
             border: 1px solid $primary-color;
             padding: 10px 20px;
+            text-align: left;
 
             h2{
                 font-size: 30px;
@@ -98,14 +100,25 @@
 
 
 
-@media (max-width: 800px) {
-    .headhunter-area {
-        .headhunter-operations {
-            .painel-vagas {
-                max-width: 600px;
+@media (max-width:990px) {
+    .vagas-area{
+
+        .search-vagas{
+
+            form{
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+            }
+        }
+
+        .vagas-container{
+
+            .vaga-card{
+               width: 100%;
+              
             }
         }
     }
-
-
 }

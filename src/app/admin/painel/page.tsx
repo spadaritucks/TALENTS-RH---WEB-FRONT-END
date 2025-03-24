@@ -13,6 +13,8 @@ import { Chamados, ChamadosAtualizacoes } from '@/models/chamados'
 import { getAllAtualizacoesAction, getChamadosAction } from '@/server actions/chamados.action'
 import { cookies } from 'next/headers'
 import Dashboard from './Dashboard'
+import { Vagas } from '@/models/vagas'
+import { getVagasAction } from '@/server actions/vagas.action'
 export const dynamic = "force-dynamic";
 
 
@@ -23,6 +25,7 @@ export default async function Painel() {
     const empresasAction = await getEmpresasAction();
     const userEmpresas: Usuarios[] = empresasAction.users
     const empresas: Empresas[] = empresasAction.empresas
+    
 
     const candidatosAction = await getCandidatosAction();
     const userCandidatos: Usuarios[] = candidatosAction.users
@@ -35,6 +38,7 @@ export default async function Painel() {
     const profissoes: Cargos[] = await getProfissoesAction()
     const chamados: Chamados[] = await getChamadosAction()
     const atualizacoes: ChamadosAtualizacoes[] = await getAllAtualizacoesAction()
+    const vagas : Vagas[] = await getVagasAction()
 
     const cookiesStore = await cookies();
     const requestCookie = cookiesStore.get('user')?.value
@@ -62,6 +66,7 @@ export default async function Painel() {
                     userCandidatos={userCandidatos}
                     userEmpresas={userEmpresas}
                     userHeadhunters={userHeadhunters}
+                    vagas = {vagas}
                 />
 
             </section>

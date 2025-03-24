@@ -1,0 +1,29 @@
+@use "../../styles/color-variables.scss" as *;
+
+.dashboard-table {
+    width: 100%;
+    max-height: 500px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 20px 10px;
+    border: 3px solid $bg-secondary-color;
+    gap: 10px;
+    
+
+    h2{
+        font-size: 18px;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    table{
+        overflow: auto;
+        text-align: center;
+
+        th{
+            background-color: $bg-secondary-color;
+        }
+    }
+}

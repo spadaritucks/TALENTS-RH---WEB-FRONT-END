@@ -106,7 +106,7 @@ export default function VagasList({
                     //Filtração para o Endereço da Empresa da vaga
                     const vagaEmpresa = empresas.find(vagaEmpresa => vagaEmpresa.id === vaga.empresa_id)
                     const userEmpresa = usersEmpresas.find(user => user.id == vagaEmpresa?.user_id)
-
+                    
                     return (
                         <div key={vaga.id} className="vaga-card">
                             <h2>{vaga.titulo}</h2>
