@@ -46,7 +46,7 @@ export default function AtualizacaoForm({ empresas, chamados, profissoes, userLo
                     setFormErrors(data.error)
                     return
                 } else {
-                    showModal("Erro", <p>data.error</p>)
+                    showModal("Erro", data.error)
                     data.error = null
                     return
                 }

@@ -11,6 +11,7 @@ interface NavbarProps {
     children: ReactNode
 }
 
+
 export default function NavBar({ children }: NavbarProps) {
 
     const [open, setOpen] = useState<boolean>(false);

@@ -55,7 +55,6 @@ export default function AdminsList({
                             return (
                                 <div className="div-line" key={admin.id}>
                                     <p key={admin.id} >{userAdmin?.nome} {userAdmin?.sobrenome}</p>
-                                    <Link href={`/admin/administradores/editar_administrador?id=${userAdmin?.id}`}><Button ButtonName='Editar' type='button' variant='secondary' /></Link>
                                     <form action={handleDeleteAdmins}>
                                         <Input type="hidden" name="id" value={userAdmin?.id.toString()} />
                                         <Button ButtonName="Excluir" variant="primary" type="submit" disabled={isPendingDelete}/>

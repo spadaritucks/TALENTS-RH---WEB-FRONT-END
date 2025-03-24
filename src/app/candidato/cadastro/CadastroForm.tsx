@@ -32,6 +32,7 @@ export function CadastroForm({ cargos }: FormProps) {
         longitude: '',
     })
 
+    
 
 
       // Atualiza os erros quando há resposta da API

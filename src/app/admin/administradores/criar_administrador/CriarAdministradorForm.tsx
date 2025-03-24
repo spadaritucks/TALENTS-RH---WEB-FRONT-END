@@ -11,7 +11,7 @@ import { useActionState, useEffect, useState } from "react"
 
 
 export default function CriarAdministradorForm() {
-    
+
 
     const [formErrors, setFormErrors] = useState<{ [key: string]: string[] }>({}) //Objeto responsavel por validação do formulario
     const [data, handleCriarAdministrador, isPending] = useActionState(createAdminAction, null)
@@ -57,13 +57,18 @@ export default function CriarAdministradorForm() {
                 }
             }
             showModal("Sucesso", data.message)
+            return
         }
     })
 
 
 
+
     return (
         <form className='consultor-form' action={handleCriarAdministrador}>
+            <div>
+                <Input label="Foto do Usuario" placeholder='Insira sua Foto' type="file" name="foto_usuario" />
+            </div>
             <div>
                 <Input label="Nome" placeholder='Nome' type="text" name="nome" />
                 {formErrors ? formErrors.nome?.map((error, index) => <p className="text-red-400 text-sm" key={index}>{error}</p>) : null}
@@ -92,6 +97,10 @@ export default function CriarAdministradorForm() {
             <div>
                 <Input label="Estado" placeholder='Estado' type="text" name="estado" onChange={(e) => setForm({ ...form, estado: e.target.value })} value={form.estado} readOnly />
                 {formErrors ? formErrors.estado?.map((error, index) => <p className="text-red-400 text-sm" key={index}>{error}</p>) : null}
+            </div>
+            <div>
+                <Input label="Numero" placeholder='Numero da Residencia' type="text" name="numero" />
+                {formErrors ? formErrors.numero?.map((error, index) => <p className="text-red-400 text-sm" key={index}>{error}</p>) : null}
             </div>
             <div>
                 <Input label="Email" placeholder='exemplo@dominio.com' type="email" name="email" />
@@ -124,6 +133,14 @@ export default function CriarAdministradorForm() {
             <div>
                 <Input label="Curriculo" type="file" name="cv" />
                 {formErrors ? formErrors.cv?.map((error, index) => <p className="text-red-400 text-sm" key={index}>{error}</p>) : null}
+            </div>
+            <div>
+                <Input label="Senha para Acesso ao Painel" type='password' name='password' />
+                {formErrors ? formErrors.password?.map((error, index) => <p className="text-red-400 text-sm" key={index}>{error}</p>) : null}
+            </div>
+            <div>
+                <Input label="Confirme sua Senha" type='password' name='password_confirm' />
+                {formErrors ? formErrors.error?.map((error, index) => <p className="text-red-400 text-sm" key={index}>{error}</p>) : null}
             </div>
             <div className='button-submit-grid' style={{ gridColumn: '1 /-1' }}>
                 <Input type="hidden" name="tipo_usuario" value="admin" readOnly />

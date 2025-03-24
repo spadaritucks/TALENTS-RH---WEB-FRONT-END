@@ -56,7 +56,7 @@ export async function getAtualizacoesByIdAction(id: number) {
 
 // Função para criar uma nova atualização
 export async function createAtualizacoesAction(_: unknown, formData: FormData) {
-    console.log(formData)
+   
     const data = await createAtualizacoes(formData);
    
 

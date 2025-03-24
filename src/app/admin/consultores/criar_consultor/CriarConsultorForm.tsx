@@ -58,11 +58,14 @@ export default function CriarConsultorForm() {
             showModal("Sucesso", data.message)
         }
     })
-        
+
 
 
     return (
         <form className='consultor-form' action={handleCriarConsultor}>
+            <div>
+                <Input label="Foto do Usuario" placeholder='Insira sua Foto' type="file" name="foto_usuario" />
+            </div>
             <div>
                 <Input label="Nome" placeholder='Nome' type="text" name="nome" />
                 {formErrors ? formErrors.nome?.map((error, index) => <p className="text-red-400 text-sm" key={index}>{error}</p>) : null}
@@ -91,6 +94,10 @@ export default function CriarConsultorForm() {
             <div>
                 <Input label="Estado" placeholder='Estado' type="text" name="estado" onChange={(e) => setForm({ ...form, estado: e.target.value })} value={form.estado} readOnly />
                 {formErrors ? formErrors.estado?.map((error, index) => <p className="text-red-400 text-sm" key={index}>{error}</p>) : null}
+            </div>
+            <div>
+                <Input label="Numero" placeholder='Numero da Residencia' type="text" name="numero" />
+                {formErrors ? formErrors.numero?.map((error, index) => <p className="text-red-400 text-sm" key={index}>{error}</p>) : null}
             </div>
             <div>
                 <Input label="Email" placeholder='exemplo@dominio.com' type="email" name="email" />
@@ -124,7 +131,18 @@ export default function CriarConsultorForm() {
                 <Input label="Curriculo" type="file" name="cv" />
                 {formErrors ? formErrors.cv?.map((error, index) => <p className="text-red-400 text-sm" key={index}>{error}</p>) : null}
             </div>
+            <div>
+                <Input label="Senha para Acesso ao Painel" type='password' name='password' />
+                {formErrors ? formErrors.password?.map((error, index) => <p className="text-red-400 text-sm" key={index}>{error}</p>) : null}
+            </div>
+            <div>
+                <Input label="Confirme sua Senha" type='password' name='password_confirm' />
+                {formErrors ? formErrors.error?.map((error, index) => <p className="text-red-400 text-sm" key={index}>{error}</p>) : null}
+            </div>
             <div className='button-submit-grid' style={{ gridColumn: '1 /-1' }}>
+                <Input type="hidden" name="tipo_usuario" value="consultor" readOnly />
+                <Input type="hidden" name="latitude" value={form.latitude} readOnly />
+                <Input type="hidden" name="longitude" value={form.longitude} readOnly />
                 <Button ButtonName='Enviar' variant='primary' type='submit' disabled={isPending} />
                 {isPending ? <Spinner size="lg" className="bg-black dark:bg-white" /> : null}
             </div>
