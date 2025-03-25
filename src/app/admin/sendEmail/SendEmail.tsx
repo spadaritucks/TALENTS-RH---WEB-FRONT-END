@@ -10,6 +10,7 @@ import { mensagensAutomaticas } from "@/json/mensagens"
 import { Cargos } from "@/models/cargos"
 import { Chamados } from "@/models/chamados"
 import { Empresas } from "@/models/empresas"
+import { StatusProcesso } from "@/models/processos"
 import { Usuarios } from "@/models/usuarios"
 import { sendEmailAction } from "@/server actions/email.action"
 import { useActionState, useEffect, useState } from "react"
@@ -43,7 +44,7 @@ export default function SendEmailForm({ usuarios }: EmailFormProps) {
                     setFormErrors(data.error)
                     return
                 } else {
-                    showModal("Erro", <p>data.error</p>)
+                    showModal("Erro", data.error)
                     data.error = null
                     return
                 }
@@ -51,6 +52,7 @@ export default function SendEmailForm({ usuarios }: EmailFormProps) {
             }
 
             showModal("Sucesso", data.message)
+
         }
     }, [data]);
 
@@ -95,6 +97,13 @@ export default function SendEmailForm({ usuarios }: EmailFormProps) {
                         ))}
                     </Select>
                 </div> : ''}
+                <div>
+                    <Select label="Status da Candidatura" defaultValue="selecione" name="status">
+                        <option value="selecione">Selecione</option>
+                        <option value={StatusProcesso.Aprovado}>Aprovado</option>
+                        <option value={StatusProcesso.Reprovado}>Reprovado</option>
+                    </Select>
+                </div>
                 <div>
                     <Button ButtonName='Enviar' type='submit' variant='primary' />
                     {isPending ? <Spinner size="lg" className="bg-black dark:bg-white" /> : null}

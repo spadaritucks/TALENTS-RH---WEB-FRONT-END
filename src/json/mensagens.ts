@@ -35,4 +35,10 @@ export const mensagensAutomaticas = [
         mensagem: "👍Estou enviando seu CV para análise do meu cliente, se interesse deles pelo seu perfil, em breve entro em contato para darmos continuidade a fase de entrevistas. Boa Sorte 🤞"
 
     },
+    {
+        id: 7,
+        nome : 'Candidato Aprovado pelo Cliente',
+        mensagem: "👍Temos uma ótima notícia para você! Sua candidatura foi aprovada para a próxima etapa do processo seletivo. 🚀Em breve, entraremos em contato com mais detalhes sobre os próximos passos. Fique atento ao seu e-mail e ao nosso sistema para novas atualizações. Se tiver alguma dúvida, estamos à disposição!! 🤞"
+
+    },
 ];

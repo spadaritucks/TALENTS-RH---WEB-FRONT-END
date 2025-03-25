@@ -13,6 +13,8 @@ import { getVagasAction } from "@/server actions/vagas.action";
 import { cookies } from "next/headers";
 import MinhasVagasList from "./MinhasVagas";
 import './page.scss'
+import { getAdminsAction } from "@/server actions/admins.action";
+import { Admins } from "@/models/admins";
 
 
 
@@ -29,6 +31,10 @@ export default async function MinhasVagasPage() {
     const candidatosAction = await getCandidatosAction();
     const usersCandidatos: Usuarios[] = candidatosAction.users
     const candidatos: Candidatos[] = candidatosAction.candidatos
+
+    const adminAction = await getAdminsAction()
+    const admins : Admins[] = adminAction.admins
+    const userAdmins : Usuarios[] = adminAction.users
 
     const processos: Processos[] = await getProcessosAction();
 
@@ -63,6 +69,8 @@ export default async function MinhasVagasPage() {
                     usersEmpresas={usersEmpresas}
                     usersHeadhunters={usersHeadhunters}
                     userLogged={userLogged}
+                    admins={admins}
+                    userAdmins={userAdmins}
                 />
             </section>
         </Main>

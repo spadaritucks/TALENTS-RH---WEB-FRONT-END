@@ -15,7 +15,7 @@ import { Estados } from "@/models/estados"
 import { Headhunters } from "@/models/headhunter"
 import { Processos, StatusProcesso } from "@/models/processos"
 import { Usuarios } from "@/models/usuarios"
-import { Vagas } from "@/models/vagas"
+import { Vagas, VagaStatus } from "@/models/vagas"
 import getCidadesAction from "@/server actions/cidades.action"
 import { createProcessoAction, getProcessosAction } from "@/server actions/processos.action"
 import { getVagaByQueryStringAction } from "@/server actions/vagas.action"
@@ -58,7 +58,8 @@ export default function VagasList({
     const { showModal } = useModal()
     const [dataVagas, HandleFiltragemAction, isPendingVagas] = useActionState(getVagaByQueryStringAction, null)
     const [dataProcessos, HandleProcessosAction, isPendingProcessos] = useActionState(createProcessoAction, null)
-    const vagasFiltradas: Vagas[] = dataVagas
+    const vagas: Vagas[] = dataVagas
+    const vagasFiltradas : Vagas[] = vagas ? vagas.filter(vaga => vaga.status == VagaStatus.Ativa) : []
     const router = useRouter()
 
     const [cidades, setCidades] = useState<Cidades[] | []>([]);
@@ -142,23 +143,24 @@ export default function VagasList({
                             <p><strong>Região: </strong>{userEmpresa?.cidade} - {userEmpresa?.estado}</p>
                             <p><strong>Nivel :</strong> {vaga.nivel_senioridade}</p>
                             {vaga.tipo_salario === "valor" ? <p><strong>Salario: </strong> De R${vaga.salario_minimo} até R${vaga.salario_maximo}</p> : <p><strong>Salario: </strong>{vaga.tipo_salario}</p>}
-                            <p><strong>Publicada em:</strong> {new Date(vaga.created_at).toLocaleDateString('pt-BR')}</p>
+                            <p><strong>Publicada em:</strong> {new Date(vaga.created_at).toLocaleDateString('pt-BR')} - <strong>Vence em: </strong> {new Date(vaga.data_final).toLocaleDateString('pt-BR')}</p>
                             <p><strong>Requisitos: </strong>{Array.isArray(vaga.competencias) ? vaga.competencias.join(', ') : vaga.competencias}</p>
+                            <p><strong>Status da Vaga: </strong>{vaga.status}</p>
                             <Button ButtonName="Exibir Descrição da Vaga" type="button" variant="secondary" onClick={() => {
                                 showModal("Descrição da Vaga",
                                     <p>{vaga.descricao}</p>
                                 )
                             }} />
                             {usuarioCandidatado ? <span className="usuario-candidatado-message">Usuario já se candidatou nessa vaga</span> :
-                                <form action={HandleProcessosAction} >
-                                    {candidatoLogged ? <Input type="hidden" name="candidato_id" value={candidatoLogged.id.toString()} /> : ''}
-                                    <Input type="hidden" name="vaga_id" value={vaga.id.toString()} />
-                                    <Input type="hidden" name="status" value={StatusProcesso.Aguardando} />
-                                    <div style={{ gridColumn: '1/-1', display: 'flex', alignItems: 'center', gap: '5px' }}>
-                                        <Button ButtonName="Enviar Curriculo" type="submit" variant="primary" disabled={isPendingProcessos} />
-                                        {isPendingProcessos ? <Spinner size="lg" className="bg-black dark:bg-white" /> : null}
-                                    </div>
-                                </form>}
+                                vaga.status == VagaStatus.Ativa ? <form action={HandleProcessosAction} >
+                                {candidatoLogged ? <Input type="hidden" name="candidato_id" value={candidatoLogged.id.toString()} /> : ''}
+                                <Input type="hidden" name="vaga_id" value={vaga.id.toString()} />
+                                <Input type="hidden" name="status" value={StatusProcesso.Aguardando} />
+                                <div style={{ gridColumn: '1/-1', display: 'flex', alignItems: 'center', gap: '5px' }}>
+                                    <Button ButtonName="Enviar Curriculo" type="submit" variant="primary" disabled={isPendingProcessos} />
+                                    {isPendingProcessos ? <Spinner size="lg" className="bg-black dark:bg-white" /> : null}
+                                </div>
+                            </form> : <span className="usuario-candidatado-message">Vaga expirada em {vaga.data_final}</span> }
 
                         </div>
                     )

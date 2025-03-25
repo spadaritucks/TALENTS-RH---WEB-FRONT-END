@@ -1,5 +1,5 @@
 export enum VagaStatus {
-    Ativa = "Ativa",
+    Ativa = "Ativo",
     Suspensa = "Suspensa",
     Cancelada = "Cancelada",
 }

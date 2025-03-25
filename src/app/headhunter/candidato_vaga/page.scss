@@ -27,7 +27,7 @@
 
         .candidato{
             width: 80%;
-            max-height: 500px;
+            max-height: 100vh;
             border: 1px solid $primary-color;
             padding: 10px 20px;
             display: flex;
@@ -43,9 +43,28 @@
             }
 
             .candidato-vaga-buttons{
+                display: flex;   
+                align-items: flex-start;
+                justify-content: flex-start;
+                width: 100%;
+                gap: 20px;
+                
+
+            }
+
+            .actions{
                 display: flex;
-                gap: 10px;   
-                width: 100%;            
+                align-items: flex-start;
+                justify-content: flex-start;
+                width: 100%;
+                gap: 20px;
+
+                form, a{
+                    margin: 0;
+                    padding: 0;
+                }
+
+                
             }
 
         }
@@ -74,6 +93,10 @@
             .candidato{
 
                 .candidato-vaga-buttons{
+                    flex-direction: column;
+                }
+
+                .actions{
                     flex-direction: column;
                 }
             }
